@@ -130,18 +130,47 @@ Wichtige Design-Entscheidungen:
 
 ## Installation
 
-Zwei Stufen: **(1)** auf dem Proxmox-Host den Container erstellen,
-**(2)** im Container die Anwendung installieren. Beides funktioniert
-mit den Befehlen unten direkt gegen dieses Repository – die Installer
-nutzen standardmäßig `https://github.com/HatchetMan111/HausMeisterCheckliste.git`
-und den höchsten Release-Tag.
+Drei Wege – vom Einzeiler bis zur manuellen Variante.
 
-### Variante A – Komplett-Setup auf dem Proxmox-Host (empfohlen)
+### Variante 0 – Einzeiler (wie bei den bekannten Proxmox-Community-Skripten)
+
+Auf dem Proxmox-Host als root ausführen – das lädt das Repository, erstellt den
+Container, installiert alles und gibt am Ende die Adresse des Dashboards aus:
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/HatchetMan111/HausMeisterCheckliste/main/hausmeister.sh)"
+```
+
+Vollautomatisch ohne Rückfragen (Standardeinstellungen: DHCP, Hostname
+`hausmeister`, Storage automatisch ermittelt):
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/HatchetMan111/HausMeisterCheckliste/main/hausmeister.sh)" -- --auto
+```
+
+Die Ausgabe am Ende enthält beide Adressen, unter denen das Dashboard erreichbar
+ist – bevorzugt `https://hausmeister.local`, alternativ die Container-IP
+(dort beim ersten Aufruf die Zertifikatswarnung bestätigen):
+
+```
+DASHBOARD (empfohlen) : https://hausmeister.local
+DASHBOARD über IP     : https://192.168.1.50
+```
+
+Über Umgebungsvariablen lässt sich der Einzeiler anpassen, z. B.:
+
+```bash
+HAUSMEISTER_AUTO=1 HAUSMEISTER_PUSH_ENABLED=1 \
+  bash -c "$(curl -fsSL https://raw.githubusercontent.com/HatchetMan111/HausMeisterCheckliste/main/hausmeister.sh)"
+```
+
+### Variante A – Komplett-Setup auf dem Proxmox-Host (interaktiv)
 
 ```bash
 git clone https://github.com/HatchetMan111/HausMeisterCheckliste.git
 cd HausMeisterCheckliste
-bash ct/hausmeister.sh
+bash ct/hausmeister.sh          # interaktiv (Vorgaben mit Enter übernehmen)
+# oder: bash ct/hausmeister.sh --auto
 ```
 
 Das Skript fragt interaktiv ab (alle Vorgaben mit Enter übernehmbar; DHCP ist
@@ -157,8 +186,7 @@ Standard und unproblematisch, da das Zertifikat am mDNS-Namen hängt):
 
 Danach: Vorlage herunterladen, unprivilegierter Container erstellen
 (`onboot=1`, 2 vCPU, 2 GB RAM, 8 GB), starten, Installer automatisch im
-Container ausführen. Am Ende erscheint die Adresse (`https://hausmeister.local`),
-die Container-IP und der Hinweis auf den Zertifikats-Schritt.
+Container ausführen. Am Ende erscheinen Dashboard-Adresse und Container-IP.
 
 ### Variante B – vorhandenen Container/Server einrichten
 
@@ -183,6 +211,9 @@ Optionale Umgebungsvariablen (beide Varianten):
 |---|---|---|
 | `HAUSMEISTER_REPO_URL` | zu installierendes Repository | dieses Repository |
 | `HAUSMEISTER_VERSION` | Git-Tag, der installiert wird | `latest` (höchster Tag) |
+| `HAUSMEISTER_AUTO` | `1` = ohne Rückfragen, alle Vorgaben übernehmen (alternativ `--auto`) | `0` |
+| `HAUSMEISTER_NET_MODE` | `dhcp` oder `statisch` | `dhcp` |
+| `HAUSMEISTER_CT_IP` / `HAUSMEISTER_CT_GW` | IP (CIDR) und Gateway bei `statisch` | – |
 | `HAUSMEISTER_PUSH_ENABLED` | `1` = Web Push aktivieren | `0` |
 | `HAUSMEISTER_APP_URL` | öffentliche Adresse (auch für Caddy-Zertifikat) | `https://hausmeister.local` |
 | `HAUSMEISTER_TZ` | Zeitzone im Container | `Europe/Berlin` |

@@ -1,20 +1,31 @@
 #!/usr/bin/env bash
 # Hausmeister – LXC-Erstellung auf dem Proxmox-Host (unprivilegiert, Debian 13)
-# Fragt Netzwerk (DHCP/statisch), Bridge, Hostname und Storage interaktiv ab,
-# erstellt den Container und führt anschließend install/hausmeister-install.sh aus.
+# Erstellt Container, installiert die Anwendung und gibt am Ende die Adresse des
+# Dashboards aus.
+#
+# Interaktiv (alle Vorgaben mit Enter übernehmen):
+#   bash ct/hausmeister.sh
+# Vollautomatisch mit Standardeinstellungen (DHCP, hausmeister.local):
+#   bash ct/hausmeister.sh --auto
+#   HAUSMEISTER_AUTO=1 bash ct/hausmeister.sh
 set -Eeuo pipefail
 
 APP_NAME="Hausmeister"
-CTID=""
+AUTO=0
+if [[ "${1:-}" == "--auto" || "${HAUSMEISTER_AUTO:-0}" == "1" ]]; then
+  AUTO=1
+fi
+
 HN="hausmeister"
 BRIDGE="vmbr0"
+NET_MODE="${HAUSMEISTER_NET_MODE:-dhcp}"
+CT_IP="${HAUSMEISTER_CT_IP:-}"
+CT_GW="${HAUSMEISTER_CT_GW:-}"
 STORAGE=""
-NET_MODE="dhcp"
-CT_IP=""
-CT_GW=""
-CORES=2
-MEM=2048
-DISK=8
+CTID=""
+CORES="${HAUSMEISTER_CORES:-2}"
+MEM="${HAUSMEISTER_MEM:-2048}"
+DISK="${HAUSMEISTER_DISK:-8}"
 INSTALL_SCRIPT="$(cd "$(dirname "$0")/.." && pwd)/install/hausmeister-install.sh"
 REPO_URL="${HAUSMEISTER_REPO_URL:-https://github.com/HatchetMan111/HausMeisterCheckliste.git}"
 APP_VERSION="${HAUSMEISTER_VERSION:-latest}"
@@ -26,6 +37,18 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 info()  { printf '\033[1;32m[INFO]\033[0m %s\n' "$*"; }
 warn()  { printf '\033[1;33m[WARN]\033[0m %s\n' "$*"; }
 fail()  { printf '\033[1;31m[FEHLER]\033[0m %s\n' "$*"; }
+
+ask() {
+  local -n _out=$1
+  local _default=$2 _prompt=$3 _input=""
+  if [[ $AUTO -eq 1 ]]; then
+    info "$_prompt: $_default (Auto-Modus)"
+    _out=$_default
+  else
+    read -r -e -i "$_default" -p "$_prompt [$_default]: " _input
+    _out="${_input:-$_default}"
+  fi
+}
 
 on_error() {
   local code=$? cmd=${BASH_COMMAND:-unbekannt}
@@ -57,41 +80,54 @@ if [[ ! -f "$INSTALL_SCRIPT" ]]; then
 fi
 
 echo "=== $APP_NAME – LXC-Setup ==="
+if [[ $AUTO -eq 1 ]]; then
+  info "Auto-Modus: alle Vorgaben werden übernommen (Netzwerk: $NET_MODE)."
+fi
 echo ""
 
-read -r -e -p "Container-Hostname [$HN]: " INPUT && [[ -n "$INPUT" ]] && HN="$INPUT"
+ask HN "$HN" "Container-Hostname"
+ask BRIDGE "$BRIDGE" "Netzwerk-Bridge"
 
-read -r -e -p "Netzwerk-Bridge [$BRIDGE]: " INPUT && [[ -n "$INPUT" ]] && BRIDGE="$INPUT"
+if [[ -n "$HAUSMEISTER_NET_MODE" ]]; then
+  info "Netzwerk-Modus aus Umgebungsvariable: $NET_MODE"
+elif [[ $AUTO -eq 1 ]]; then
+  info "IP-Vergabe: dhcp (Auto-Modus – möglich, da das Zertifikat am mDNS-Namen hängt)"
+else
+  while true; do
+    read -r -e -i "$NET_MODE" -p "IP-Vergabe: dhcp oder statisch [dhcp]: " INPUT
+    NET_MODE="${INPUT:-dhcp}"
+    [[ "$NET_MODE" == "dhcp" || "$NET_MODE" == "statisch" ]] && break
+    warn "Bitte 'dhcp' oder 'statisch' eingeben."
+  done
+fi
 
-while true; do
-  read -r -e -p "IP-Vergabe: dhcp oder statisch [dhcp]: " INPUT
-  INPUT="${INPUT:-dhcp}"
-  [[ "$INPUT" == "dhcp" || "$INPUT" == "statisch" ]] && NET_MODE="$INPUT" && break
-  warn "Bitte 'dhcp' oder 'statisch' eingeben."
-done
 if [[ "$NET_MODE" == "statisch" ]]; then
-  read -r -e -p "Statische IP (CIDR, z. B. 192.168.1.50/24): " CT_IP
-  [[ -z "$CT_IP" ]] && { fail "Statische IP ist erforderlich."; exit 1; }
-  read -r -e -p "Gateway (z. B. 192.168.1.1): " CT_GW
-  [[ -z "$CT_GW" ]] && { fail "Gateway ist erforderlich."; exit 1; }
+  if [[ -n "$CT_IP" && -n "$CT_GW" ]]; then
+    info "Statische IP aus Umgebungsvariable: $CT_IP (GW $CT_GW)"
+  else
+    read -r -e -p "Statische IP (CIDR, z. B. 192.168.1.50/24): " CT_IP
+    [[ -z "$CT_IP" ]] && { fail "Statische IP ist erforderlich."; exit 1; }
+    read -r -e -p "Gateway (z. B. 192.168.1.1): " CT_GW
+    [[ -z "$CT_GW" ]] && { fail "Gateway ist erforderlich."; exit 1; }
+  fi
 fi
 echo "Hinweis: Das TLS-Zertifikat hängt am mDNS-Namen ($HN.local), nicht an der IP –"
 echo "daher ist DHCP problemlos möglich. Die statische IP ist nur Komfort."
 
 STORAGE_DEFAULT=$(pvesm status -content rootdir 2>/dev/null | awk 'NR>1 && $1!="Name" {print $1; exit}')
 STORAGE_DEFAULT="${STORAGE_DEFAULT:-local-lvm}"
-read -r -e -p "Storage für Root-Disk [$STORAGE_DEFAULT]: " INPUT && STORAGE="${INPUT:-$STORAGE_DEFAULT}"
+ask STORAGE "$STORAGE_DEFAULT" "Storage für Root-Disk"
 
 read -r -e -i "$REPO_URL" -p "Git-Repository-URL von $APP_NAME [${REPO_URL}]: " INPUT
 REPO_URL="${INPUT:-$REPO_URL}"
 [[ -z "$REPO_URL" ]] && { fail "Repository-URL ist erforderlich."; exit 1; }
-read -r -e -p "Version/Tag [latest = höchster Release-Tag]: " INPUT && APP_VERSION="${INPUT:-latest}"
+ask APP_VERSION "$APP_VERSION" "Version/Tag (latest = höchster Release-Tag)"
 
 CTID_DEFAULT=200
 while pct list 2>/dev/null | awk '{print $1}' | grep -qx "$CTID_DEFAULT"; do
   CTID_DEFAULT=$((CTID_DEFAULT + 1))
 done
-read -r -e -p "Container-ID [$CTID_DEFAULT]: " INPUT && CTID="${INPUT:-$CTID_DEFAULT}"
+ask CTID "$CTID_DEFAULT" "Container-ID"
 if pct list 2>/dev/null | awk '{print $1}' | grep -qx "$CTID"; then
   fail "Container-ID $CTID ist bereits vergeben."
   exit 1
@@ -145,14 +181,24 @@ CT_ACTUAL_IP=$(pct exec "$CTID" -- hostname -I 2>/dev/null | awk '{print $1}')
 info "=== Fertig ==="
 cat <<EOF
 
-  Container-ID   : $CTID
-  Hostname       : $HN (mDNS: $HN.local)
-  IP             : ${CT_ACTUAL_IP:-unbekannt}
-  URL            : https://$HN.local
-  Version        : $APP_VERSION
+  ============================================================
+   $APP_NAME ist installiert und läuft.
 
-  Nächster Schritt: Zertifikat pro Gerät bestätigen – Anleitung unter
-  https://$HN.local/help/certificate (beim ersten Aufruf verlinkt).
+    DASHBOARD (empfohlen) : https://$HN.local
+    DASHBOARD über IP     : https://${CT_ACTUAL_IP:-unbekannt}
 
-  Log: $LOG_FILE
+    Container-ID          : $CTID
+    Hostname              : $HN (mDNS: $HN.local)
+    Container-IP          : ${CT_ACTUAL_IP:-unbekannt}
+    Version               : $APP_VERSION
+
+    Hinweis: Das TLS-Zertifikat gilt für $HN.local. Beim ersten
+    Aufruf der IP-Adresse die Zertifikatswarnung bestätigen –
+    dauerhaft sauber läuft es über https://$HN.local.
+
+    Einmalig pro Gerät: Zertifikat bestätigen, Anleitung unter
+    https://$HN.local/help/certificate
+
+    Log: $LOG_FILE
+  ============================================================
 EOF

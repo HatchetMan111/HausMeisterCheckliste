@@ -4,6 +4,21 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.2] - 2026-08-31
+
+### Hinzugefügt
+
+- Einzeiler-Installation im Stil der Proxmox-Community-Skripte:
+  `bash -c "$(curl -fsSL https://raw.githubusercontent.com/HatchetMan111/HausMeisterCheckliste/main/hausmeister.sh)"`
+  – lädt das Repository, erstellt den Container, installiert die Anwendung und
+  gibt am Ende die Dashboard-Adressen aus (hausmeister.local und Container-IP)
+- Auto-Modus für das Host-Skript (`ct/hausmeister.sh --auto` bzw.
+  `HAUSMEISTER_AUTO=1`) mit Standardeinstellungen (DHCP, automatisch ermittelter
+  Storage); Netzwerk optionally per `HAUSMEISTER_NET_MODE`/`HAUSMEISTER_CT_IP`/
+  `HAUSMEISTER_CT_GW` vorgeben
+- Abschluss-Zusammenfassung zeigt nun ausdrücklich beide Dashboard-Adressen
+  (mDNS-Name bevorzugt, IP als Alternative mit Zertifikatshinweis)
+
 ## [0.1.1] - 2026-08-31
 
 ### Geändert
