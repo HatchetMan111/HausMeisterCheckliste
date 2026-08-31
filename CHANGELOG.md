@@ -4,6 +4,19 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.9] - 2026-08-31
+
+### Behoben
+
+- Health-Check der Container-Installation schlug fehl, obwohl App und Caddy
+  liefen: (1) `libnss-mdns` fehlte, damit ließ sich `hausmeister.local` im
+  Container nicht per mDNS auflösen; (2) die Root-CA wurde nie erzeugt, weil
+  der Auslöse-Handshake SNI `127.0.0.1` statt `hausmeister.local` sendete
+  (Caddy stellt keine Zertifikate für unbekannte SNI aus). Jetzt: `libnss-mdns`
+  wird installiert, Zertifikats-Ausstellung wird mit korrektem SNI angestoßen,
+  Root-CA wird exportiert und container-intern vertraut; Health-Check prüft
+  mDNS zuerst, danach lokale Auflösung, bei Fehlern mit Diagnose-Hinweis
+
 ## [0.1.8] - 2026-08-31
 
 ### Behoben

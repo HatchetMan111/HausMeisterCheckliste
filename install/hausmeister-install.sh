@@ -54,7 +54,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 info "System vorbereiten …"
 apt-get update -qq
-apt-get install -y -qq ca-certificates curl git python3 python3-venv sqlite3 avahi-daemon tzdata >/dev/null
+apt-get install -y -qq ca-certificates curl git python3 python3-venv sqlite3 avahi-daemon libnss-mdns tzdata >/dev/null
 
 info "Zeitzone setzen: $TIMEZONE"
 if [[ -f "/usr/share/zoneinfo/$TIMEZONE" ]]; then
@@ -193,7 +193,7 @@ info "Root-CA des internen Zertifikats exportieren (für lokale Verifikation) �
 CA_SRC="/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt"
 for _ in $(seq 1 15); do
   [[ -f "$CA_SRC" ]] && break
-  curl -ksSf "https://127.0.0.1/" -o /dev/null >/dev/null 2>&1 || true
+  curl -ksS --resolve "$SITE_NAME:443:127.0.0.1" "https://$SITE_NAME/" -o /dev/null >/dev/null 2>&1 || true
   sleep 2
 done
 if [[ -f "$CA_SRC" ]]; then
@@ -222,11 +222,13 @@ else
   fail "Timer nicht aktiv: hausmeister-daily.timer"
   FAILED=1
 fi
-if curl -fsS "https://$SITE_NAME/health" >/dev/null 2>&1 \
-  || curl -fsS --resolve "$SITE_NAME:443:127.0.0.1" "https://$SITE_NAME/health" >/dev/null 2>&1; then
-  info "Health-Check  : https://$SITE_NAME/health → OK"
+if curl -fsS "https://$SITE_NAME/health" >/dev/null 2>&1; then
+  info "Health-Check  : https://$SITE_NAME/health → OK (via mDNS)"
+elif curl -fsS --resolve "$SITE_NAME:443:127.0.0.1" "https://$SITE_NAME/health" >/dev/null 2>&1; then
+  info "Health-Check  : https://$SITE_NAME/health → OK (via lokaler Auflösung)"
 else
   fail "Health-Check fehlgeschlagen: https://$SITE_NAME/health"
+  fail "Diagnose: getent hosts $SITE_NAME; journalctl -u caddy --no-pager | tail -20"
   FAILED=1
 fi
 
