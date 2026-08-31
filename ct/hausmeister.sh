@@ -116,7 +116,18 @@ echo "daher ist DHCP problemlos möglich. Die statische IP ist nur Komfort."
 
 STORAGE_DEFAULT=$(pvesm status -content rootdir 2>/dev/null | awk 'NR>1 && $1!="Name" {print $1; exit}')
 STORAGE_DEFAULT="${STORAGE_DEFAULT:-local-lvm}"
-ask STORAGE "$STORAGE_DEFAULT" "Storage für Root-Disk"
+ask STORAGE "$STORAGE_DEFAULT" "Storage für Root-Disk (Container-Festplatte)"
+
+TEMPLATE_STORAGE="${HAUSMEISTER_TEMPLATE_STORAGE:-}"
+if [[ -z "$TEMPLATE_STORAGE" ]]; then
+  TEMPLATE_STORAGE=$(pvesm status -content vztmpl 2>/dev/null | awk 'NR>1 && $1!="Name" {print $1; exit}' || true)
+fi
+if [[ -z "$TEMPLATE_STORAGE" ]]; then
+  fail "Kein Storage mit Vorlagen-Unterstützung (Content 'vztmpl') gefunden."
+  fail "Datacenter → Storage prüfen; alternativ HAUSMEISTER_TEMPLATE_STORAGE setzen."
+  exit 1
+fi
+info "Vorlagen-Storage: $TEMPLATE_STORAGE"
 
 read -r -p "Git-Repository-URL von $APP_NAME [${REPO_URL}]: " INPUT
 REPO_URL="${INPUT:-$REPO_URL}"
@@ -150,7 +161,7 @@ if [[ -z "$TEMPLATE" ]]; then
   fail "Bitte manuell prüfen: pveam available  (erwartet: debian-1x-standard_*)"
   exit 1
 fi
-pveam download "$STORAGE" "$TEMPLATE" >/dev/null || { fail "Vorlagen-Download fehlgeschlagen: $TEMPLATE"; exit 1; }
+pveam download "$TEMPLATE_STORAGE" "$TEMPLATE" >/dev/null || { fail "Vorlagen-Download fehlgeschlagen: $TEMPLATE (Storage: $TEMPLATE_STORAGE)"; exit 1; }
 info "Vorlage: $TEMPLATE"
 
 info "Container $CTID erstellen (unprivilegiert, onboot=1, ${CORES} vCPU, ${MEM}MB RAM, ${DISK}GB) …"
@@ -161,7 +172,7 @@ else
   NET_CFG+=",ip=dhcp"
 fi
 
-pct create "$CTID" "${STORAGE}:vztmpl/$TEMPLATE" \
+pct create "$CTID" "${TEMPLATE_STORAGE}:vztmpl/$TEMPLATE" \
   --hostname "$HN" \
   --unprivileged 1 \
   --onboot 1 \

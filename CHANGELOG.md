@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.7] - 2026-08-31
+
+### Behoben
+
+- Vorlagen-Download und Root-Disk nutzten denselben Storage: Auf Standard-Proxmox
+  kann das LVM-thin-Storage (`local-lvm`) keine Container-Vorlagen speichern
+  („storage 'local-lvm' does not support templates“). Der Vorlagen-Storage wird
+  jetzt separat und automatisch ermittelt (erster Storage mit Content
+  `vztmpl`), ist per `HAUSMEISTER_TEMPLATE_STORAGE` überschreibbar, und der
+  Prompt für die Root-Disk ist klar als „Container-Festplatte“ beschriftet
+
 ## [0.1.6] - 2026-08-31
 
 ### Behoben
