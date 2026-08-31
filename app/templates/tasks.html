@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Aufgaben – Hausmeister{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Aufgaben</h1>
+  <a class="btn primary" href="/tasks/new">+ Neue Aufgabe</a>
+</div>
+
+<form class="filterbar card" method="get" action="/tasks">
+  <label>Bereich
+    <select name="area">
+      <option value="">Alle</option>
+      {% for a in areas %}
+      <option value="{{ a.slug }}" {% if filter_area == a.slug %}selected{% endif %}>{{ a.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Suche <input type="search" name="q" value="{{ filter_q }}"></label>
+  <label class="check"><input type="checkbox" name="show_inactive" value="true" {% if show_inactive %}checked{% endif %}> Inaktive anzeigen</label>
+  <button class="btn">Filtern</button>
+</form>
+
+<section class="card">
+  {% if tasks %}
+  <table class="task-table">
+    <thead>
+      <tr><th>Aufgabe</th><th>Bereich</th><th>Zeitplan</th><th>Priorität</th><th>Status</th><th>Aktionen</th></tr>
+    </thead>
+    <tbody>
+      {% for t in tasks %}
+      <tr class="prio-{{ t.priority }} {% if not t.active %}inactive{% endif %}">
+        <td>
+          <a href="/tasks/{{ t.id }}/edit" class="task-title">{{ t.title }}</a>
+          {% if t.next_due %}<span class="task-meta">nächste Fälligkeit: {{ t.next_due }}</span>{% endif %}
+          {% if t.source == "placeholder" %}<span class="badge placeholder">Platzhalter</span>{% endif %}
+        </td>
+        <td>{{ t.area_name or "—" }}{% if t.category_name %}<span class="task-meta">{{ t.category_name }}</span>{% endif %}</td>
+        <td>{{ t.schedule_text }}</td>
+        <td><span class="badge prio">{{ t.priority }}</span></td>
+        <td>{% if t.active %}<span class="badge ok">aktiv</span>{% else %}<span class="badge">inaktiv</span>{% endif %}</td>
+        <td class="row-actions">
+          <a class="btn small" href="/tasks/{{ t.id }}/edit">Bearbeiten</a>
+          <form method="post" action="/tasks/{{ t.id }}/toggle-form">
+            <button class="btn small">{{ "Deaktivieren" if t.active else "Aktivieren" }}</button>
+          </form>
+          <form method="post" action="/tasks/{{ t.id }}/delete-form" onsubmit="return confirm('Aufgabe inkl. Verlauf wirklich löschen?');">
+            <button class="btn small danger">Löschen</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">Keine Aufgaben gefunden. <a href="/tasks/new">Neue Aufgabe anlegen</a> oder Checkliste importieren (Einstellungen).</p>
+  {% endif %}
+</section>
+{% endblock %}

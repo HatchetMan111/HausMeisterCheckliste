@@ -1,0 +1,12 @@
+[Unit]
+Description=Hausmeister – täglicher Wartungslauf
+After=hausmeister.service
+
+[Service]
+Type=oneshot
+User=hausmeister
+Group=hausmeister
+WorkingDirectory=/opt/hausmeister
+EnvironmentFile=/opt/hausmeister/.env
+ExecStart=/opt/hausmeister/venv/bin/python -m app.services.scheduler --run-daily
+NoNewPrivileges=true

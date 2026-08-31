@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Einstellungen – Hausmeister{% endblock %}
+{% block content %}
+<h1>Einstellungen</h1>
+
+<section class="card">
+  <h2>Grundstück</h2>
+  <form method="post" action="/settings" class="form">
+    <div class="grid2">
+      <label>Name
+        <input type="text" name="property_name" value="{{ s.property.name }}">
+      </label>
+      <label>Adresse
+        <input type="text" name="property_address" value="{{ s.property.address or '' }}">
+      </label>
+    </div>
+
+    <h2>E-Mail-Benachrichtigung (primärer Weg)</h2>
+    <label class="check">
+      <input type="checkbox" name="email_enabled" {% if s.channels.email %}checked{% endif %}>
+      Tägliche Zusammenfassung per E-Mail aktiv
+    </label>
+    <div class="grid2">
+      <label>SMTP-Server
+        <input type="text" name="smtp_host" value="{{ s.smtp.host }}">
+      </label>
+      <label>Port
+        <input type="number" name="smtp_port" min="1" max="65535" value="{{ s.smtp.port }}">
+      </label>
+    </div>
+    <div class="grid2">
+      <label>Verschlüsselung
+        <select name="smtp_security">
+          <option value="starttls" {% if s.smtp.security == 'starttls' %}selected{% endif %}>STARTTLS</option>
+          <option value="ssl" {% if s.smtp.security == 'ssl' %}selected{% endif %}>SSL/TLS</option>
+          <option value="none" {% if s.smtp.security == 'none' %}selected{% endif %}>Keine</option>
+        </select>
+      </label>
+      <label>Nutzer
+        <input type="text" name="smtp_user" value="{{ s.smtp.user }}" autocomplete="off">
+      </label>
+    </div>
+    <div class="grid2">
+      <label>Passwort
+        <input type="password" name="smtp_password" value="" placeholder="{{ 'gespeichert – leer lassen = unverändert' if s.smtp.password_set else '' }}" autocomplete="new-password">
+      </label>
+      <label>Absender
+        <input type="text" name="smtp_from" value="{{ s.smtp.from }}">
+      </label>
+    </div>
+    <div class="grid2">
+      <label>Empfänger
+        <input type="text" name="notify_email" value="{{ s.notify_email }}">
+      </label>
+      <label>Tage im Voraus
+        <input type="number" name="notify_days_ahead" min="0" max="60" value="7">
+      </label>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" type="submit">Speichern</button>
+      <button class="btn" type="submit" formaction="/settings/test-email-form">Test-E-Mail senden</button>
+    </div>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Web Push (optional)</h2>
+  {% if s.push_enabled_env %}
+  <p>Push-Kanal: <strong>{% if s.channels.push %}aktiv{% else %}inaktiv{% endif %}</strong>.
+     Voraussetzung: Das Zertifikat muss auf diesem Gerät bestätigt sein
+     (<a href="/help/certificate">Anleitung</a>).</p>
+  <div class="form-actions">
+    <button type="button" class="btn primary" data-action="push-subscribe" id="push-subscribe" data-vapid-key="{{ s.vapid_public_key or '' }}">Push auf diesem Gerät aktivieren</button>
+    <button type="button" class="btn" data-action="push-test" id="push-test">Test-Push senden</button>
+  </div>
+  {% else %}
+  <p class="empty">Web Push ist deaktiviert (Umgebungsvariable HAUSMEISTER_PUSH_ENABLED=0). Aktivierung: README, Abschnitt „Web Push aktivieren“.</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <h2>Backup</h2>
+  <p>Backup-Verzeichnis: <code>{{ s.backup_dir }}</code></p>
+  <div class="form-actions">
+    <a class="btn primary" href="/api/maintenance/backup/export">Backup jetzt herunterladen (ZIP)</a>
+  </div>
+  <form method="post" action="/settings/backup-import-form" enctype="multipart/form-data" class="form">
+    <label>Backup-Datei (ZIP) importieren
+      <input type="file" name="file" accept=".zip" required>
+    </label>
+    <button class="btn danger" type="submit">Backup importieren (überschreibt Daten!)</button>
+  </form>
+  <p class="hint">Hinweis: Der geheime Schlüssel (.secret_key) ist nicht Teil des Backups. Nach einem Import auf fremdem System muss das SMTP-Passwort neu eingetragen werden. Für Schutz vor Container-Verlust: externes Ziel mounten – siehe README (NFS/CIFS).</p>
+</section>
+
+<section class="card">
+  <h2>Aufgabenvorlagen importieren</h2>
+  <p>CSV oder JSON mit den Spalten/Feldern laut README (Abschnitt „Checklisten-Import“).
+     Matching über den stabilen <code>slug</code> – bestehende Verläufe bleiben erhalten.</p>
+  <form method="post" action="/settings/import-checklist-form" enctype="multipart/form-data" class="form">
+    <label>Datei (JSON oder CSV)
+      <input type="file" name="file" accept=".json,.csv" required>
+    </label>
+    <button class="btn primary" type="submit">Importieren</button>
+  </form>
+  <p class="hint">Die mitgelieferten Vorlagen sind Platzhalter (Kennzeichnung „Platzhalter“ in der Aufgabenliste) und vor dem ersten produktiven Einsatz durch echte Checklisten-Inhalte zu ersetzen.</p>
+</section>
+{% endblock %}

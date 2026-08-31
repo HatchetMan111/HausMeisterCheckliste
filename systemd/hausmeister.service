@@ -1,0 +1,20 @@
+[Unit]
+Description=Hausmeister – lokale Wartungsplanung (Web-App)
+After=network.target
+
+[Service]
+Type=simple
+User=hausmeister
+Group=hausmeister
+WorkingDirectory=/opt/hausmeister
+EnvironmentFile=/opt/hausmeister/.env
+ExecStart=/opt/hausmeister/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8080
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/opt/hausmeister/data
+
+[Install]
+WantedBy=multi-user.target

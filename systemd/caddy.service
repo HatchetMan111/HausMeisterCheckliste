@@ -1,0 +1,16 @@
+[Unit]
+Description=Caddy Webserver (Reverse-Proxy fuer Hausmeister)
+After=network.target avahi-daemon.service
+Wants=avahi-daemon.service
+
+[Service]
+User=caddy
+Group=caddy
+ExecStart=/usr/bin/caddy run --environ --config /etc/caddy/Caddyfile
+ExecReload=/usr/bin/caddy reload --config /etc/caddy/Caddyfile --force
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Tests
+        run: pytest
+        env:
+          HAUSMEISTER_DATA_DIR: /tmp/hausmeister-ci-data
+
+  migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt
+      - name: Migration up
+        run: alembic upgrade head
+        env:
+          HAUSMEISTER_DATA_DIR: /tmp/hausmeister-ci-mig
+      - name: Migration down
+        run: alembic downgrade base
+        env:
+          HAUSMEISTER_DATA_DIR: /tmp/hausmeister-ci-mig
+      - name: Migration erneut up
+        run: alembic upgrade head
+        env:
+          HAUSMEISTER_DATA_DIR: /tmp/hausmeister-ci-mig
+
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: bash -n (Syntaxprüfung)
+        run: |
+          bash -n ct/hausmeister.sh
+          bash -n install/hausmeister-install.sh
+          bash -n update.sh
+      - name: ShellCheck
+        run: |
+          shellcheck -x ct/hausmeister.sh
+          shellcheck -x install/hausmeister-install.sh
+          shellcheck -x update.sh

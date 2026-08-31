@@ -1,0 +1,195 @@
+from __future__ import annotations
+
+from datetime import date
+
+
+def test_health(client):
+    resp = client.get("/health")
+    assert resp.status_code == 200
+    assert resp.json()["status"] == "ok"
+
+
+def test_dashboard_buckets_complete_flow(client):
+    today = date.today().isoformat()
+    resp = client.post(
+        "/api/tasks",
+        json={
+            "title": "Dashboard Durchlauf",
+            "area": "technik",
+            "schedule_type": "one_time",
+            "due_date": today,
+        },
+    )
+    assert resp.status_code == 201
+
+    dash = client.get("/api/maintenance/dashboard").json()
+    item = next(i for i in dash["today"] if i["title"] == "Dashboard Durchlauf")
+    assert item["priority"] == "normal"
+
+    resp = client.post(f"/api/maintenance/instances/{item['instance_id']}/complete", json={})
+    assert resp.status_code == 200
+
+    dash = client.get("/api/maintenance/dashboard").json()
+    assert not any(i["title"] == "Dashboard Durchlauf" for i in dash["today"])
+
+    history = client.get("/api/maintenance/history").json()["completions"]
+    assert any(c["task_title"] == "Dashboard Durchlauf" for c in history)
+
+    resp = client.post(f"/api/maintenance/instances/{item['instance_id']}/complete", json={})
+    assert resp.status_code == 409
+
+
+def test_defects_are_inactive(client):
+    resp = client.get("/api/defects")
+    assert resp.status_code == 501
+    resp = client.post("/api/defects")
+    assert resp.status_code == 501
+
+
+def test_settings_roundtrip_encrypted_password(client, db):
+    from app.models import Setting
+    from app.services.notifications import get_smtp_config
+
+    resp = client.put(
+        "/api/settings",
+        json={
+            "smtp_host": "mail.example.org",
+            "smtp_port": 587,
+            "smtp_security": "starttls",
+            "smtp_user": "wartung",
+            "smtp_password": "geheim-123",
+            "smtp_from": "wartung@example.org",
+            "notify_email": "empfang@example.org",
+            "notify_days_ahead": 3,
+            "email_enabled": True,
+        },
+    )
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+    assert data["smtp"]["password_set"] is True
+    assert "geheim" not in str(data)
+
+    row = db.query(Setting).filter(Setting.key == "smtp_password").one()
+    assert row.value != "geheim-123"
+    assert row.value.startswith("gAAAA")
+
+    cfg = get_smtp_config(db)
+    assert cfg["password"] == "geheim-123"
+    assert cfg["host"] == "mail.example.org"
+
+    resp = client.put("/api/settings", json={"smtp_user": "wartung2"})
+    assert resp.status_code == 200
+    cfg = get_smtp_config(db)
+    assert cfg["password"] == "geheim-123"
+    assert cfg["user"] == "wartung2"
+
+    resp = client.put("/api/settings", json={"smtp_clear_password": True})
+    assert resp.status_code == 200
+    db.expire_all()
+    cfg = get_smtp_config(db)
+    assert cfg["password"] == ""
+
+
+def test_settings_validation(client):
+    resp = client.put("/api/settings", json={"smtp_security": "bogus"})
+    assert resp.status_code == 422
+    resp = client.put("/api/settings", json={"smtp_port": 99999})
+    assert resp.status_code == 422
+    resp = client.put("/api/settings", json={"notify_days_ahead": 999})
+    assert resp.status_code == 422
+
+
+def test_test_email_requires_configuration(client):
+    resp = client.put("/api/settings", json={"smtp_host": "", "notify_email": ""})
+    assert resp.status_code == 200
+    resp = client.post("/api/settings/test-email", json={})
+    assert resp.status_code == 400
+
+
+def test_push_disabled_by_default(client):
+    resp = client.get("/api/settings/push/vapid-key")
+    assert resp.status_code == 404
+    resp = client.post("/api/settings/push/test")
+    assert resp.status_code == 404
+
+
+def test_backup_export_is_zip(client):
+    resp = client.get("/api/maintenance/backup/export")
+    assert resp.status_code == 200
+    assert resp.headers["content-type"] == "application/zip"
+    assert resp.content[:4] == b"PK\x03\x04"
+    assert b"hausmeister.sqlite3" in resp.content
+
+
+def test_backup_import_restores_state(client):
+    resp = client.post(
+        "/api/tasks",
+        json={"title": "Backup Bestand", "schedule_type": "one_time", "due_date": "2031-01-01"},
+    )
+    assert resp.status_code == 201
+
+    backup = client.get("/api/maintenance/backup/export").content
+
+    tasks = client.get("/api/tasks").json()["tasks"]
+    task_id = next(t["id"] for t in tasks if t["title"] == "Backup Bestand")
+    assert client.delete(f"/api/tasks/{task_id}").status_code == 204
+    assert not any(
+        t["title"] == "Backup Bestand" for t in client.get("/api/tasks").json()["tasks"]
+    )
+
+    resp = client.post(
+        "/api/maintenance/backup/import",
+        files={"file": ("backup.zip", backup, "application/zip")},
+    )
+    assert resp.status_code == 200, resp.text
+    titles = [t["title"] for t in client.get("/api/tasks").json()["tasks"]]
+    assert "Backup Bestand" in titles
+
+
+def test_backup_import_rejects_non_zip(client):
+    resp = client.post(
+        "/api/maintenance/backup/import",
+        files={"file": ("x.zip", b"kein zip", "application/zip")},
+    )
+    assert resp.status_code == 400
+
+
+def test_pages_render(client):
+    for path in ("/", "/tasks", "/tasks/new", "/history", "/settings", "/help/certificate"):
+        resp = client.get(path)
+        assert resp.status_code == 200, path
+        assert "Hausmeister" in resp.text
+
+
+def test_root_ca_endpoint_absent_by_default(client):
+    resp = client.get("/certs/root-ca.crt")
+    assert resp.status_code == 404
+
+
+def test_annual_window_overdue_after_window(client, db):
+    task_payload = {
+        "title": "Fenster Jahresaufgabe",
+        "schedule_type": "annual_window",
+        "window_start_month": 10,
+        "window_end_month": 11,
+    }
+    resp = client.post("/api/tasks", json=task_payload)
+    assert resp.status_code == 201
+
+    client.post("/api/maintenance/ensure-instances")
+    instances = client.get("/api/maintenance/instances").json()["instances"]
+    task_inst = [i for i in instances if i["title"] == "Fenster Jahresaufgabe"]
+    assert task_inst, "Instanz für Jahresfenster sollte existieren"
+
+    from datetime import timedelta
+
+    today = date.today()
+    current_year_window_start = date(today.year, 10, 1)
+    future = current_year_window_start > today
+    assert all(
+        (i["status"] == "upcoming") == future or i["status"] in ("due", "overdue", "upcoming")
+        for i in task_inst
+    )
+
+    if today.month >= 12:
+        assert all(i["status"] == "overdue" for i in task_inst if i["due_date"] < (today - timedelta(days=31)).isoformat())
