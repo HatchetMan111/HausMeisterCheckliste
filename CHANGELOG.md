@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.8] - 2026-08-31
+
+### Behoben
+
+- Container-Installer brach mit „sudo: command not found“ ab: Debian-LXCs
+  bringen kein `sudo` mit. Die Befehle als Anwendungsbenutzer (Alembic,
+  Aufgaben-Import) nutzen jetzt `runuser` aus util-linux (immer vorhanden);
+  `update.sh` analog korrigiert
+- Locale-Warnungen („perl: warning: Falling back …“) im Container-Installer
+  durch gesetztes `LC_ALL=C.UTF-8` beseitigt
+
 ## [0.1.7] - 2026-08-31
 
 ### Behoben

@@ -15,9 +15,16 @@ TIMEZONE="${HAUSMEISTER_TZ:-Europe/Berlin}"
 
 exec > >(tee -a "$LOG_FILE") 2>&1
 
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
+
 info()  { printf '\033[1;32m[INFO]\033[0m %s\n' "$*"; }
 warn()  { printf '\033[1;33m[WARN]\033[0m %s\n' "$*"; }
 fail()  { printf '\033[1;31m[FEHLER]\033[0m %s\n' "$*"; }
+
+as_app_user() {
+  runuser -u "$APP_USER" -- "$@"
+}
 
 on_error() {
   local code=$? cmd=${BASH_COMMAND:-unbekannt}
@@ -103,11 +110,11 @@ mkdir -p "$APP_DIR/data"
 chown -R "$APP_USER:$APP_USER" "$APP_DIR"
 
 info "Datenbankschema migrieren (Alembic) …"
-sudo -u "$APP_USER" env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
+as_app_user env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
   "$APP_DIR/venv/bin/alembic" -c "$APP_DIR/alembic.ini" upgrade head
 
 info "Aufgabenbibliothek importieren (nur bei leerer Datenbank) …"
-TASK_COUNT=$(sudo -u "$APP_USER" env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
+TASK_COUNT=$(as_app_user env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
   "$APP_DIR/venv/bin/python" - <<'PYEOF'
 from app.db import init
 init()
@@ -119,7 +126,7 @@ db.close()
 PYEOF
 ) || TASK_COUNT=0
 if [[ "${TASK_COUNT:-0}" -eq 0 ]]; then
-  sudo -u "$APP_USER" env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
+  as_app_user env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
     "$APP_DIR/venv/bin/python" "$APP_DIR/scripts/import_checklist.py" "$APP_DIR/data/templates/checklist.json"
   info "Platzhalter-Aufgabenbibliothek importiert (vor Produktionseinsatz ersetzen!)."
 else

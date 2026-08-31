@@ -58,7 +58,7 @@ if [[ -f "$APP_DIR/requirements.txt" ]]; then
 fi
 
 info "Migrationen anwenden …"
-sudo -u hausmeister env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
+runuser -u hausmeister -- env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
   "$APP_DIR/venv/bin/alembic" -c "$APP_DIR/alembic.ini" upgrade head
 
 systemctl restart hausmeister
