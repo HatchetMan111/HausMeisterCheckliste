@@ -172,19 +172,29 @@ if [[ -f /etc/caddy/Caddyfile ]] && ! grep -q "verwaltet von Hausmeister" /etc/c
   warn "Vorhandene Caddy-Konfiguration gesichert und durch die Hausmeister-Konfiguration ersetzt."
 fi
 cat > /etc/caddy/Caddyfile <<EOF
-# verwaltet von Hausmeister – Re-Runs setzen diese Datei zurück
+# verwaltet von Hausmeister (Re-Runs setzen diese Datei zurueck)
 {
-\tadmin off
+  admin off
 }
 
 $SITE_NAME {
-\ttls internal
-\tencode gzip
-\treverse_proxy 127.0.0.1:8080
+  tls internal
+  encode gzip
+  reverse_proxy 127.0.0.1:8080
 }
 EOF
 chown root:caddy /etc/caddy/Caddyfile 2>/dev/null || true
 chmod 644 /etc/caddy/Caddyfile
+
+chown -R caddy:caddy /var/lib/caddy 2>/dev/null || true
+
+if ! runuser -u caddy -- /usr/bin/caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile >/dev/null 2>&1; then
+  fail "Caddyfile ist ungültig – Validierungsausgabe:"
+  runuser -u caddy -- /usr/bin/caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile || true
+  fail "Konfiguration prüfen: /etc/caddy/Caddyfile"
+  exit 1
+fi
+info "Caddyfile valide."
 
 info "Dienste starten und aktivieren …"
 systemctl enable --now avahi-daemon >/dev/null 2>&1 || true

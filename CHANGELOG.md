@@ -4,6 +4,19 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.11] - 2026-08-31
+
+### Behoben
+
+- Caddy startete mit der frisch geschriebenen Konfiguration nicht: In
+  Bash-Heredocs bleibt `\t` ein literales Backslash-t, die generierte
+  Caddyfile enthielt damit ungültige Direktiven (`\tadmin off` …) – der Fehler
+  war bisher nie aufgefallen, weil die Datei durch den Paket-Default nie
+  tatsächlich geschrieben wurde. Jetzt: saubere Einrückung per Leerzeichen,
+  Caddyfile wird vor dem Start per `caddy validate` (als Caddy-Benutzer,
+  damit der Storage korrekt gehört wird) geprüft, Storage-Besitzrechte
+  abgesichert
+
 ## [0.1.10] - 2026-08-31
 
 ### Behoben
