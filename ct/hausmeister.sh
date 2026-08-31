@@ -88,7 +88,7 @@ echo ""
 ask HN "$HN" "Container-Hostname"
 ask BRIDGE "$BRIDGE" "Netzwerk-Bridge"
 
-if [[ -n "$HAUSMEISTER_NET_MODE" ]]; then
+if [[ -n "${HAUSMEISTER_NET_MODE:-}" ]]; then
   info "Netzwerk-Modus aus Umgebungsvariable: $NET_MODE"
 elif [[ $AUTO -eq 1 ]]; then
   info "IP-Vergabe: dhcp (Auto-Modus – möglich, da das Zertifikat am mDNS-Namen hängt)"

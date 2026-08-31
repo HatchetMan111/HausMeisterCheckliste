@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.3] - 2026-08-31
+
+### Behoben
+
+- Host-Skript brach unter `set -u` mit „HAUSMEISTER_NET_MODE: unbound variable“
+  ab, wenn die Umgebungsvariable nicht gesetzt war (reguläre interaktive
+  Installation im Einzeiler betroffen)
+
 ## [0.1.2] - 2026-08-31
 
 ### Hinzugefügt
