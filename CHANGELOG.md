@@ -4,6 +4,20 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.12] - 2026-08-31
+
+### Geändert
+
+- Dashboard ist jetzt **auch über HTTP** erreichbar – ohne jeden
+  Zertifikatsaufwand: `http://hausmeister.local` und `http://<Container-IP>`
+  (Port 80) sofort nutzbar. HTTPS bleibt parallel aktiv und ist nur noch für
+  die PWA-Extras nötig (App-Installation, Offline-„Erledigt“-Klicks, Web Push),
+  da Browser dafür einen „secure context“ verlangen
+- Installer-Verifikation: HTTP-Health-Check ist maßgeblich; HTTPS-Fehler
+  führen nur noch zu einem Hinweis statt eines Abbruchs
+- Abschluss-Zusammenfassung zeigt beide Wege (HTTP sofort / HTTPS für PWA)
+- README: „Erste Schritte“ und Zertifikats-Abschnitt entsprechend angepasst
+
 ## [0.1.11] - 2026-08-31
 
 ### Behoben

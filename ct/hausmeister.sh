@@ -205,20 +205,17 @@ cat <<EOF
   ============================================================
    $APP_NAME ist installiert und läuft.
 
-    DASHBOARD (empfohlen) : https://$HN.local
-    DASHBOARD über IP     : https://${CT_ACTUAL_IP:-unbekannt}
+    DASHBOARD (sofort, ohne Zertifikat) : http://$HN.local
+    DASHBOARD über IP                   : http://${CT_ACTUAL_IP:-unbekannt}
 
-    Container-ID          : $CTID
-    Hostname              : $HN (mDNS: $HN.local)
-    Container-IP          : ${CT_ACTUAL_IP:-unbekannt}
-    Version               : $APP_VERSION
+    DASHBOARD mit PWA-Funktionen        : https://$HN.local
+      (Offline-Modus/Push – dafür einmalig Zertifikat
+       bestätigen: https://$HN.local/help/certificate)
 
-    Hinweis: Das TLS-Zertifikat gilt für $HN.local. Beim ersten
-    Aufruf der IP-Adresse die Zertifikatswarnung bestätigen –
-    dauerhaft sauber läuft es über https://$HN.local.
-
-    Einmalig pro Gerät: Zertifikat bestätigen, Anleitung unter
-    https://$HN.local/help/certificate
+    Container-ID                        : $CTID
+    Hostname                            : $HN (mDNS: $HN.local)
+    Container-IP                        : ${CT_ACTUAL_IP:-unbekannt}
+    Version                             : $APP_VERSION
 
     Log: $LOG_FILE
   ============================================================

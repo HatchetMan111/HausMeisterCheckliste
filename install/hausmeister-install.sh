@@ -177,6 +177,17 @@ cat > /etc/caddy/Caddyfile <<EOF
   admin off
 }
 
+# HTTP: sofort nutzbar, ohne Zertifikat (kein Offline-Modus/kein Push)
+http://$SITE_NAME {
+  reverse_proxy 127.0.0.1:8080
+}
+
+:80 {
+  reverse_proxy 127.0.0.1:8080
+}
+
+# HTTPS: volle PWA-Funktionen (Offline-Modus, Push) nach einmaliger
+# Zertifikats-Bestaetigung – Anleitung: /help/certificate
 $SITE_NAME {
   tls internal
   encode gzip
@@ -243,14 +254,19 @@ else
   fail "Timer nicht aktiv: hausmeister-daily.timer"
   FAILED=1
 fi
-if curl -fsS "https://$SITE_NAME/health" >/dev/null 2>&1; then
-  info "Health-Check  : https://$SITE_NAME/health → OK (via mDNS)"
-elif curl -fsS --resolve "$SITE_NAME:443:127.0.0.1" "https://$SITE_NAME/health" >/dev/null 2>&1; then
-  info "Health-Check  : https://$SITE_NAME/health → OK (via lokaler Auflösung)"
-else
-  fail "Health-Check fehlgeschlagen: https://$SITE_NAME/health"
-  fail "Diagnose: getent hosts $SITE_NAME; journalctl -u caddy --no-pager | tail -20"
+if ! curl -fsS "http://127.0.0.1/health" >/dev/null 2>&1; then
+  fail "Health-Check fehlgeschlagen: http://127.0.0.1/health"
+  fail "Diagnose: systemctl status caddy; journalctl -u caddy --no-pager | tail -20"
   FAILED=1
+else
+  info "Health-Check  : HTTP → OK (Dashboard ohne Zertifikat erreichbar)"
+  if curl -fsS "https://$SITE_NAME/health" >/dev/null 2>&1 \
+    || curl -fsS --resolve "$SITE_NAME:443:127.0.0.1" "https://$SITE_NAME/health" >/dev/null 2>&1; then
+    info "Health-Check  : https://$SITE_NAME/health → OK (PWA/Offline-Funktionen aktiv)"
+  else
+    warn "HTTPS-Pfad noch nicht geprüft/vertraut – Dashboard läuft trotzdem über HTTP."
+    warn "Für Offline-Modus und Push: https://$SITE_NAME/help/certificate beachten."
+  fi
 fi
 
 CT_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
@@ -264,18 +280,22 @@ cat <<EOF
 ============================================================
  $APP_NAME ist installiert (Version $APP_VERSION).
 
-  Adresse        : https://$SITE_NAME
-  Container-IP   : ${CT_IP:-unbekannt}  (mDNS: $SITE_NAME)
-  Health         : https://$SITE_NAME/health
+  DASHBOARD (sofort, ohne Zertifikat):
+    http://$SITE_NAME
+    http://${CT_IP:-<container-ip>}
 
-  WICHTIG – Zertifikat bestätigen (pro Gerät einmalig):
+  DASHBOARD mit vollen PWA-Funktionen (Offline-Modus, Push):
+    https://$SITE_NAME
+
+  WICHTIG – Zertifikat bestätigen (pro Gerät einmalig, NUR
+  für die HTTPS-Variante nötig):
     1. https://$SITE_NAME im Browser öffnen und der Warnung
        vorübergehend folgen ('Erweitert' > 'Weiter zu ...').
     2. Root-CA laden: https://$SITE_NAME/certs/root-ca.crt
     3. Schritt-für-Schritt-Anleitung (Android/iOS/Windows/Linux):
        https://$SITE_NAME/help/certificate
     Ohne diesen Schritt bleiben Service-Worker (Offline-Modus)
-    und Web Push deaktiviert.
+    und Web Push deaktiviert. Über HTTP läuft alles andere.
 
   Nächste Schritte:
     - E-Mail/SMTP in der Web-UI eintragen (Einstellungen).

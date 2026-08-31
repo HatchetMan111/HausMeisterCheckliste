@@ -48,7 +48,7 @@ maintenance“ sind bewusst **nicht** Teil dieser Version.
 3. [Architektur](#architektur)
 4. [Installation](#installation)
 5. [Erste Schritte nach der Installation](#erste-schritte-nach-der-installation)
-6. [Zertifikat auf deinem Gerät bestätigen (Pflichtschritt)](#zertifikat-auf-deinem-gerät-bestätigen-pflichtschritt)
+6. [Zertifikat auf deinem Gerät bestätigen (nur für Offline-Modus & Push)](#zertifikat-auf-deinem-gerät-bestätigen-nur-für-offline-modus--push)
 7. [Web Push aktivieren](#web-push-aktivieren)
 8. [E-Mail-Benachrichtigung (SMTP)](#e-mail-benachrichtigung-smtp)
 9. [Backup & Wiederherstellung](#backup--wiederherstellung)
@@ -246,30 +246,43 @@ Macht (idempotent, mit vollständiger Fehlerdiagnostik und Log unter
 
 In ~10 Minuten vom frischen Container zur fertigen Nutzung:
 
-1. **`https://hausmeister.local` öffnen** und die Browser-Warnung einmalig
-   bestätigen („Erweitert → Weiter …“), damit du die Seite erreichst.
-2. **Zertifikat auf jedem Gerät bestätigen** – Pflichtschritt für Offline-Modus
-   und Push: [Anleitung](#zertifikat-auf-deinem-gerät-bestätigen-pflichtschritt).
-   Danach die Seite neu laden – kein Warnhinweis mehr.
-3. **Als App installieren (PWA):** im Browser-Menü „Zum Startbildschirm
-   hinzufügen“ / „App installieren“. Danach startet Hausmeister wie eine
-   native App im Vollbild.
-4. **Dashboard prüfen:** die Platzhalter-Aufgaben sind bereits geladen und
+1. **Dashboard öffnen – ohne jegliches Zertifikatsaufwand:**
+   `http://hausmeister.local` (oder `http://<Container-IP>`).
+   Über HTTP läuft alles: Aufgaben, Fälligkeiten, Verlauf, Einstellungen,
+   Backup. Hinweis: Ob `.local`-Namen am PC/Handy funktionieren, hängt vom
+   Gerät ab (mDNS) – die IP-Adresse funktioniert immer.
+2. **Dashboard prüfen:** die Platzhalter-Aufgaben sind bereits geladen und
    erzeugen sofort erste Fälligkeiten – so siehst du sofort, wie alles arbeitet.
-5. **Eigene Checkliste importieren** (oder Platzhalter anpassen), siehe
+3. **Als App installieren + Offline-Modus + Push (optional):** dafür ist HTTPS
+   mit bestätigtem Zertifikat nötig – ein einmaliger Schritt pro Gerät,
+   Anleitung im nächsten Abschnitt. Danach die Seite über
+   `https://hausmeister.local` nutzen und im Browser-Menü „Zum Startbildschirm
+   hinzufügen“ / „App installieren“ wählen.
+4. **Eigene Checkliste importieren** (oder Platzhalter anpassen), siehe
    [Checklisten-Import](#checklisten-import).
-6. **E-Mail einrichten:** *Einstellungen → E-Mail-Benachrichtigung* – SMTP-Host,
+5. **E-Mail einrichten:** *Einstellungen → E-Mail-Benachrichtigung* – SMTP-Host,
    Empfänger eintragen, Kanal aktivieren, Test-E-Mail senden.
-7. **Optional Web Push** aktivieren (Feature-Flag + Gerät anmelden), siehe
+6. **Web Push** (optional, setzt Schritt 3 voraus), siehe
    [Web Push aktivieren](#web-push-aktivieren).
-8. **Backup prüfen:** unter *Einstellungen → Backup* einmal den ZIP-Download
+7. **Backup prüfen:** unter *Einstellungen → Backup* einmal den ZIP-Download
    ausführen und – empfohlen – ein externes Backup-Ziel mounten
    (siehe [Backup](#backup--wiederherstellung)).
 
 Danach läuft der Betrieb von selbst: der tägliche Timer (07:30 Uhr) erzeugt
 neue Fälligkeiten, sichert die Datenbank und schickt die E-Mail-Zusammenfassung.
 
-## Zertifikat auf deinem Gerät bestätigen (Pflichtschritt)
+**HTTP oder HTTPS?** Über HTTP nutzt du Hausmeister komplett im Browser – nur
+die PWA-Extras (App-Installation, Offline-„Erledigt“-Klicks, Push) brauchen
+HTTPS als „secure context“. HTTPS bleibt parallel aktiv; du kannst jederzeit
+wechseln.
+
+## Zertifikat auf deinem Gerät bestätigen (nur für Offline-Modus & Push)
+
+Für die normale Nutzung reicht HTTP (`http://hausmeister.local` bzw.
+`http://<Container-IP>`) – ganz ohne Zertifikat. HTTPS ist nur dann relevant,
+wenn du die **PWA-Funktionen** willst: App-Installation auf dem Startbildschirm,
+Offline-„Erledigt“-Klicks und Web Push. Browser verlangen dafür einen
+„secure context“, also ein vertrautes Zertifikat.
 
 Hausmeister nutzt ein selbstsigniertes Zertifikat für `hausmeister.local`.
 Browser akzeptieren es **nicht automatisch** – jedes Gerät (Handy, Tablet, Laptop)
