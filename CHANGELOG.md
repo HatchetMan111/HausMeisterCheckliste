@@ -4,6 +4,20 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.4] - 2026-08-31
+
+### Behoben
+
+- Vorlagen-Erkennung brach unter `pipefail` ab, sobald `pveam` keine
+  Debian-13-Vorlage lieferte (z. B. ältere Proxmox-Versionen): der Skript-Abbruch
+  geschah direkt nach „Vorlage herunterladen“, der Debian-12-Fallback war nie
+  erreichbar. Jetzt: `grep` nicht-abortierend, Fallback auf Debian-12 mit
+  Hinweis, klare Fehlermeldung mit Prüfhinweis (`pveam available`), falls gar
+  keine Standardvorlage existiert, und explizite Fehlermeldung bei
+  fehlgeschlagenem Vorlagen-Download
+- Container-IP-Ermittlung am Ende ist fehlertolerant (kein Abbruch mehr nach
+  erfolgreicher Installation, falls `hostname -I` im Container scheitert)
+
 ## [0.1.3] - 2026-08-31
 
 ### Behoben

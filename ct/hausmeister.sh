@@ -135,12 +135,17 @@ fi
 
 info "Debian-13-Vorlage herunterladen …"
 pveam update >/dev/null 2>&1 || true
-TEMPLATE=$(pveam available --section system 2>/dev/null | awk '{print $2}' | grep '^debian-13-standard' | sort -V | tail -n1)
+TEMPLATE=$(pveam available 2>/dev/null | awk '{print $2}' | grep '^debian-13-standard' | sort -V | tail -n1 || true)
 if [[ -z "$TEMPLATE" ]]; then
-  TEMPLATE=$(pveam available 2>/dev/null | awk '{print $2}' | grep '^debian-1[23]-standard' | sort -V | tail -n1)
+  warn "Keine Debian-13-Vorlage gefunden – Debian-12-Vorlage wird verwendet."
+  TEMPLATE=$(pveam available 2>/dev/null | awk '{print $2}' | grep '^debian-12-standard' | sort -V | tail -n1 || true)
 fi
-[[ -z "$TEMPLATE" ]] && { fail "Keine Debian-Standardvorlage gefunden."; exit 1; }
-pveam download "$STORAGE" "$TEMPLATE" >/dev/null
+if [[ -z "$TEMPLATE" ]]; then
+  fail "Keine Debian-Standardvorlage gefunden."
+  fail "Bitte manuell prüfen: pveam available  (erwartet: debian-1x-standard_*)"
+  exit 1
+fi
+pveam download "$STORAGE" "$TEMPLATE" >/dev/null || { fail "Vorlagen-Download fehlgeschlagen: $TEMPLATE"; exit 1; }
 info "Vorlage: $TEMPLATE"
 
 info "Container $CTID erstellen (unprivilegiert, onboot=1, ${CORES} vCPU, ${MEM}MB RAM, ${DISK}GB) …"
@@ -177,7 +182,7 @@ pct push "$CTID" "$INSTALL_SCRIPT" /tmp/hausmeister-install.sh --perms 755
 pct exec "$CTID" -- bash -c \
   "HAUSMEISTER_REPO_URL='$REPO_URL' HAUSMEISTER_VERSION='$APP_VERSION' HAUSMEISTER_PUSH_ENABLED='$PUSH_ENABLED' bash /tmp/hausmeister-install.sh"
 
-CT_ACTUAL_IP=$(pct exec "$CTID" -- hostname -I 2>/dev/null | awk '{print $1}')
+CT_ACTUAL_IP=$(pct exec "$CTID" -- hostname -I 2>/dev/null | awk '{print $1}' || true)
 info "=== Fertig ==="
 cat <<EOF
 
