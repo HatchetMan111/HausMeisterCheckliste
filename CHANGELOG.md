@@ -4,6 +4,19 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.1] - 2026-08-31
+
+### Geändert
+
+- Installer (`ct/hausmeister.sh`, `install/hausmeister-install.sh`) nutzen jetzt
+  standardmäßig `https://github.com/HatchetMan111/HausMeisterCheckliste.git` –
+  `bash install/hausmeister-install.sh` funktioniert damit ohne Umgebungsvariable;
+  im Host-Skript ist die URL als Vorgabe vorbelegt (Enter = übernehmen)
+- README erweitert: Einführung „Was ist das – und wofür?“, Alltagsnutzung,
+  konkrete Installationsbefehle mit echter Repository-URL, Tabelle der
+  Installer-Umgebungsvariablen und Checkliste „Erste Schritte nach der
+  Installation“
+
 ## [0.1.0] - 2026-08-31
 
 ### Hinzugefügt

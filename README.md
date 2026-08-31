@@ -5,6 +5,36 @@ Präventive Planung statt Sensorik: Aufgaben nach Monatsfenstern, festen Monaten
 Tages-Intervallen oder Einzelterminen – inkl. Verlauf, Offline-Fähigkeit,
 Backup und E-Mail-Zusammenfassung.
 
+## Was ist das – und wofür?
+
+Jedes Haus hat wiederkehrende Pflichtaufgaben, die leicht vergessen werden:
+Dachrinne im Herbst leeren, Rauchmelder vierteljährlich testen, Lüftungsfilter
+alle drei Monate wechseln, Bewässerung vor dem ersten Frost winterfest machen.
+Zettel, Merkhäfte und Tabellen versagen genau dann, wenn der Alltag dazwischenkommt –
+und niemand weiß mehr, wann der Feuerlöscher zuletzt geprüft wurde.
+
+Hausmeister nimmt dir das Merken ab:
+
+- **Du legst einmal fest, wann was fällig ist** – als Jahresfenster („Dachrinne:
+  Oktober–November“), feste Monate („Rauchmelder: Jan/Apr/Jul/Okt“),
+  Tages-Intervall („Feuerlöscher-Fachwartung: alle 730 Tage“) oder Einzeltermin.
+- **Hausmeister plant daraus selbstständig Fälligkeiten**, zeigt sie auf einem
+  Dashboard (Überfällig / Heute / Diese Woche / Demnächst) und schickt dir auf
+  Wunsch täglich eine E-Mail-Zusammenfassung.
+- **Ein Klick auf „Erledigt“** dokumentiert, wann und von wem die Aufgabe gemacht
+  wurde – der Verlauf zeigt auf einen Blick die Historie jeder Aufgabe.
+- **Auch im Keller, Garten oder auf dem Dach ohne Empfang nutzbar:** die App ist
+  eine PWA – auf dem Handy wie eine eigene App installierbar, „Erledigt“-Klicks
+  ohne Netz werden automatisch nachgeholt.
+- **Alles läuft bei dir zu Hause** – in einem kleinen Container auf dem eigenen
+  Server, ohne Cloud, ohne Konto, ohne Abhängigkeit von einem Anbieter. Die Daten
+  gehören dir; Backups sind ein ZIP-Download.
+
+Gedacht für Eigentümerinnen und Eigentümer von Haus, Hof und Garten, für
+Zweitwohnungen oder kleine Gewerbeimmobilien – für alle, die Wartung vorab planen
+statt hinterher reparieren. Sensordaten, Energiemanager oder „predictive
+maintenance“ sind bewusst **nicht** Teil dieser Version.
+
 - **Vollständig lokal:** läuft in einem unprivilegierten LXC-Container, keine Cloud-Abhängigkeit.
 - **PWA + REST-API:** installierbare Web-App mit Offline-Schreib-Queue („Erledigt“-Klicks ohne Netz werden nachgeholt).
 - **Kein Login im MVP:** Zugriff ist für LAN/VPN gedacht. Tabellen für Benutzer, Sitzungen und Rollen liegen bereits im Schema (inaktiv).
@@ -14,17 +44,19 @@ Backup und E-Mail-Zusammenfassung.
 ## Inhalt
 
 1. [Funktionsumfang](#funktionsumfang)
-2. [Architektur](#architektur)
-3. [Installation](#installation)
-4. [Zertifikat auf deinem Gerät bestätigen (Pflichtschritt)](#zertifikat-auf-deinem-gerät-bestätigen-pflichtschritt)
-5. [Web Push aktivieren](#web-push-aktivieren)
-6. [E-Mail-Benachrichtigung (SMTP)](#e-mail-benachrichtigung-smtp)
-7. [Backup & Wiederherstellung](#backup--wiederherstellung)
-8. [Checklisten-Import](#checklisten-import)
-9. [Update](#update)
-10. [Zeitplan-Typen](#zeitplan-typen)
-11. [Entwicklung & Tests](#entwicklung--tests)
-12. [Scope](#scope)
+2. [So nutzt du Hausmeister im Alltag](#so-nutzt-du-hausmeister-im-alltag)
+3. [Architektur](#architektur)
+4. [Installation](#installation)
+5. [Erste Schritte nach der Installation](#erste-schritte-nach-der-installation)
+6. [Zertifikat auf deinem Gerät bestätigen (Pflichtschritt)](#zertifikat-auf-deinem-gerät-bestätigen-pflichtschritt)
+7. [Web Push aktivieren](#web-push-aktivieren)
+8. [E-Mail-Benachrichtigung (SMTP)](#e-mail-benachrichtigung-smtp)
+9. [Backup & Wiederherstellung](#backup--wiederherstellung)
+10. [Checklisten-Import](#checklisten-import)
+11. [Update](#update)
+12. [Zeitplan-Typen](#zeitplan-typen)
+13. [Entwicklung & Tests](#entwicklung--tests)
+14. [Scope](#scope)
 
 ---
 
@@ -40,6 +72,37 @@ Backup und E-Mail-Zusammenfassung.
 - Backup als ZIP-Download, Backup-Ziel konfigurierbar, tägliche DB-Sicherung per Timer
 - E-Mail-Zusammenfassung als primärer Benachrichtigungsweg; Web Push optional
 - Mitgelieferte Platzhalter-Aufgabenbibliothek (vor dem Produktionseinsatz ersetzen!)
+
+## So nutzt du Hausmeister im Alltag
+
+**Typischer Ablauf:**
+
+1. **Aufgaben einmal festlegen.** Beim ersten Start ist eine vorgefertigte
+   Bibliothek mit 34 gängigen Wartungsaufgaben geladen (Platzhalter – siehe
+   [Checklisten-Import](#checklisten-import)). Du übernimmst sie, passt sie an
+   oder importierst deine eigene Liste. Eigene Aufgaben legst du unter
+   *Aufgaben → + Neue Aufgabe* an: Titel, Bereich, Zeitplan-Typ, fertig.
+2. **Hausmeister rechnet.** Aus jedem Zeitplan entsteht automatisch eine konkrete
+   Fälligkeit – z. B. erscheint „Dachrinnen reinigen“ ab 1. Oktober im Dashboard
+   und gilt nach Ende November als überfällig, falls unerledigt.
+3. **Morgens überblicken.** Dashboard öffnen (am Handy oder PC): Was ist
+   überfällig, was ist heute dran, was kommt diese Woche? Per E-Mail erhältst du
+   dieselbe Übersicht täglich um 7:30 Uhr.
+4. **Erledigen und abhaken.** Knopf „Erledigt“ – fertig. Optional mit Notiz
+   („neue Dichtung eingesetzt“), Verlauf dokumentiert automatisch Datum und Person.
+   Eine Aufgabe, die in diesem Jahr entfällt (z. B. Heckenschnitt wegen Vogelnest),
+   überspringst du per „Überspringen“ – sie bleibt dokumentiert und kehrt nächstes
+   Jahr wieder.
+5. **Unterwegs offline.** Handy in den Keller oder auf die Leiter, kein WLAN:
+   Die App startet trotzdem (Installierte PWA). „Erledigt“-Klicks werden lokal
+   gespeichert und beim nächsten Netzkontakt automatisch synchronisiert.
+6. **Immer absicherbar.** Backup per Knopfdruck herunterladen oder automatisch
+   auf ein NAS mounten – siehe [Backup](#backup--wiederherstellung).
+
+**Mehrere Personen im Haushalt:** Alle Geräte im selben Netz nutzen dieselbe
+Installation (jeweils einmal das Zertifikat bestätigen, siehe unten). Wer etwas
+erledigt, kann seinen Namen bei „Erledigt“ hinterlegen – so sieht die Familie,
+wann und von wem was gemacht wurde.
 
 ## Architektur
 
@@ -67,30 +130,72 @@ Wichtige Design-Entscheidungen:
 
 ## Installation
 
-Zwei Stufen:
+Zwei Stufen: **(1)** auf dem Proxmox-Host den Container erstellen,
+**(2)** im Container die Anwendung installieren. Beides funktioniert
+mit den Befehlen unten direkt gegen dieses Repository – die Installer
+nutzen standardmäßig `https://github.com/HatchetMan111/HausMeisterCheckliste.git`
+und den höchsten Release-Tag.
 
-### 1. Auf dem Proxmox-Host: `ct/hausmeister.sh`
+### Variante A – Komplett-Setup auf dem Proxmox-Host (empfohlen)
 
-Fragt interaktiv ab (DHCP ist Standard und unproblematisch, da das Zertifikat am
-mDNS-Namen hängt):
+```bash
+git clone https://github.com/HatchetMan111/HausMeisterCheckliste.git
+cd HausMeisterCheckliste
+bash ct/hausmeister.sh
+```
+
+Das Skript fragt interaktiv ab (alle Vorgaben mit Enter übernehmbar; DHCP ist
+Standard und unproblematisch, da das Zertifikat am mDNS-Namen hängt):
 
 - Container-Hostname (Standard: `hausmeister`)
 - Netzwerk-Bridge (Standard: `vmbr0`)
 - IP-Vergabe: **dhcp** oder **statisch** (bei statisch: IP/CIDR + Gateway)
 - Storage für die Root-Disk
-- Git-Repository-URL und Version/Tag (`latest` = höchster Release-Tag)
+- Git-Repository-URL (voreingestellt: dieses Repository)
+- Version/Tag (`latest` = höchster Release-Tag, Standard)
 - Container-ID
 
-Danach: Vorlage herunterladen, unprivilegierten Container erstellen
-(`onboot=1`, 2 vCPU, 2 GB RAM, 8 GB), starten und den Installer im Container ausführen.
+Danach: Vorlage herunterladen, unprivilegierter Container erstellen
+(`onboot=1`, 2 vCPU, 2 GB RAM, 8 GB), starten, Installer automatisch im
+Container ausführen. Am Ende erscheint die Adresse (`https://hausmeister.local`),
+die Container-IP und der Hinweis auf den Zertifikats-Schritt.
 
-Alternativ direkt im existierenden Container:
+### Variante B – vorhandenen Container/Server einrichten
+
+Für Debian 12/13 (im LXC als root, sonst mit `sudo`):
 
 ```bash
-HAUSMEISTER_REPO_URL=<git-url> bash install/hausmeister-install.sh
+git clone https://github.com/HatchetMan111/HausMeisterCheckliste.git
+cd HausMeisterCheckliste
+bash install/hausmeister-install.sh
 ```
 
-### 2. Im Container: `install/hausmeister-install.sh`
+Oder ohne vorheriges Klonen – das Skript lädt das Repository selbst:
+
+```bash
+HAUSMEISTER_REPO_URL=https://github.com/HatchetMan111/HausMeisterCheckliste.git \
+  bash install/hausmeister-install.sh
+```
+
+Optionale Umgebungsvariablen (beide Varianten):
+
+| Variable | Bedeutung | Standard |
+|---|---|---|
+| `HAUSMEISTER_REPO_URL` | zu installierendes Repository | dieses Repository |
+| `HAUSMEISTER_VERSION` | Git-Tag, der installiert wird | `latest` (höchster Tag) |
+| `HAUSMEISTER_PUSH_ENABLED` | `1` = Web Push aktivieren | `0` |
+| `HAUSMEISTER_APP_URL` | öffentliche Adresse (auch für Caddy-Zertifikat) | `https://hausmeister.local` |
+| `HAUSMEISTER_TZ` | Zeitzone im Container | `Europe/Berlin` |
+
+Beispiel mit eigener Domain und Push:
+
+```bash
+HAUSMEISTER_APP_URL=https://wartung.meine-familie.de \
+HAUSMEISTER_PUSH_ENABLED=1 \
+  bash install/hausmeister-install.sh
+```
+
+### Was der Container-Installer macht
 
 Macht (idempotent, mit vollständiger Fehlerdiagnostik und Log unter
 `/var/log/hausmeister-install-*.log`):
@@ -105,6 +210,33 @@ Macht (idempotent, mit vollständiger Fehlerdiagnostik und Log unter
    (App, Caddy, Timer), Health-Check über `https://hausmeister.local/health`
 8. Zusammenfassung mit Container-IP, finaler URL und Hinweis auf den
    Zertifikats-Bestätigungsschritt
+
+## Erste Schritte nach der Installation
+
+In ~10 Minuten vom frischen Container zur fertigen Nutzung:
+
+1. **`https://hausmeister.local` öffnen** und die Browser-Warnung einmalig
+   bestätigen („Erweitert → Weiter …“), damit du die Seite erreichst.
+2. **Zertifikat auf jedem Gerät bestätigen** – Pflichtschritt für Offline-Modus
+   und Push: [Anleitung](#zertifikat-auf-deinem-gerät-bestätigen-pflichtschritt).
+   Danach die Seite neu laden – kein Warnhinweis mehr.
+3. **Als App installieren (PWA):** im Browser-Menü „Zum Startbildschirm
+   hinzufügen“ / „App installieren“. Danach startet Hausmeister wie eine
+   native App im Vollbild.
+4. **Dashboard prüfen:** die Platzhalter-Aufgaben sind bereits geladen und
+   erzeugen sofort erste Fälligkeiten – so siehst du sofort, wie alles arbeitet.
+5. **Eigene Checkliste importieren** (oder Platzhalter anpassen), siehe
+   [Checklisten-Import](#checklisten-import).
+6. **E-Mail einrichten:** *Einstellungen → E-Mail-Benachrichtigung* – SMTP-Host,
+   Empfänger eintragen, Kanal aktivieren, Test-E-Mail senden.
+7. **Optional Web Push** aktivieren (Feature-Flag + Gerät anmelden), siehe
+   [Web Push aktivieren](#web-push-aktivieren).
+8. **Backup prüfen:** unter *Einstellungen → Backup* einmal den ZIP-Download
+   ausführen und – empfohlen – ein externes Backup-Ziel mounten
+   (siehe [Backup](#backup--wiederherstellung)).
+
+Danach läuft der Betrieb von selbst: der tägliche Timer (07:30 Uhr) erzeugt
+neue Fälligkeiten, sichert die Datenbank und schickt die E-Mail-Zusammenfassung.
 
 ## Zertifikat auf deinem Gerät bestätigen (Pflichtschritt)
 
@@ -294,6 +426,8 @@ angeplegt (Letzte-Erledigung + Intervall); die übrigen Typen erzeugen neue Inst
 ## Entwicklung & Tests
 
 ```bash
+git clone https://github.com/HatchetMan111/HausMeisterCheckliste.git
+cd HausMeisterCheckliste
 python3 -m venv venv && venv/bin/pip install -r requirements.txt -r requirements-dev.txt
 venv/bin/alembic upgrade head                                   # Schema
 HAUSMEISTER_DATA_DIR=/tmp/hm venv/bin/python scripts/import_checklist.py data/templates/checklist.json

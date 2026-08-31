@@ -16,7 +16,7 @@ CORES=2
 MEM=2048
 DISK=8
 INSTALL_SCRIPT="$(cd "$(dirname "$0")/.." && pwd)/install/hausmeister-install.sh"
-REPO_URL="${HAUSMEISTER_REPO_URL:-}"
+REPO_URL="${HAUSMEISTER_REPO_URL:-https://github.com/HatchetMan111/HausMeisterCheckliste.git}"
 APP_VERSION="${HAUSMEISTER_VERSION:-latest}"
 PUSH_ENABLED="${HAUSMEISTER_PUSH_ENABLED:-0}"
 LOG_FILE="/var/log/hausmeister-ct-$(date +%Y%m%d-%H%M%S).log"
@@ -82,7 +82,8 @@ STORAGE_DEFAULT=$(pvesm status -content rootdir 2>/dev/null | awk 'NR>1 && $1!="
 STORAGE_DEFAULT="${STORAGE_DEFAULT:-local-lvm}"
 read -r -e -p "Storage für Root-Disk [$STORAGE_DEFAULT]: " INPUT && STORAGE="${INPUT:-$STORAGE_DEFAULT}"
 
-read -r -e -p "Git-Repository-URL von $APP_NAME: " REPO_URL
+read -r -e -i "$REPO_URL" -p "Git-Repository-URL von $APP_NAME [${REPO_URL}]: " INPUT
+REPO_URL="${INPUT:-$REPO_URL}"
 [[ -z "$REPO_URL" ]] && { fail "Repository-URL ist erforderlich."; exit 1; }
 read -r -e -p "Version/Tag [latest = höchster Release-Tag]: " INPUT && APP_VERSION="${INPUT:-latest}"
 

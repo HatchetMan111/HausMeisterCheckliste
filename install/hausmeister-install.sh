@@ -7,7 +7,7 @@ APP_NAME="Hausmeister"
 APP_DIR="/opt/hausmeister"
 APP_USER="hausmeister"
 LOG_FILE="/var/log/hausmeister-install-$(date +%Y%m%d-%H%M%S).log"
-REPO_URL="${HAUSMEISTER_REPO_URL:-}"
+REPO_URL="${HAUSMEISTER_REPO_URL:-https://github.com/HatchetMan111/HausMeisterCheckliste.git}"
 APP_VERSION="${HAUSMEISTER_VERSION:-latest}"
 PUSH_ENABLED="${HAUSMEISTER_PUSH_ENABLED:-0}"
 APP_PUBLIC_URL="${HAUSMEISTER_APP_URL:-https://hausmeister.local}"
@@ -37,7 +37,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [[ -z "$REPO_URL" ]]; then
-  read -r -p "Git-Repository-URL von $APP_NAME: " REPO_URL
+  read -r -e -p "Git-Repository-URL von $APP_NAME: " REPO_URL
   [[ -z "$REPO_URL" ]] && { fail "Repository-URL ist erforderlich."; exit 1; }
 fi
 
