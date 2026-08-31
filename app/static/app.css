@@ -173,7 +173,35 @@ a.task-title:hover { text-decoration: underline; }
 .month-actions { display: flex; gap: 0.4rem; }
 .month-actions form { display: inline; }
 
-.overdue-hint { color: var(--red); }
+.month-tabs, .overdue-hint { color: var(--red); }
+
+.muted-date { color: var(--muted); font-size: 0.95rem; }
+
+.stat-urgent { color: var(--red); font-weight: 700; }
+.stat-ok { color: var(--green); font-weight: 700; }
+
+.dash-section.sec-urgent { border-left: 4px solid var(--red); }
+.dash-section.sec-month { border-left: 4px solid var(--green); }
+.dash-section.sec-monthrest, .dash-section.sec-later { border-left: 4px solid var(--border); }
+
+.sec-sub { color: var(--muted); font-size: 0.85rem; margin: -0.4rem 0 0.6rem; }
+
+.task-item.status-overdue { border-left: 4px solid var(--red); background: #fdf7f7; border-radius: 8px; padding-left: 0.8rem; }
+.task-item.status-due { border-left: 4px solid var(--amber); border-radius: 8px; padding-left: 0.8rem; }
+.task-item.status-upcoming { border-left: 4px solid #9db8a6; border-radius: 8px; padding-left: 0.8rem; }
+
+.dot-red { color: var(--red); font-weight: 600; }
+.dot-amber { color: var(--amber); font-weight: 600; }
+
+.prio-chip {
+  font-size: 0.75rem;
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  background: var(--green-light);
+  color: var(--green);
+  white-space: nowrap;
+}
+.chip-high { background: #fbeaec; color: var(--red); }
 
 .empty { color: var(--muted); font-style: italic; }
 

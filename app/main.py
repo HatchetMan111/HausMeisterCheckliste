@@ -67,11 +67,21 @@ def _flash(request: Request) -> str | None:
 
 @app.get("/", response_class=HTMLResponse)
 def dashboard_page(request: Request, db: Session = Depends(get_db)):
-    buckets = dashboard_buckets(db, date.today())
+    from .api.maintenance import dashboard_sections
+
+    today = date.today()
+    sections = dashboard_sections(db, today)
+    weekdays = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
     return templates.TemplateResponse(
         request,
         "dashboard.html",
-        {"buckets": buckets, "msg": _flash(request), "page": "dashboard"},
+        {
+            "sections": sections,
+            "month_name": MONTH_NAMES[today.month - 1],
+            "today_long": f"{weekdays[today.weekday()]}, {today.day}. {MONTH_NAMES[today.month - 1]} {today.year}",
+            "msg": _flash(request),
+            "page": "dashboard",
+        },
     )
 
 

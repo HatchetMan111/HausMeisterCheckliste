@@ -193,3 +193,29 @@ def test_annual_window_overdue_after_window(client, db):
 
     if today.month >= 12:
         assert all(i["status"] == "overdue" for i in task_inst if i["due_date"] < (today - timedelta(days=31)).isoformat())
+
+
+def test_dashboard_sections_order(client):
+    from datetime import date, timedelta
+
+    client.post(
+        "/api/tasks",
+        json={"title": "Dringend Sektion", "schedule_type": "one_time",
+              "due_date": (date.today() - timedelta(days=3)).isoformat(), "priority": "high"},
+    )
+    client.post(
+        "/api/tasks",
+        json={"title": "Demnaechst Sektion", "schedule_type": "one_time",
+              "due_date": (date.today() + timedelta(days=20)).isoformat()},
+    )
+    resp = client.get("/")
+    assert resp.status_code == 200
+    text = resp.text
+    assert "🔥 Jetzt dringend" in text
+    assert "Dringend Sektion" in text
+    assert "Später" in text
+    assert "Demnaechst Sektion" in text
+    assert "🗓️" in text and "📅" in text
+
+    buckets = client.get("/api/maintenance/dashboard").json()
+    assert any(i["title"] == "Dringend Sektion" for i in buckets["overdue"])

@@ -102,6 +102,56 @@ def get_dashboard(db: Session = Depends(get_db)):
     return dashboard_buckets(db, date.today())
 
 
+def dashboard_sections(db: Session, today: date) -> dict:
+    """Dashboard-Reihenfolge: dringend -> Monat im Fokus -> Rest."""
+    rows = (
+        db.query(TaskInstance)
+        .join(Task)
+        .filter(Task.active.is_(True), TaskInstance.status == "open")
+        .all()
+    )
+    items = []
+    for inst in rows:
+        st = recurrence.status_for(inst.task, inst, today)
+        if st in ("done", "skipped"):
+            continue
+        item = serialize_instance(inst, st)
+        prio = item.get("priority") if item.get("priority") in ("high", "normal", "low") else "normal"
+        item["priority"] = prio
+        item["priority_rank"] = {"high": 0, "normal": 1, "low": 2}[prio]
+        item["due_str"] = inst.due_date.strftime("%d.%m.")
+        items.append(item)
+
+    urgent = sorted(
+        (i for i in items if i["status"] in ("overdue", "due")),
+        key=lambda i: (i["priority_rank"], i["due_date"]),
+    )
+
+    month_start = today.replace(day=1)
+    month_end = date(today.year, today.month, _last_day_of_month(today.year, today.month))
+    in_month = [
+        i
+        for i in items
+        if i["status"] == "upcoming" and month_start <= date.fromisoformat(i["due_date"]) <= month_end
+    ]
+    in_month.sort(key=lambda i: (i["priority_rank"], i["due_date"]))
+    month_focus = [i for i in in_month if i["priority"] in ("high", "normal")]
+    month_rest = [i for i in in_month if i["priority"] == "low"]
+
+    month_ids = {i["instance_id"] for i in in_month}
+    later = sorted(
+        (
+            i
+            for i in items
+            if i["status"] == "upcoming"
+            and i["instance_id"] not in month_ids
+            and date.fromisoformat(i["due_date"]) <= today + timedelta(days=30)
+        ),
+        key=lambda i: (i["priority_rank"], i["due_date"]),
+    )
+    return {"urgent": urgent, "month_focus": month_focus, "month_rest": month_rest, "later": later}
+
+
 @router.get("/instances")
 def list_instances(
     from_date: date | None = None,

@@ -1,43 +1,65 @@
 {% extends "base.html" %}
+{% set area_icons = {"haus": "🏠", "hof": "🧰", "technik": "⚙️", "garten": "🌿", "sicherheit": "🛡️"} %}
 {% block title %}Übersicht – Hausmeister{% endblock %}
 {% block content %}
-<h1>Wartungsübersicht</h1>
-{% set sections = [
-  ("overdue", "Überfällig", buckets.overdue),
-  ("today", "Heute / aktuell", buckets.today),
-  ("week", "Diese Woche", buckets.week),
-  ("upcoming", "Demnächst (30 Tage)", buckets.upcoming)
+<div class="page-head">
+  <h1>🏠 Wartungsübersicht</h1>
+  <span class="muted-date">📅 {{ today_long }}</span>
+</div>
+
+{% set month_total = sections.month_focus|length + sections.month_rest|length %}
+<div class="card stats">
+  <span class="stat {% if sections.urgent %}stat-urgent{% endif %}">🔥 {{ sections.urgent|length }} dringend</span>
+  <span class="stat">📅 {{ month_total }} diesen Monat</span>
+  <span class="stat">🗓️ {{ sections.later|length }} demnächst</span>
+  {% if sections.urgent|length == 0 and month_total == 0 and sections.later|length == 0 %}
+  <span class="stat stat-ok">🎉 Alles erledigt!</span>
+  {% endif %}
+</div>
+
+{% set secs = [
+  ("urgent", "🔥 Jetzt dringend", "Überfällig und heute fällig – zuerst dran", sections.urgent),
+  ("month", "📅 " ~ month_name ~ " – im Fokus", "Wichtige und empfohlene Aufgaben dieses Monats", sections.month_focus),
+  ("monthrest", "📌 " ~ month_name ~ " – optional", "Niedrige Priorität, wenn Zeit bleibt", sections.month_rest),
+  ("later", "🗓️ Später", "Nächste 30 Tage", sections.later)
 ] %}
-{% for key, title, items in sections %}
-<section class="card">
+{% for key, title, subtitle, items in secs %}
+{% if items or key in ("urgent", "month") %}
+<section class="card dash-section sec-{{ key }}">
   <h2>{{ title }} <span class="count">{{ items|length }}</span></h2>
+  <p class="sec-sub">{{ subtitle }}</p>
   {% if items %}
   <ul class="task-list">
     {% for it in items %}
-    <li class="task-item prio-{{ it.priority }}" data-instance="{{ it.instance_id }}">
+    <li class="task-item status-{{ it.status }} prio-{{ it.priority }}" data-instance="{{ it.instance_id }}">
       <div class="task-info">
-        <span class="task-title">{{ it.title }}</span>
+        <span class="task-title">{{ area_icons.get(it.area, "🏠") }} {{ it.title }}</span>
         <span class="task-meta">
-          {{ it.area_name or "—" }}{% if it.category_name %} · {{ it.category_name }}{% endif %} ·
-          {% if it.window_end and it.status == "due" %}Fenster bis {{ it.window_end }}{% else %}fällig {{ it.due_date }}{% endif %}
-          {% if it.estimated_minutes %} · ca. {{ it.estimated_minutes }} Min.{% endif %}
+          {% if it.status == "overdue" %}<span class="status-dot dot-red">🔴 überfällig seit {{ it.due_str }}</span>
+          {% elif it.status == "due" %}<span class="status-dot dot-amber">🟠 heute fällig</span>
+          {% else %}<span class="status-dot">📆 fällig {{ it.due_str }}</span>{% endif %}
+          · {{ it.area_name or "—" }}{% if it.category_name %} · {{ it.category_name }}{% endif %}
+          {% if it.window_end and it.status == "due" %} · Fenster bis {{ it.window_end }}{% endif %}
+          {% if it.estimated_minutes %} · ⏳ ca. {{ it.estimated_minutes }} Min.{% endif %}
         </span>
         {% if it.description %}<span class="task-desc">{{ it.description }}</span>{% endif %}
       </div>
       <div class="task-actions">
-        <button type="button" class="btn primary" data-action="complete" data-instance="{{ it.instance_id }}">Erledigt</button>
-        <noscript><form method="post" action="/maintenance/instances/{{ it.instance_id }}/complete-form"><button class="btn primary">Erledigt</button></form></noscript>
+        <span class="prio-chip chip-high">{{ "⚡ Wichtig" if it.priority == "high" else ("⏱ Empfohlen" if it.priority == "normal" else "📌 Optional") }}</span>
+        <button type="button" class="btn primary" data-action="complete" data-instance="{{ it.instance_id }}">✓ Erledigt</button>
+        <noscript><form method="post" action="/maintenance/instances/{{ it.instance_id }}/complete-form"><button class="btn primary">✓ Erledigt</button></form></noscript>
         {% if it.status == "overdue" %}
-        <button type="button" class="btn" data-action="skip" data-instance="{{ it.instance_id }}">Überspringen</button>
-        <noscript><form method="post" action="/maintenance/instances/{{ it.instance_id }}/skip-form"><button class="btn">Überspringen</button></form></noscript>
+        <button type="button" class="btn" data-action="skip" data-instance="{{ it.instance_id }}">⤼ Überspringen</button>
+        <noscript><form method="post" action="/maintenance/instances/{{ it.instance_id }}/skip-form"><button class="btn">⤼ Überspringen</button></form></noscript>
         {% endif %}
       </div>
     </li>
     {% endfor %}
   </ul>
   {% else %}
-  <p class="empty">Nichts zu tun.</p>
+  <p class="empty">{% if key == "urgent" %}🎉 Nichts dringend – gut gemacht!{% elif key == "month" %}☀️ Keine offenen Aufgaben mehr in diesem Monat.{% endif %}</p>
   {% endif %}
 </section>
+{% endif %}
 {% endfor %}
 {% endblock %}

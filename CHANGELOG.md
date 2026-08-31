@@ -4,6 +4,22 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.2.1] - 2026-08-31
+
+### Geändert
+
+- Dashboard-Redesign mit klaren Prioritäten in dieser Reihenfolge:
+  **🔥 Jetzt dringend** (überfällig + heute, sortiert nach Priorität) →
+  **📅 aktueller Monat – im Fokus** (wichtige/empfohlene Aufgaben des Monats) →
+  **📌 Monat – optional** → **🗓️ Später** (nächste 30 Tage); leere Sektionen
+  zeigen freundliche Leerzustände, die Monats-Sektion bleibt stets sichtbar
+- Optik: Bereichs-Icons (🏠 🧰 ⚙️ 🌿 🛡️), Status-Markierungen (🔴 überfällig /
+  🟠 heute), Prioritäts-Chips, farbige Sektions-Ränder, Datumszeile
+  („Montag, 31. August 2026“), Kompakt-Statistikleiste, ✓-Buttons und
+  geschätzte Zeitangabe je Aufgabe
+- Neue Funktion `dashboard_sections` in der API-Bibliothek; der bestehende
+  `/api/maintenance/dashboard`-Endpunkt (Buckets) bleibt unverändert
+
 ## [0.2.0] - 2026-08-31
 
 ### Hinzugefügt
