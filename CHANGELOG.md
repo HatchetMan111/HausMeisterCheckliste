@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.6] - 2026-08-31
+
+### Behoben
+
+- Container-Erstellung schlug mit „VM … already exists“ fehl, wenn die
+  vorgeschlagene ID durch eine bestehende VM belegt war (`pct list` sieht nur
+  Container, VMIDs sind aber clusterweit für VMs und CTs gemeinsam vergeben).
+  Die freie ID wird jetzt per `pvesh get /cluster/nextid` ermittelt
+  (wie bei den Community-Skripten üblich); Fallback prüft `pct list` **und**
+  `qm list`
+
 ## [0.1.5] - 2026-08-31
 
 ### Behoben

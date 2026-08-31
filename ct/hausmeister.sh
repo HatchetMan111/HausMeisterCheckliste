@@ -123,13 +123,18 @@ REPO_URL="${INPUT:-$REPO_URL}"
 [[ -z "$REPO_URL" ]] && { fail "Repository-URL ist erforderlich."; exit 1; }
 ask APP_VERSION "$APP_VERSION" "Version/Tag (latest = höchster Release-Tag)"
 
-CTID_DEFAULT=200
-while pct list 2>/dev/null | awk '{print $1}' | grep -qx "$CTID_DEFAULT"; do
-  CTID_DEFAULT=$((CTID_DEFAULT + 1))
-done
+CTID_DEFAULT=$(pvesh get /cluster/nextid 2>/dev/null || true)
+if [[ -z "$CTID_DEFAULT" ]]; then
+  CTID_DEFAULT=200
+  while pct list 2>/dev/null | awk '{print $1}' | grep -qx "$CTID_DEFAULT" \
+    || qm list 2>/dev/null | awk '{print $1}' | grep -qx "$CTID_DEFAULT"; do
+    CTID_DEFAULT=$((CTID_DEFAULT + 1))
+  done
+fi
 ask CTID "$CTID_DEFAULT" "Container-ID"
-if pct list 2>/dev/null | awk '{print $1}' | grep -qx "$CTID"; then
-  fail "Container-ID $CTID ist bereits vergeben."
+if pct list 2>/dev/null | awk '{print $1}' | grep -qx "$CTID" \
+  || qm list 2>/dev/null | awk '{print $1}' | grep -qx "$CTID"; then
+  fail "ID $CTID ist bereits vergeben (Container oder VM)."
   exit 1
 fi
 
