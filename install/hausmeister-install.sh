@@ -152,19 +152,27 @@ info "systemd-Units installieren …"
 install -m 644 "$APP_DIR/systemd/hausmeister.service" /etc/systemd/system/hausmeister.service
 install -m 644 "$APP_DIR/systemd/hausmeister-daily.service" /etc/systemd/system/hausmeister-daily.service
 install -m 644 "$APP_DIR/systemd/hausmeister-daily.timer" /etc/systemd/system/hausmeister-daily.timer
-install -m 644 "$APP_DIR/systemd/caddy.service" /etc/systemd/system/caddy.service
+if [[ -f /usr/lib/systemd/system/caddy.service || -f /lib/systemd/system/caddy.service ]]; then
+  info "caddy.service des Pakets wird übernommen (bindet Ports mit korrekten Capabilities)."
+else
+  install -m 644 "$APP_DIR/systemd/caddy.service" /etc/systemd/system/caddy.service
+fi
 systemctl daemon-reload
 
 info "Caddy-Konfiguration (TLS auf $APP_PUBLIC_URL) …"
-install -d -o caddy -g caddy /etc/caddy
+install -d -m 755 /etc/caddy
 if [[ "$APP_PUBLIC_URL" != "https://hausmeister.local" && "$APP_PUBLIC_URL" != "hausmeister.local" ]]; then
   SITE_NAME="${APP_PUBLIC_URL#https://}"
   SITE_NAME="${SITE_NAME%%/*}"
 else
   SITE_NAME="hausmeister.local"
 fi
-if [[ ! -f /etc/caddy/Caddyfile ]]; then
-  cat > /etc/caddy/Caddyfile <<EOF
+if [[ -f /etc/caddy/Caddyfile ]] && ! grep -q "verwaltet von Hausmeister" /etc/caddy/Caddyfile; then
+  cp /etc/caddy/Caddyfile "/etc/caddy/Caddyfile.vorher-$(date +%Y%m%d-%H%M%S).bak" 2>/dev/null || true
+  warn "Vorhandene Caddy-Konfiguration gesichert und durch die Hausmeister-Konfiguration ersetzt."
+fi
+cat > /etc/caddy/Caddyfile <<EOF
+# verwaltet von Hausmeister – Re-Runs setzen diese Datei zurück
 {
 \tadmin off
 }
@@ -175,13 +183,16 @@ $SITE_NAME {
 \treverse_proxy 127.0.0.1:8080
 }
 EOF
-fi
+chown root:caddy /etc/caddy/Caddyfile 2>/dev/null || true
+chmod 644 /etc/caddy/Caddyfile
 
 info "Dienste starten und aktivieren …"
 systemctl enable --now avahi-daemon >/dev/null 2>&1 || true
 systemctl enable --now caddy
 systemctl enable --now hausmeister
 systemctl enable --now hausmeister-daily.timer
+systemctl restart caddy
+sleep 2
 
 info "Warten auf die Anwendung …"
 for _ in $(seq 1 30); do

@@ -4,6 +4,21 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.10] - 2026-08-31
+
+### Behoben
+
+- Kernursache der fehlgeschlagenen Health-Checks: Das Debian-Caddy-Paket legt
+  eine eigene Standard-Caddyfile an (Demo-Site `localhost`). Der Installer
+  schrieb seine Konfiguration nur, wenn die Datei noch nicht existierte – Caddy
+  lief dadurch mit der Demo-Konfiguration: aktiv, aber ohne
+  `hausmeister.local`-Site, ohne interne CA und ohne Port 443. Jetzt wird die
+  Hausmeister-Caddyfile immer gesetzt (vorhandene Fremd-Konfiguration wird
+  gesichert, marker-basiert), Caddy zur Übernahme neu gestartet
+- Eigene `caddy.service` wird nur noch installiert, wenn das Paket keine
+  mitbringt; die mitgelieferte Unit enthält jetzt
+  `AmbientCapabilities=CAP_NET_BIND_SERVICE`
+
 ## [0.1.9] - 2026-08-31
 
 ### Behoben
