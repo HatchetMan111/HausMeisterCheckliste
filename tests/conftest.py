@@ -39,9 +39,11 @@ def client(app_env):
 
 @pytest.fixture()
 def db(app_env):
-    from app.db import SessionLocal
+    import app.db as app_db
 
-    session = SessionLocal()
+    if app_db.SessionLocal is None:
+        app_db.init()
+    session = app_db.SessionLocal()
     try:
         yield session
     finally:

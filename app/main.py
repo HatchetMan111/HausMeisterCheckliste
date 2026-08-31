@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, Form, HTTPException, Request, UploadFile
@@ -15,8 +15,9 @@ from .api import defects, maintenance, settings as settings_api
 from .api import tasks as tasks_api
 from .api.maintenance import dashboard_buckets, export_backup_zip, import_backup_zip
 from .db import get_db, init, seed_base_data
-from .models import Area, Category, Task, TaskCompletion
+from .models import Area, Category, Task, TaskCompletion, TaskInstance
 from .services import recurrence, scheduler
+from .services.recurrence import parse_repeat_months, window_bounds
 
 templates = Jinja2Templates(directory=str(Path(__file__).resolve().parent / "templates"))
 STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -277,6 +278,163 @@ def task_toggle_form(task_id: int, db: Session = Depends(get_db)):
 def task_delete_form(task_id: int, db: Session = Depends(get_db)):
     tasks_api.delete_task(task_id, db)
     return RedirectResponse("/tasks?msg=Aufgabe+gelöscht", status_code=303)
+
+
+def _flash(request: Request) -> str | None:
+    return request.query_params.get("msg")
+
+
+MONTH_NAMES = [
+    "Januar", "Februar", "März", "April", "Mai", "Juni",
+    "Juli", "August", "September", "Oktober", "November", "Dezember",
+]
+
+@app.get("/jahresplan", response_class=HTMLResponse)
+def jahresplan_page(
+    request: Request,
+    view: str = "month",
+    month: int | None = None,
+    priority: str = "all",
+    db: Session = Depends(get_db),
+):
+    scheduler.ensure_all_instances(db)
+    today = date.today()
+    year = today.year
+    view = "year" if view == "year" else "month"
+    if month is None or not 1 <= month <= 12:
+        month = today.month
+    if priority not in ("all", "high", "normal", "low", "tip"):
+        priority = "all"
+
+    tasks = db.query(Task).filter(Task.active.is_(True)).all()
+    year_start, year_end = date(year, 1, 1), date(year, 12, 31)
+    instances = (
+        db.query(TaskInstance)
+        .join(Task)
+        .filter(Task.active.is_(True), TaskInstance.due_date >= year_start, TaskInstance.due_date <= year_end)
+        .all()
+    )
+    open_by_task_month: dict[tuple[int, int], int] = {}
+    done_by_task_month: dict[tuple[int, int], int] = {}
+    overdue_by_task: dict[int, int] = {}
+    for inst in instances:
+        key = (inst.task_id, inst.due_date.month)
+        if inst.status == "open":
+            open_by_task_month[key] = inst.id
+            if inst.due_date < today:
+                overdue_by_task[inst.task_id] = overdue_by_task.get(inst.task_id, 0) + 1
+        elif inst.status == "done":
+            done_by_task_month[key] = done_by_task_month.get(key, 0) + 1
+
+    def task_months(task: Task) -> list[int]:
+        if task.schedule_type == "annual_repeat":
+            return sorted(parse_repeat_months(task.repeat_months))
+        if task.schedule_type == "annual_window":
+            return [int(task.window_start_month or 1)]
+        if task.schedule_type == "one_time" and task.due_date:
+            return [task.due_date.month]
+        return []
+
+    def month_of_window(task: Task, m: int) -> bool:
+        start, end = window_bounds(task, year)
+        cursor = start
+        while cursor <= end:
+            if cursor.month == m:
+                return True
+            cursor += timedelta(days=1)
+        return False
+
+    def matches_priority(task: Task) -> bool:
+        prio = task.priority if task.priority in ("high", "normal", "low") else "normal"
+        if priority == "tip":
+            return task.source == "tip"
+        if priority == "all":
+            return True
+        return prio == priority
+
+    def build_item(task: Task, m: int | None) -> dict:
+        key = (task.id, m) if m else (task.id, today.month)
+        open_id = open_by_task_month.get(key)
+        done_cnt = done_by_task_month.get(key, 0)
+        status = "done" if (done_cnt and not open_id) else ("open" if open_id else "planned")
+        prio = task.priority if task.priority in ("high", "normal", "low") else "normal"
+        return {
+            "task": task,
+            "priority": prio,
+            "is_tip": task.source == "tip",
+            "open_id": open_id,
+            "done": done_cnt,
+            "overdue": overdue_by_task.get(task.id, 0),
+            "schedule_text": recurrence.human_schedule(task),
+            "status": status,
+        }
+
+    months_out: list[dict] = []
+    month_range = range(1, 13) if view == "year" else [month]
+    for m in month_range:
+        items = []
+        for task in tasks:
+            if task.schedule_type == "annual_repeat":
+                if m not in parse_repeat_months(task.repeat_months):
+                    continue
+            elif task.schedule_type == "annual_window":
+                if not month_of_window(task, m):
+                    continue
+            elif task.schedule_type == "one_time" and task.due_date:
+                if task.due_date.month != m:
+                    continue
+            else:
+                continue
+            if not matches_priority(task):
+                continue
+            item = build_item(task, m)
+            if task.schedule_type == "annual_window":
+                item["window_end"] = window_bounds(task, year)[1].isoformat()
+            items.append(item)
+        items.sort(key=lambda i: ({"high": 0, "normal": 1, "low": 2}.get(i["priority"], 3), i["task"].title))
+        months_out.append({"month": m, "name": MONTH_NAMES[m - 1], "items": items})
+
+    running = []
+    for task in tasks:
+        if task.schedule_type not in ("interval_days", "one_time"):
+            continue
+        if not matches_priority(task):
+            continue
+        running.append(build_item(task, None))
+    running.sort(key=lambda i: i["task"].title)
+
+    all_items = [i for mrow in months_out for i in mrow["items"]] + running
+    total = len(all_items)
+    done_total = sum(1 for i in all_items if i["status"] == "done")
+    return templates.TemplateResponse(
+        request,
+        "jahresplan.html",
+        {
+            "view": view,
+            "show_month": month,
+            "months": months_out,
+            "running": running,
+            "priority": priority,
+            "total": total,
+            "done_total": done_total,
+            "year": year,
+            "msg": _flash(request),
+            "page": "jahresplan",
+        },
+    )
+
+
+
+@app.post("/jahresplan/complete-month/{month}")
+def complete_month_form(month: int, db: Session = Depends(get_db)):
+    maintenance.complete_month(month, db)
+    return RedirectResponse(f"/jahresplan?msg=Monat+abgehakt", status_code=303)
+
+
+@app.post("/jahresplan/reopen-month/{month}")
+def reopen_month_form(month: int, db: Session = Depends(get_db)):
+    maintenance.reopen_month(month, db)
+    return RedirectResponse(f"/jahresplan?msg=Monat+zurückgesetzt", status_code=303)
 
 
 @app.post("/maintenance/instances/{instance_id}/complete-form")

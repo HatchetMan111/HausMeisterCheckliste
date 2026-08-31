@@ -155,6 +155,56 @@ def skip_instance(instance_id: int, db: Session = Depends(get_db)):
     return {"ok": True, "instance_id": inst.id, "status": "skipped"}
 
 
+def _last_day_of_month(year: int, month: int) -> int:
+    import calendar
+
+    return calendar.monthrange(year, month)[1]
+
+
+def _instances_in_month(db: Session, month: int, statuses: tuple[str, ...]) -> list[TaskInstance]:
+    if not 1 <= month <= 12:
+        raise HTTPException(status_code=422, detail="Monat muss zwischen 1 und 12 liegen.")
+    year = date.today().year
+    first = date(year, month, 1)
+    last = date(year, month, _last_day_of_month(year, month))
+    return (
+        db.query(TaskInstance)
+        .join(Task)
+        .filter(
+            Task.active.is_(True),
+            TaskInstance.status.in_(statuses),
+            TaskInstance.due_date >= first,
+            TaskInstance.due_date <= last,
+        )
+        .all()
+    )
+
+
+@router.post("/complete-month/{month}")
+def complete_month(month: int, db: Session = Depends(get_db)):
+    instances = _instances_in_month(db, month, ("open",))
+    for inst in instances:
+        inst.status = "done"
+        db.add(TaskCompletion(task_id=inst.task_id, instance_id=inst.id))
+        _schedule_next_interval(db, inst.task, inst.due_date)
+    if instances:
+        db.commit()
+    return {"ok": True, "completed": len(instances)}
+
+
+@router.post("/reopen-month/{month}")
+def reopen_month(month: int, db: Session = Depends(get_db)):
+    instances = _instances_in_month(db, month, ("done", "skipped"))
+    reopened = 0
+    for inst in instances:
+        inst.status = "open"
+        db.query(TaskCompletion).filter(TaskCompletion.instance_id == inst.id).delete()
+        reopened += 1
+    if reopened:
+        db.commit()
+    return {"ok": True, "reopened": reopened}
+
+
 @router.get("/history")
 def history(limit: int = 100, db: Session = Depends(get_db)):
     rows = (

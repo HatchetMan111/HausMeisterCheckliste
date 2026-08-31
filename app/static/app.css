@@ -154,6 +154,26 @@ a.task-title:hover { text-decoration: underline; }
 
 .badge.ok { background: var(--green-light); color: var(--green); border-color: transparent; }
 .badge.placeholder { background: #fff6e5; color: var(--amber); border-color: #ecd9b0; }
+.badge.prio-high-badge { background: #fbeaec; color: var(--red); border-color: #e7c4c8; }
+.badge.prio-normal-badge { background: #eaf1f7; color: #2c5a80; border-color: #cdddeb; }
+.badge.prio-low-badge { background: #f2f0eb; color: #7a7458; border-color: #e0dccc; }
+.badge.tip { background: #f3edff; color: #5b3fa8; border-color: #ddd0f2; margin-left: 0.25rem; }
+
+.viewbar { display: flex; flex-direction: column; gap: 0.6rem; }
+.viewswitch { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.viewswitch .muted { color: var(--muted); font-size: 0.85rem; margin-right: 0.25rem; }
+.viewbar .btn.active { background: var(--green); border-color: var(--green); color: #fff; }
+
+.stats { display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.95rem; }
+.stats strong { color: var(--green); }
+
+.monthtabs { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+
+.month-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.month-actions { display: flex; gap: 0.4rem; }
+.month-actions form { display: inline; }
+
+.overdue-hint { color: var(--red); }
 
 .empty { color: var(--muted); font-style: italic; }
 

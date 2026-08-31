@@ -4,6 +4,30 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.2.0] - 2026-08-31
+
+### Hinzugefügt
+
+- **Jahres-Checkliste** (Seite „Jahresplan“) mit zwei Ansichten:
+  📅 Monatsansicht (je Monat, umschaltbar) und 📋 Jahresübersicht (alle Monate
+  auf einen Blick); Zähler für Aufgaben/erledigt/offen; Filter ⚡ Wichtig,
+  ⏱ Empfohlen, 📌 Optional und 💡 Smart-Tipps; je Monat „✓ Alle abhaken“ und
+  „↺ Zurücksetzen“ (Rückgängig inkl. Verlaufsbereinigung des Monats)
+- Neue REST-Endpunkte: `POST /api/maintenance/complete-month/{monat}` und
+  `POST /api/maintenance/reopen-month/{monat}` (mit Validierung 1–12)
+- Fertige Jahresbibliothek `data/templates/jahresplan.json`: **158 Aufgaben**,
+  monatsgenau über das Jahr (Heizung & Energie, PV, Dach/Fassade/Keller,
+  Sicherheit inkl. 30 neutral formulierter Smart-Home-/Sensorik-Tipps,
+  Wasser & Pool, Garten mit Schnittregel-Hinweisen, Fenster & Türen);
+  170 Fälligkeiten pro Jahr
+- Installer lädt bei leerer Datenbank jetzt die Jahresplan-Bibliothek;
+  `checklist.json` bleibt als Formatbeispiel für eigene Importe
+
+### Geändert
+
+- README: neue Kapitel „Jahres-Checkliste nutzen“ und überarbeitete
+  Funktionsliste; Nutzungshinweise auf die Jahresbibliothek angepasst
+
 ## [0.1.12] - 2026-08-31
 
 ### Geändert

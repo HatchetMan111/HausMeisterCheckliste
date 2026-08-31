@@ -127,8 +127,8 @@ PYEOF
 ) || TASK_COUNT=0
 if [[ "${TASK_COUNT:-0}" -eq 0 ]]; then
   as_app_user env HAUSMEISTER_DATA_DIR="$APP_DIR/data" \
-    "$APP_DIR/venv/bin/python" "$APP_DIR/scripts/import_checklist.py" "$APP_DIR/data/templates/checklist.json"
-  info "Platzhalter-Aufgabenbibliothek importiert (vor Produktionseinsatz ersetzen!)."
+    "$APP_DIR/venv/bin/python" "$APP_DIR/scripts/import_checklist.py" "$APP_DIR/data/templates/jahresplan.json"
+  info "Jahresplan-Aufgabenbibliothek importiert."
 else
   info "Datenbank enthält $TASK_COUNT Aufgaben – Import übersprungen."
 fi

@@ -62,6 +62,13 @@ maintenance“ sind bewusst **nicht** Teil dieser Version.
 
 ## Funktionsumfang
 
+- **Jahres-Checkliste mit zwei Ansichten:** 📅 Monatsansicht (Aufgaben je Monat,
+  umschaltbar) und 📋 Jahresübersicht (alle 12 Monate auf einen Blick) – inkl.
+  Zähler (Aufgaben / erledigt / offen), Filtern (⚡ Wichtig, ⏱ Empfohlen,
+  📌 Optional, 💡 Smart-Tipps), „✓ Alle abhaken“ und „↺ Zurücksetzen“ pro Monat
+- **Fertige Jahresbibliothek:** 158 Aufgaben über Heizung, PV/Energie,
+  Dach/Fassade, Keller, Sicherheit inkl. Smart-Home-Tipps, Wasser/Pool,
+  Garten und Fenster – monatsgenau verteilt (siehe [Jahresplan](#jahres-checkliste-nutzen))
 - Aufgabenbibliothek mit Bereichen (Haus, Hof, Technik, Garten, Sicherheit) und Kategorien
 - Aufgaben aktivieren/deaktivieren, eigene Aufgaben anlegen, bearbeiten, löschen
 - Vier eindeutige Zeitplan-Typen (siehe [Zeitplan-Typen](#zeitplan-typen))
@@ -71,17 +78,35 @@ maintenance“ sind bewusst **nicht** Teil dieser Version.
   und werden per Background Sync nachgeholt
 - Backup als ZIP-Download, Backup-Ziel konfigurierbar, tägliche DB-Sicherung per Timer
 - E-Mail-Zusammenfassung als primärer Benachrichtigungsweg; Web Push optional
-- Mitgelieferte Platzhalter-Aufgabenbibliothek (vor dem Produktionseinsatz ersetzen!)
+
+## Jahres-Checkliste nutzen
+
+Die Seite **Jahresplan** gruppiert alle aktiven Aufgaben nach ihren geplanten
+Monaten – basierend auf den Zeitplan-Typen (feste Monate, Jahresfenster,
+Laufende/Intervall-Aufgaben erscheinen separat):
+
+- **📅 Monatsansicht:** ein Monat, umschaltbar über die Monats-Kacheln. Jede
+  Aufgabe zeigt ihren Status (geplant / offen mit „Erledigt“-Knopf / ✓ erledigt).
+- **📋 Jahresübersicht:** alle Monate gestapelt – der Jahresplan auf einen Blick.
+- **Filter:** ⚡ Wichtig, ⏱ Empfohlen, 📌 Optional, 💡 Smart-Tipps (Sensorik- und
+  Automatisierungs-Tipps) – kombinierbar mit beiden Ansichten.
+- **✓ Alle abhaken:** markiert alle offenen Aufgaben des Monats als erledigt
+  (inkl. Verlaufseinträgen). **↺ Zurücksetzen** macht das für den Monat rückgängig.
+
+Die Bibliothek liegt in `data/templates/jahresplan.json` und wird bei der
+Installation automatisch geladen. Eigene Listen importierst du wie unten
+beschrieben ([Checklisten-Import](#checklisten-import)) – Matching über den
+stabilen `slug`, Reimporte ändern keine Verläufe.
 
 ## So nutzt du Hausmeister im Alltag
 
 **Typischer Ablauf:**
 
-1. **Aufgaben einmal festlegen.** Beim ersten Start ist eine vorgefertigte
-   Bibliothek mit 34 gängigen Wartungsaufgaben geladen (Platzhalter – siehe
-   [Checklisten-Import](#checklisten-import)). Du übernimmst sie, passt sie an
-   oder importierst deine eigene Liste. Eigene Aufgaben legst du unter
-   *Aufgaben → + Neue Aufgabe* an: Titel, Bereich, Zeitplan-Typ, fertig.
+1. **Aufgaben einmal festlegen.** Beim ersten Start ist eine fertige
+   Jahresbibliothek mit 158 monatsgenauen Wartungsaufgaben geladen
+   (siehe [Jahres-Checkliste nutzen](#jahres-checkliste-nutzen)). Du übernimmst
+   sie, passt sie an oder importierst deine eigene Liste. Eigene Aufgaben legst
+   du unter *Aufgaben → + Neue Aufgabe* oder direkt im *Jahresplan* an.
 2. **Hausmeister rechnet.** Aus jedem Zeitplan entsteht automatisch eine konkrete
    Fälligkeit – z. B. erscheint „Dachrinnen reinigen“ ab 1. Oktober im Dashboard
    und gilt nach Ende November als überfällig, falls unerledigt.
@@ -234,7 +259,7 @@ Macht (idempotent, mit vollständiger Fehlerdiagnostik und Log unter
 1. Basispakete (Python, Git, Avahi/mDNS, Caddy, …), Zeitzone setzen
 2. Systembenutzer anlegen, Repository **tag-basiert** nach `/opt/hausmeister` laden
 3. Virtualenv + Abhängigkeiten, Alembic-Migrationen anwenden
-4. Platzhalter-Aufgabenbibliothek importieren (nur wenn Datenbank leer ist)
+4. Jahresplan-Aufgabenbibliothek importieren (nur wenn Datenbank leer ist)
 5. `.env` (inkl. `HAUSMEISTER_PUSH_ENABLED`, `HAUSMEISTER_APP_URL`, `HAUSMEISTER_BACKUP_DIR`)
 6. systemd-Units + Caddyfile (`tls internal` auf `hausmeister.local`)
 7. Dienste starten, Root-CA exportieren, **Verifikation**: `systemctl is-active`
@@ -251,14 +276,15 @@ In ~10 Minuten vom frischen Container zur fertigen Nutzung:
    Über HTTP läuft alles: Aufgaben, Fälligkeiten, Verlauf, Einstellungen,
    Backup. Hinweis: Ob `.local`-Namen am PC/Handy funktionieren, hängt vom
    Gerät ab (mDNS) – die IP-Adresse funktioniert immer.
-2. **Dashboard prüfen:** die Platzhalter-Aufgaben sind bereits geladen und
-   erzeugen sofort erste Fälligkeiten – so siehst du sofort, wie alles arbeitet.
+2. **Jahresplan ansehen:** die Jahresbibliothek (158 Aufgaben) ist bereits
+   geladen und erzeugt sofort Fälligkeiten – Monatsansicht und
+   Jahresübersicht unter *Jahresplan*.
 3. **Als App installieren + Offline-Modus + Push (optional):** dafür ist HTTPS
    mit bestätigtem Zertifikat nötig – ein einmaliger Schritt pro Gerät,
    Anleitung im nächsten Abschnitt. Danach die Seite über
    `https://hausmeister.local` nutzen und im Browser-Menü „Zum Startbildschirm
    hinzufügen“ / „App installieren“ wählen.
-4. **Eigene Checkliste importieren** (oder Platzhalter anpassen), siehe
+4. **Eigene Checkliste importieren** (oder Bibliothek anpassen), siehe
    [Checklisten-Import](#checklisten-import).
 5. **E-Mail einrichten:** *Einstellungen → E-Mail-Benachrichtigung* – SMTP-Host,
    Empfänger eintragen, Kanal aktivieren, Test-E-Mail senden.
@@ -395,10 +421,16 @@ Alternativ den ZIP-Download regelmäßig manuell/extern abholen.
 
 ## Checklisten-Import
 
-Die mitgelieferte Bibliothek (`data/templates/checklist.json`) ist ein **Platzhalter**
-(`"source": "placeholder"`, in der Aufgabenliste als „Platzhalter“ markiert) auf Basis
-allgemein anerkannter Wartungsempfehlungen. **Vor dem ersten produktiven Einsatz** durch
-die eigenen Checklisten ersetzen:
+Die aktive Aufgabenbibliothek (`data/templates/jahresplan.json`) wird bei der
+Installation automatisch geladen: **158 Aufgaben** monatsgenau über das ganze Jahr
+(Heizung & Energie, PV, Dach/Fassade/Keller, Sicherheit inkl. Smart-Home-Tipps,
+Wasser & Pool, Garten, Fenster & Türen). Smart-Home-/Sensorik-Tipps sind mit
+`"source": "tip"` markiert und über den 💡-Filter auffindbar.
+
+Die Datei `data/templates/checklist.json` dient als **Formatbeispiel** für
+eigene Importe und wird vom Installer nicht geladen.
+
+Eigene Checklisten (JSON oder CSV) ersetzen oder ergänzen die Bibliothek:
 
 ```bash
 /opt/hausmeister/venv/bin/python /opt/hausmeister/scripts/import_checklist.py checkliste.json
