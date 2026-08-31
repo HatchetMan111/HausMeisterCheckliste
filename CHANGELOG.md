@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.1.5] - 2026-08-31
+
+### Behoben
+
+- Installation hing reproduzierbar an der ersten Eingabe in ein Readline-Prompt
+  (`read -e -i`): in PVE-Web-Konsole (noVNC) und einzelnen SSH-Clients kollidiert
+  der readline-Raw-Modus mit eingefügtem Text, sodass `read` endlos wartete.
+  Alle Prompts nutzen jetzt schlichtes `read -r` (Vorgabe weiterhin in Klammern,
+  Enter = übernehmen) – robust in jedem Terminal, ohne Funktionsverlust
+
 ## [0.1.4] - 2026-08-31
 
 ### Behoben

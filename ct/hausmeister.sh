@@ -45,7 +45,7 @@ ask() {
     info "$_prompt: $_default (Auto-Modus)"
     _out=$_default
   else
-    read -r -e -i "$_default" -p "$_prompt [$_default]: " _input
+    read -r -p "$_prompt [$_default]: " _input
     _out="${_input:-$_default}"
   fi
 }
@@ -94,7 +94,7 @@ elif [[ $AUTO -eq 1 ]]; then
   info "IP-Vergabe: dhcp (Auto-Modus – möglich, da das Zertifikat am mDNS-Namen hängt)"
 else
   while true; do
-    read -r -e -i "$NET_MODE" -p "IP-Vergabe: dhcp oder statisch [dhcp]: " INPUT
+    read -r -p "IP-Vergabe: dhcp oder statisch [dhcp]: " INPUT
     NET_MODE="${INPUT:-dhcp}"
     [[ "$NET_MODE" == "dhcp" || "$NET_MODE" == "statisch" ]] && break
     warn "Bitte 'dhcp' oder 'statisch' eingeben."
@@ -105,9 +105,9 @@ if [[ "$NET_MODE" == "statisch" ]]; then
   if [[ -n "$CT_IP" && -n "$CT_GW" ]]; then
     info "Statische IP aus Umgebungsvariable: $CT_IP (GW $CT_GW)"
   else
-    read -r -e -p "Statische IP (CIDR, z. B. 192.168.1.50/24): " CT_IP
+    read -r -p "Statische IP (CIDR, z. B. 192.168.1.50/24): " CT_IP
     [[ -z "$CT_IP" ]] && { fail "Statische IP ist erforderlich."; exit 1; }
-    read -r -e -p "Gateway (z. B. 192.168.1.1): " CT_GW
+    read -r -p "Gateway (z. B. 192.168.1.1): " CT_GW
     [[ -z "$CT_GW" ]] && { fail "Gateway ist erforderlich."; exit 1; }
   fi
 fi
@@ -118,7 +118,7 @@ STORAGE_DEFAULT=$(pvesm status -content rootdir 2>/dev/null | awk 'NR>1 && $1!="
 STORAGE_DEFAULT="${STORAGE_DEFAULT:-local-lvm}"
 ask STORAGE "$STORAGE_DEFAULT" "Storage für Root-Disk"
 
-read -r -e -i "$REPO_URL" -p "Git-Repository-URL von $APP_NAME [${REPO_URL}]: " INPUT
+read -r -p "Git-Repository-URL von $APP_NAME [${REPO_URL}]: " INPUT
 REPO_URL="${INPUT:-$REPO_URL}"
 [[ -z "$REPO_URL" ]] && { fail "Repository-URL ist erforderlich."; exit 1; }
 ask APP_VERSION "$APP_VERSION" "Version/Tag (latest = höchster Release-Tag)"
