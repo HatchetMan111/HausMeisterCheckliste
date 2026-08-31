@@ -4,6 +4,42 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.2.2] - 2026-08-31
+
+### Geändert
+
+- **Kein Überrollen bei Erstinstallation:** Fälligkeiten werden neu nur ab dem
+  aktuellen Monat erzeugt – der Jahres-Rückstand vergangener Monate erscheint
+  nicht als rote Wand. Retro-Abhaken bleibt möglich: „✓ Alle abhaken“ im
+  Jahresplan erzeugt fehlende Monats-Instanzen on-demand und erledigt sie
+- **Monats-Semantik:** monatsbasierte Aufgaben (feste Monate, Jahresfenster)
+  sind den ganzen Monat „fällig“ und erst ab dem Folgemonat „überfällig“ –
+  „Rauchmelder im August“ ist nicht schon am 2. August rot
+- **Dashboard-Priorisierung geschärft:** „🔥 Jetzt dringend“ = echter Rückstand
+  plus datumsgenaue Aufgaben von heute; monatsbasierte Fälligkeiten stehen im
+  „📅 Monat im Fokus“
+- **Rückstand-Rettungsanker:** ab 10 überfälligen Aufgaben erscheint auf dem
+  Dashboard ein Aufhol-Panel („Von einer Erstinstallation oder Migration?“) mit
+  Link zum Jahresplan und Button „Alle überfälligen überspringen“
+  (`POST /api/maintenance/skip-all-overdue`)
+- **Duplikate vermieden:** Jahresbibliothek dedupliziert (Solarmodule = eine
+  Aufgabe im April+August, Rasenwässern = eine Aufgabe im Juni+Juli, jetzt 156
+  Aufgaben); Import-Option `--deactivate-missing` deaktiviert veraltete
+  Bibliotheks-Aufgaben, **Nutzer-eigene Aufgaben (`source: user`) bleiben
+  immer aktiv**
+
+### Empfohlener Deployschritt für Bestandsinstallationen
+
+```bash
+/opt/hausmeister/venv/bin/python /opt/hausmeister/scripts/import_checklist.py \
+  /opt/hausmeister/data/templates/jahresplan.json --deactivate-missing
+systemctl restart hausmeister
+```
+
+Damit werden die alten Platzhalter-Aufgaben deaktiviert und Doppelungen
+eliminiert; eigene Aufgaben bleiben unberührt. Restliche Alt-Fälligkeiten auf
+dem Dashboard über „Alle überfälligen überspringen“ aufräumen.
+
 ## [0.2.1] - 2026-08-31
 
 ### Geändert

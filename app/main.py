@@ -447,6 +447,12 @@ def reopen_month_form(month: int, db: Session = Depends(get_db)):
     return RedirectResponse(f"/jahresplan?msg=Monat+zurückgesetzt", status_code=303)
 
 
+@app.post("/maintenance/skip-all-overdue-form")
+def skip_all_overdue_form(db: Session = Depends(get_db)):
+    maintenance.skip_all_overdue(db)
+    return RedirectResponse("/?msg=Überfällige+Aufgaben+übersprungen", status_code=303)
+
+
 @app.post("/maintenance/instances/{instance_id}/complete-form")
 def complete_instance_form(instance_id: int, db: Session = Depends(get_db)):
     maintenance.complete_instance(instance_id, None, db)

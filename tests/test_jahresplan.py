@@ -11,8 +11,8 @@ from import_checklist import run_import  # noqa: E402
 
 def test_jahresplan_import_count(db):
     result = run_import(ROOT / "data" / "templates" / "jahresplan.json")
-    assert result["created"] >= 150
-    assert result["updated"] == 0
+    assert result["total"] == 156
+    assert result["created"] + result["updated"] == 156
 
 
 def test_jahresplan_import_is_idempotent(db):

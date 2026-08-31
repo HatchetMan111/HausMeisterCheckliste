@@ -134,6 +134,16 @@ def status_for(task, instance, today: date) -> str:
         if today >= instance.due_date:
             return "due"
         return "upcoming"
+    if task.schedule_type == "annual_repeat":
+        # monatsbasierte Aufgaben sind innerhalb ihres Monats fällig,
+        # erst ab dem Folgemonat überfällig
+        month_end = last_day_of_month(instance.due_date.year, instance.due_date.month)
+        month_end_date = instance.due_date.replace(day=month_end)
+        if today > month_end_date:
+            return "overdue"
+        if today >= instance.due_date:
+            return "due"
+        return "upcoming"
     if instance.due_date < today:
         return "overdue"
     if instance.due_date == today:

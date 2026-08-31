@@ -6,7 +6,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 APP_NAME = "Hausmeister"
-VERSION = "0.2.1"
+VERSION = "0.2.2"
 
 DATA_DIR = Path(os.environ.get("HAUSMEISTER_DATA_DIR", BASE_DIR / "data"))
 DB_PATH = Path(os.environ.get("HAUSMEISTER_DB_PATH", DATA_DIR / "hausmeister.sqlite3"))

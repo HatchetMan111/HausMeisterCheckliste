@@ -3,202 +3,2070 @@
   "source": "jahresplan",
   "note": "Jahres-Wartungsplan nach Monaten. Prioritaeten: high=Wichtig, normal=Empfohlen, low=Optional. source=tip markiert Smart-Home-/Sensorik-Tipps (Ansichtsfilter 'Smart-Tipp').",
   "areas": [
-    { "slug": "haus", "name": "Haus" },
-    { "slug": "hof", "name": "Hof" },
-    { "slug": "technik", "name": "Technik" },
-    { "slug": "garten", "name": "Garten" },
-    { "slug": "sicherheit", "name": "Sicherheit" }
+    {
+      "slug": "haus",
+      "name": "Haus"
+    },
+    {
+      "slug": "hof",
+      "name": "Hof"
+    },
+    {
+      "slug": "technik",
+      "name": "Technik"
+    },
+    {
+      "slug": "garten",
+      "name": "Garten"
+    },
+    {
+      "slug": "sicherheit",
+      "name": "Sicherheit"
+    }
   ],
   "categories": [
-    { "slug": "heizung", "name": "Heizung", "area": "technik" },
-    { "slug": "pv", "name": "PV und Energie", "area": "technik" },
-    { "slug": "energie", "name": "Energieverbrauch", "area": "technik" },
-    { "slug": "klimaanlage", "name": "Klimaanlage", "area": "technik" },
-    { "slug": "wasser", "name": "Wasser", "area": "technik" },
-    { "slug": "elektro", "name": "Elektro", "area": "technik" },
-    { "slug": "smarthome", "name": "Smart Home und Sensorik", "area": "technik" },
-    { "slug": "dach", "name": "Dach und Rinnen", "area": "haus" },
-    { "slug": "fassade", "name": "Fassade und Anstrich", "area": "haus" },
-    { "slug": "keller", "name": "Keller", "area": "haus" },
-    { "slug": "fenster", "name": "Fenster und Türen", "area": "haus" },
-    { "slug": "aussen", "name": "Aussenanlagen", "area": "hof" },
-    { "slug": "beleuchtung", "name": "Beleuchtung", "area": "sicherheit" },
-    { "slug": "einbruchschutz", "name": "Einbruchschutz", "area": "sicherheit" },
-    { "slug": "notfall", "name": "Notfallvorsorge", "area": "sicherheit" },
-    { "slug": "rasen", "name": "Rasen", "area": "garten" },
-    { "slug": "hecke", "name": "Hecken und Gehölze", "area": "garten" },
-    { "slug": "beete", "name": "Beete und Pflanzen", "area": "garten" },
-    { "slug": "obst", "name": "Obst und Ernte", "area": "garten" },
-    { "slug": "gartenpflege", "name": "Gartenpflege", "area": "garten" },
-    { "slug": "geraete", "name": "Geräte", "area": "garten" },
-    { "slug": "bewaesserung", "name": "Bewässerung", "area": "garten" },
-    { "slug": "pool", "name": "Pool und Teich", "area": "garten" },
-    { "slug": "rauchmelder", "name": "Rauch- und CO-Melder", "area": "sicherheit" },
-    { "slug": "feuerloescher", "name": "Feuerlöscher", "area": "sicherheit" }
+    {
+      "slug": "heizung",
+      "name": "Heizung",
+      "area": "technik"
+    },
+    {
+      "slug": "pv",
+      "name": "PV und Energie",
+      "area": "technik"
+    },
+    {
+      "slug": "energie",
+      "name": "Energieverbrauch",
+      "area": "technik"
+    },
+    {
+      "slug": "klimaanlage",
+      "name": "Klimaanlage",
+      "area": "technik"
+    },
+    {
+      "slug": "wasser",
+      "name": "Wasser",
+      "area": "technik"
+    },
+    {
+      "slug": "elektro",
+      "name": "Elektro",
+      "area": "technik"
+    },
+    {
+      "slug": "smarthome",
+      "name": "Smart Home und Sensorik",
+      "area": "technik"
+    },
+    {
+      "slug": "dach",
+      "name": "Dach und Rinnen",
+      "area": "haus"
+    },
+    {
+      "slug": "fassade",
+      "name": "Fassade und Anstrich",
+      "area": "haus"
+    },
+    {
+      "slug": "keller",
+      "name": "Keller",
+      "area": "haus"
+    },
+    {
+      "slug": "fenster",
+      "name": "Fenster und Türen",
+      "area": "haus"
+    },
+    {
+      "slug": "aussen",
+      "name": "Aussenanlagen",
+      "area": "hof"
+    },
+    {
+      "slug": "beleuchtung",
+      "name": "Beleuchtung",
+      "area": "sicherheit"
+    },
+    {
+      "slug": "einbruchschutz",
+      "name": "Einbruchschutz",
+      "area": "sicherheit"
+    },
+    {
+      "slug": "notfall",
+      "name": "Notfallvorsorge",
+      "area": "sicherheit"
+    },
+    {
+      "slug": "rasen",
+      "name": "Rasen",
+      "area": "garten"
+    },
+    {
+      "slug": "hecke",
+      "name": "Hecken und Gehölze",
+      "area": "garten"
+    },
+    {
+      "slug": "beete",
+      "name": "Beete und Pflanzen",
+      "area": "garten"
+    },
+    {
+      "slug": "obst",
+      "name": "Obst und Ernte",
+      "area": "garten"
+    },
+    {
+      "slug": "gartenpflege",
+      "name": "Gartenpflege",
+      "area": "garten"
+    },
+    {
+      "slug": "geraete",
+      "name": "Geräte",
+      "area": "garten"
+    },
+    {
+      "slug": "bewaesserung",
+      "name": "Bewässerung",
+      "area": "garten"
+    },
+    {
+      "slug": "pool",
+      "name": "Pool und Teich",
+      "area": "garten"
+    },
+    {
+      "slug": "rauchmelder",
+      "name": "Rauch- und CO-Melder",
+      "area": "sicherheit"
+    },
+    {
+      "slug": "feuerloescher",
+      "name": "Feuerlöscher",
+      "area": "sicherheit"
+    }
   ],
   "tasks": [
-    { "slug": "heizung-effizienz-pruefen", "title": "Heizungsanlage auf Effizienz prüfen", "description": "Filter reinigen, Heizkörper entlüften, Druck im System prüfen.", "area": "technik", "category": "heizung", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "thermostate-ventile-kontrollieren", "title": "Thermostate und Ventile kontrollieren", "description": "Auf freien Gang und korrekte Funktion prüfen — Ventile können einrosten.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "heizoel-pellets-vorrat-pruefen", "title": "Heizölvorrat / Pelletvorrat prüfen", "description": "Nachbestellen falls unter 30 % Restmenge — Lieferzeiten im Winter länger.", "area": "technik", "category": "heizung", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "heizung-taktung-verbrauch-analysieren", "title": "Heizsystem: Taktung und Verbrauch analysieren", "description": "Schalthäufigkeit und Laufzeiten aufzeichnen — zu häufiges Takten (über 6×/h) deutet auf Überdimensionierung hin und kostet Energie.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [1], "source": "tip" },
-    { "slug": "kaminofen-kamine-reinigen-lassen", "title": "Kaminöfen und Kamine reinigen lassen", "description": "Schornsteinfeger beauftragen — gesetzlich vorgeschrieben, Ruß- und Teerablagerungen entfernen.", "area": "technik", "category": "heizung", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "energieverbrauch-januar-auswerten", "title": "Energieverbrauch Januar auswerten", "description": "Zählerstand notieren und mit Vorjahr vergleichen — Abweichungen dokumentieren.", "area": "technik", "category": "energie", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "pv-batteriespeicher-inbetriebnahme", "title": "PV-Batteriespeicher aus dem Wintermodus holen", "description": "Anfang Februar: Speicher aufwecken, Ladezustand und Zelldrift prüfen — Einbindung ins Smart-Home-System kontrollieren.", "area": "technik", "category": "pv", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [2], "source": "tip" },
-    { "slug": "pv-ueberschusssteuerung-vorbereiten", "title": "PV-Überschusssteuerung vorbereiten", "description": "Ab Ende Februar steigt die Sonneneinstrahlung deutlich — Überschusssteuerung für Heizstab oder Wärmepumpe konfigurieren und testen.", "area": "technik", "category": "pv", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [2], "source": "tip" },
-    { "slug": "heizlastberechnung-beauftragen", "title": "Heizlastberechnung beauftragen", "description": "Ermöglicht optimale Auslegung der Heizung — Basis für Modernisierung und spart langfristig bis zu 20 % Energie.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "pv-ueberschusssteuerung-aktivieren", "title": "PV-Überschusssteuerung aktivieren und testen", "description": "Ab Ende März/Anfang April lohnt sich der PV-Überschuss für Warmwasser oder Heizungsunterstützung — automatisierte Steuerung einrichten und Eigenverbrauch optimieren.", "area": "technik", "category": "pv", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [3], "source": "tip" },
-    { "slug": "heizungseffizienz-nach-winter", "title": "Heizungseffizienz nach Winter analysieren", "description": "Heizkurve und Vorlauftemperatur anpassen, Pumpenstufe prüfen.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "heizung-sommerbetrieb", "title": "Heizung auf Sommerbetrieb umstellen", "description": "Warmwasser-Vorhaltetemperatur prüfen, Zirkulationspumpe optimieren, Heizkörper abdrehen.", "area": "technik", "category": "heizung", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "solaranlage-nach-winter-reinigen", "title": "Solaranlage nach Winter reinigen", "description": "Verschmutzte Module können bis 30 % Leistung verlieren — warmes Wasser, kein Hochdruckreiniger.", "area": "technik", "category": "pv", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "pv-eigenverbrauch-warmepumpe-eauto", "title": "PV-Eigenverbrauch optimieren: Wärmepumpe und E-Auto einbinden", "description": "Frühjahrssonne optimal nutzen: PV-Überschuss automatisch an Wärmepumpe, Heizstab oder E-Auto-Ladung koppeln — spart Netzstrom.", "area": "technik", "category": "pv", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [4], "source": "tip" },
-    { "slug": "pv-statistik-mai", "title": "PV-Überschuss-Statistik Mai auswerten", "description": "Mai ist meist erster Hochertrag-Monat: Eigenverbrauchsquote prüfen, ggf. weitere Verbraucher (E-Auto, Warmwasserspeicher) einbinden für maximale Autarkie.", "area": "technik", "category": "pv", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [5], "source": "tip" },
-    { "slug": "klimaanlage-testlauf", "title": "Klimaanlage Testlauf vor Sommer", "description": "Filter reinigen, Kondensat-Abfluss prüfen, Kühlmittel beim Fachbetrieb prüfen lassen.", "area": "technik", "category": "klimaanlage", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "klimaanlage-warten", "title": "Klimaanlage reinigen und warten", "description": "Filter, Kondensatablauf, Lamellen — professionelle Wartung alle 1–2 Jahre empfohlen.", "area": "technik", "category": "klimaanlage", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "energieverbrauch-halbjahr", "title": "Energieverbrauch Halbjahr auswerten", "description": "Strom, Wasser, Gas/Heizung mit Vorjahr vergleichen.", "area": "technik", "category": "energie", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "pv-sommermodus-eigenverbrauch", "title": "Sommermodus: PV-Eigenverbrauch maximieren", "description": "Waschmaschine, Spülmaschine und E-Auto-Ladung in PV-Hochzeiten (Mittagsstunden) legen — senkt Strombezugskosten drastisch.", "area": "technik", "category": "pv", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [6], "source": "tip" },
-    { "slug": "pv-hochsommer-ertrag", "title": "PV-Anlage: Hochsommer-Ertrag optimal nutzen", "description": "Juli ist meist der ertragreichste Monat: Überschussstrom in Batterie laden und gleichzeitig Warmwasser aufheizen — Verbraucher automatisch koordinieren.", "area": "technik", "category": "pv", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [7], "source": "tip" },
-    { "slug": "pv-jahres-halbzeit", "title": "PV-Anlage: Jahres-Halbzeit-Auswertung", "description": "Ertragsvergleich mit Vorjahr, Verschmutzungsgrad der Module prüfen — saubere Module bringen bis 30 % mehr Ertrag. Zeitpunkt für Reinigung vor dem Herbst.", "area": "technik", "category": "pv", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [8], "source": "tip" },
-    { "slug": "solarmodule-reinigen", "title": "Solarmodule reinigen", "description": "Früh morgens oder abends bei kühler Witterung mit klarem Wasser und weichem Tuch.", "area": "technik", "category": "pv", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "heizung-winterbetrieb-vorbereiten", "title": "Heizung für Winterbetrieb vorbereiten", "description": "Jahresinspektion durch Fachbetrieb — Düsen, Brenner, Wärmetauscher, Pumpe.", "area": "technik", "category": "heizung", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "heizoel-pellets-bestellen", "title": "Heizölvorrat / Pelletvorrat bestellen", "description": "Vor dem Saisonstart — Sommerpreise oft 10–15 % günstiger als Winterpreise.", "area": "technik", "category": "heizung", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "thermostatventile-wintermodus", "title": "Thermostatventile auf Wintermodus / Nachtabsenkung", "description": "Heizkurve anpassen, Nachtabsenkung aktiviert spart 5–15 % Heizenergie.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "heizung-saison-monitoring-start", "title": "Heizsystem: Heizsaison-Monitoring starten", "description": "Taktung und Laufzeiten dokumentieren — Optimierungspotenzial für die Heizsaison erkennen. Heizlastberechnung als Basis für Modernisierungsplanung.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [9], "source": "tip" },
-    { "slug": "pv-herbstmodus", "title": "PV-Überschusssteuerung auf Herbstmodus anpassen", "description": "Solarer Ertrag sinkt ab September deutlich — Priorität auf Warmwassererwärmung und Batterieladung vor E-Auto-Laden anpassen.", "area": "technik", "category": "pv", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [9], "source": "tip" },
-    { "slug": "heizkoerper-entlueften-november", "title": "Heizkörper entlüften", "description": "Gluckern deutet auf Luftblasen hin — Entlüftungsventil aufdrehen bis Wasser kommt, Druck danach prüfen.", "area": "technik", "category": "heizung", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "heizung-volle-leistung-pruefen", "title": "Heizungsanlage auf volle Leistung prüfen", "description": "Pumpenleistung, Vorlauftemperatur und Kesseltemperatur optimieren.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "heizung-taktprotokoll-november", "title": "Heizsystem: Taktprotokoll November auswerten", "description": "Zu häufiges Takten (über 6×/Stunde) zeigt Handlungsbedarf — auffällige Muster dokumentieren und Optimierung prüfen.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [11], "source": "tip" },
-    { "slug": "heizkostenspiegel-vorbereiten", "title": "Heizkostenspiegel vorbereiten", "description": "Zählerstände Gas/Öl/Pellets notieren für Jahresabrechnung und Vergleich.", "area": "technik", "category": "energie", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "energieverbrauch-jahresauswertung", "title": "Energieverbrauch Jahresauswertung", "description": "Zählerstände Gas, Strom, Wasser notieren — Vergleich mit Vorjahr, Effizienz beurteilen.", "area": "technik", "category": "energie", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [12] },
-    { "slug": "heizungswasser-ph-messen", "title": "Heizungswasser pH-Wert messen lassen", "description": "pH 8,2–9,5 ist optimal — zu saures Heizungswasser korrodiert Rohre und Wärmetauscher.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [12] },
-    { "slug": "pv-speicher-winterschlaf", "title": "PV-Batteriespeicher: Winterschlaf prüfen und einstellen", "description": "Bei dauerhafter Kälte (unter 5 °C) Batteriespeicher auf Wintermodus / Tiefentladeschutz einstellen — Monitoring und Schutz der Akkus sicherstellen.", "area": "technik", "category": "pv", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [12], "source": "tip" },
-    { "slug": "heizung-jahresreport", "title": "Heizsystem: Jahresreport erstellen", "description": "Jahresauswertung von Taktung, Laufzeiten und Verbrauch — ideale Basis für Modernisierungsplanung und Heizlastberechnung im neuen Jahr.", "area": "technik", "category": "heizung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [12], "source": "tip" },
-
-    { "slug": "dach-schneelasten", "title": "Dach nach Schneelasten kontrollieren", "description": "Besonders bei älteren Dächern und Flachdächern — ab 80 kg/m² kritisch.", "area": "haus", "category": "dach", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "regenrinnen-eisbildung", "title": "Regenrinnen auf Eisbildung prüfen", "description": "Eiszapfen und Verstopfungen vorsichtig entfernen.", "area": "haus", "category": "dach", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "streusand-salz-auffuellen", "title": "Streusand / Salz auffüllen", "description": "Wege, Einfahrt und Treppe sicher halten — Salzverbrauch: max. 20 g/m².", "area": "hof", "category": "aussen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "kellerabdichtung-lichtschaechte", "title": "Kellerabdichtung und Lichtschächte kontrollieren", "description": "Schneeschmelze kann zu Wassereinbruch führen — Schächte von Eis befreien.", "area": "haus", "category": "keller", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "fassade-frostschaden", "title": "Frostschäden an Fassade kontrollieren", "description": "Risse und abgeplatzte Stellen dokumentieren, bei Tauwetter ausbessern.", "area": "haus", "category": "fassade", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "wasserrohre-frostschaden", "title": "Wasserrohre auf Frostschäden prüfen", "description": "Besonders in unbeheizten Bereichen: Garage, Keller, Außenwände — auf Feuchtigkeit und Druckverlust achten.", "area": "technik", "category": "wasser", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "gartengeraete-winterschaden", "title": "Gartengeräte auf Winterschäden kontrollieren", "description": "Frühzeitig Reparaturen planen, Ersatzteile rechtzeitig bestellen.", "area": "garten", "category": "geraete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "dachrinnen-frostschaden", "title": "Dachrinnen auf Verstopfungen und Frostschäden prüfen", "description": "Vor der Schneeschmelze frei räumen — Fallrohre auf Risse prüfen.", "area": "haus", "category": "dach", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "dachinspektion-nach-winter", "title": "Dachinspektion nach Winter", "description": "Ziegel auf Beschädigungen, Moos, Schneeschutzgitter und Blitzschutz prüfen.", "area": "haus", "category": "dach", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "regenrinnen-reinigen-reparieren", "title": "Regenrinnen reinigen und reparieren", "description": "Laub und Schmutz aus dem Winter entfernen, Gefälle auf freien Abfluss prüfen.", "area": "haus", "category": "dach", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "aussenanstrich-schaden", "title": "Außenanstrich auf Schäden prüfen", "description": "Lackschäden, Holzfäule und aufgeplatzte Fugen frühzeitig beheben.", "area": "haus", "category": "fassade", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "garagentor-carport-kontrolle", "title": "Garagentor, Carport und Nebengebäude kontrollieren", "description": "Federn, Führungsschienen, Schlösser, Beleuchtung.", "area": "hof", "category": "aussen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "aussenleitungen-gartensteckdosen", "title": "Außenleitungen und Gartensteckdosen prüfen", "description": "Feuchtigkeitsschäden nach Winter, Fehlerstromschutzschalter testen.", "area": "technik", "category": "elektro", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "einfahrt-pflaster-frostschaden", "title": "Einfahrt und Pflasterbelag auf Frostschäden prüfen", "description": "Risse ausbessern bevor Unkraut eindringt — Fugenmörtel erneuern.", "area": "hof", "category": "aussen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "sichtschutz-zaeune", "title": "Sichtschutz und Zäune kontrollieren", "description": "Pfostenfäulnis, gelockerte Verbindungen, Holz behandeln.", "area": "hof", "category": "aussen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "aussenfarbe-holzteile-fruehjahr", "title": "Außenfarbe und Holzteile im Frühjahr behandeln", "description": "Trockenes Wetter nutzen — UV-Schutzlasur oder Wetterschutzfarbe.", "area": "haus", "category": "fassade", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "dachflaechenfenster-dichtigkeit", "title": "Dachflächenfenster auf Undichtigkeiten prüfen", "description": "Nach Frühjahrsregen: Gummirahmen und Eindeckrahmen prüfen.", "area": "haus", "category": "dach", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "terrassendielen-behandeln", "title": "Terrassendielen und Holzteile behandeln", "description": "Ölen oder lasieren bei trockenem Wetter — Holz vor Grauwerden schützen.", "area": "hof", "category": "aussen", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "markisen-sonnenschutz", "title": "Markisen und Sonnenschutz prüfen", "description": "Motor und Tuchbefestigung prüfen, Gelenke ölen.", "area": "hof", "category": "aussen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "fassade-trockenrisse", "title": "Fassade auf Risse und Trockenrisse prüfen", "description": "Hitzesommer fördern Rissbildung — vor Herbst ausbessern.", "area": "haus", "category": "fassade", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [7] },
-    { "slug": "gartenstrom-niedervolt", "title": "Gartenstrom und Niedervoltbeleuchtung prüfen", "description": "Leitungen auf Beschädigungen durch Rasenmäher oder Schaufeln.", "area": "technik", "category": "elektro", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [7] },
-    { "slug": "hausnummer-wegleuchten", "title": "Hausnummernbeleuchtung und Wegleuchten", "description": "Defekte Leuchtmittel tauschen.", "area": "sicherheit", "category": "beleuchtung", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [7] },
-    { "slug": "regenrinnen-sommerverstopfung", "title": "Regenrinnen auf Sommerverstopfungen prüfen", "description": "Pollen, Blätter, Vogelkot entfernen — vor der Herbstregenzeit reinigen.", "area": "haus", "category": "dach", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "fassadenrisse-herbst", "title": "Fassadenrisse vor Herbst ausbessern", "description": "Trockenes Wetter nutzen für dauerhafte Fugenabdichtung mit Acryl oder Silikon.", "area": "haus", "category": "fassade", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "holzteile-ausbleichen", "title": "Holzteile auf Ausbleichen und Trockenrisse prüfen", "description": "Terrassendielen, Zaunbretter, Carport-Dach — vor Herbstregen nachölen.", "area": "hof", "category": "aussen", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "dachrinnen-herbstlaub", "title": "Dachrinnen von Herbstlaub befreien", "description": "Vor der Hauptregenzeit — verstopfte Rinnen verursachen Fassaden- und Fundamentschäden.", "area": "haus", "category": "dach", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "aussenwasserhaehne-winter", "title": "Außenwasserhähne absperren und entleeren", "description": "Entleerungsschieber im Keller schließen! Vergessen kostet teure Rohrbrüche.", "area": "technik", "category": "wasser", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "keller-feuchtigkeit-herbst", "title": "Keller auf Feuchtigkeitsschäden prüfen", "description": "Nach ersten Herbstregen — Schimmelflecken früh behandeln, Drainage kontrollieren.", "area": "haus", "category": "keller", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "kellerfenster-lichtschaechte", "title": "Kellerfenster auf Dichtigkeit und Lichtschächte prüfen", "description": "Dichtungen prüfen, Lichtschächte von Laub befreien, Abläufe reinigen.", "area": "haus", "category": "keller", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "kellerschaechte-wassereinbruch", "title": "Kellerschächte auf Wassereinbruch prüfen", "description": "Schutzgitter reinigen, Abläufe freihalten vor Winterregen.", "area": "haus", "category": "keller", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "winterdienstmaterial", "title": "Winterdienstmaterial bereitstellen", "description": "Streusalz (Haushaltsvorrat), Schneeschieber, Sandstreuer — jetzt günstig kaufen.", "area": "hof", "category": "aussen", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "dachrinnen-finale-reinigung", "title": "Dachrinnen finale Reinigung vor Winter", "description": "Letzter Check nach dem Laubfall — Schneeschutzgitter auf festen Sitz prüfen.", "area": "haus", "category": "dach", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "weihnachtsbeleuchtung-sicher", "title": "Weihnachtsbeleuchtung sicher verlegen", "description": "Lichterketten auf Beschädigungen prüfen, Kabelverbindungen im Freien wetterfest absichern.", "area": "sicherheit", "category": "beleuchtung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [12] },
-    { "slug": "schneeraeumung-organisieren", "title": "Schneeräumung organisieren", "description": "Pflicht: Gehwege und Zugänge räumen — ggf. Winterdienst beauftragen, Haftung beachten.", "area": "hof", "category": "aussen", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [12] },
-    { "slug": "renovierungsjahresplanung", "title": "Jahresplanung Renovierungen nächstes Jahr", "description": "Größere Vorhaben (Dach, Fassade, Heizung) jetzt planen — Handwerker frühzeitig anfragen.", "area": "haus", "category": "fassade", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [12] },
-
-    { "slug": "rauchmelder-monatstest", "title": "Rauchmelder testen", "description": "Monatliche Funktionsprüfung — Testtaste mindestens 3 Sekunden drücken.", "area": "sicherheit", "category": "rauchmelder", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
-    { "slug": "co-melder-monatstest", "title": "CO-Melder prüfen", "description": "Batterietest und Signalton — lebenswichtig in der Heizsaison.", "area": "sicherheit", "category": "rauchmelder", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "notfallnummern-aktualisieren", "title": "Notfallnummern aktualisieren", "description": "Heizungsdienst, Klempner, Elektrik, Hausarzt — Liste sichtbar aufhängen.", "area": "sicherheit", "category": "notfall", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "smarthome-firmware-updates", "title": "Smart-Home-Zentrale: Firmware-Updates prüfen", "description": "Regelmäßige Updates sichern Stabilität und Cybersicherheit aller Geräte — Update-Log prüfen.", "area": "technik", "category": "smarthome", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [1], "source": "tip" },
-    { "slug": "blitzschutz-pruefen-lassen", "title": "Blitzschutzanlage prüfen lassen", "description": "Alle 2–4 Jahre durch Fachbetrieb — Erdungswiderstand und Ableitungen messen.", "area": "sicherheit", "category": "elektro", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "steckdosen-aussenbereich", "title": "Steckdosen im Außenbereich überprüfen", "description": "Feuchtigkeitsschäden und Dichtungen kontrollieren, Schutzabdeckungen prüfen.", "area": "technik", "category": "elektro", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "einbruchalarm-kameras-sichtfeld", "title": "Einbruchalarm und Außenkameras auf Sichtfelder prüfen", "description": "Laubaustrieb verdeckt häufig Kamerablickfelder und Bewegungsmelderreichweiten — Ausrichtung anpassen.", "area": "sicherheit", "category": "smarthome", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [5], "source": "tip" },
-    { "slug": "einbruchschutz-urlaubszeit", "title": "Einbruchschutz für Urlaubszeit vorbereiten", "description": "Timer-Schaltung für Lichter, Briefkasten leeren lassen, Nachbarn informieren.", "area": "sicherheit", "category": "einbruchschutz", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [7] },
-    { "slug": "smarthome-urlaubsmodus", "title": "Smart-Home-Urlaubsmodus aktivieren", "description": "Anwesenheit durch automatische Licht- und Rollladensteuerung simulieren — Türen, Fenster und Bewegungsmelder aus der Ferne per App überwachen.", "area": "sicherheit", "category": "smarthome", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [7], "source": "tip" },
-    { "slug": "feuerloescher-jahrespruefung", "title": "Feuerlöscher prüfen", "description": "Alle 2 Jahre durch Fachbetrieb — Plombierung, Druckanzeige, Halterung und Haltbarkeitsdatum.", "area": "sicherheit", "category": "feuerloescher", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "einbruchschutz-kontrolle-august", "title": "Einbruchschutz kontrollieren", "description": "Schlösser, Sicherheitsbeschläge, Bewegungsmelder-Empfindlichkeit, Scharniere prüfen.", "area": "sicherheit", "category": "einbruchschutz", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "sicherheitskameras-alarmsensoren-test", "title": "Sicherheitskameras und Alarmsensoren testen", "description": "Vor Ende der Urlaubssaison: Sensoren auf Funktion prüfen, Benachrichtigungseinstellungen und Netzwerk-Empfang kontrollieren.", "area": "sicherheit", "category": "smarthome", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [8], "source": "tip" },
-    { "slug": "bewegungsmelder-kurze-tage", "title": "Bewegungsmelder auf kürzere Tage einstellen", "description": "Dunkelheit beginnt früher — Empfindlichkeit und Einschaltzeiten der Außenbeleuchtung anpassen, Dämmerungsschalter kontrollieren.", "area": "sicherheit", "category": "smarthome", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [10], "source": "tip" },
-    { "slug": "notstrom-taschenlampen", "title": "Notstrom und Taschenlampen bereitstellen", "description": "Herbststürme können Stromausfälle verursachen — Powerbank und Batterien prüfen.", "area": "sicherheit", "category": "notfall", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "rauchmelder-jahrestest", "title": "Rauchmelder Jahrestest und Batteriewechsel", "description": "Alle Rauchmelder testen, Batterien nach Hersteller wechseln (mind. alle 12 Monate).", "area": "sicherheit", "category": "rauchmelder", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [12] },
-    { "slug": "co-melder-jahrestest", "title": "CO-Melder Jahrestest", "description": "Besonders wichtig in der Heizsaison — bei Gasheizung und Kamin.", "area": "sicherheit", "category": "rauchmelder", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [12] },
-    { "slug": "erste-hilfe-set-pruefen", "title": "Erste-Hilfe-Set prüfen und auffüllen", "description": "Verfallsdaten der Verbandsmaterialien prüfen — neue Verbandsmittel einlegen.", "area": "sicherheit", "category": "notfall", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [12] },
-    { "slug": "smarthome-jahresupdate-backup", "title": "Smart-Home-System: Jahres-Update und Backup", "description": "Firmware aller Geräte aktualisieren, Backup der Systemkonfiguration erstellen — Sicherheitsupdates schließen Schwachstellen.", "area": "technik", "category": "smarthome", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [12], "source": "tip" },
-
-    { "slug": "warmwasser-temperatur-legionellen", "title": "Warmwasserspeicher Temperatur prüfen", "description": "Mindestens 60 °C gegen Legionellen-Bildung — gesetzliche Anforderung.", "area": "technik", "category": "wasser", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "siphons-abfluesse-geruch", "title": "Siphons und Abflüsse auf Geruch prüfen", "description": "Seltener genutzte Abflüsse (Keller, Zweit-WC) mit Wasser befüllen.", "area": "technik", "category": "wasser", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [1] },
-    { "slug": "wasserverbrauch-monatsauswertung", "title": "Wasserverbrauch: Monatsauswertung", "description": "Ungewöhnliche Spitzen können auf schleichende Lecks, vergessene Außenzapfhähne oder defekte Spülkästen hinweisen.", "area": "technik", "category": "wasser", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [1], "source": "tip" },
-    { "slug": "wasserverbrauch-jahresvergleich", "title": "Wasserverbrauch: Jahresvergleich", "description": "Monats- und Jahresvergleich hilft, Leckagen und ineffiziente Geräte zu erkennen (tropfende Armatur ≈ 2.000 l/Jahr).", "area": "technik", "category": "wasser", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [2], "source": "tip" },
-    { "slug": "aussenwasserzaehler-ablesen", "title": "Außenwasserzähler ablesen und notieren", "description": "Für Jahresabrechnung und Verbrauchskontrolle.", "area": "technik", "category": "wasser", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "wasserleitungen-frost-undichtigkeit", "title": "Wasserleitungen nach Frost auf Undichtigkeiten prüfen", "description": "Alle sichtbaren Rohre kontrollieren — besonders in Außenwänden und unbeheizten Räumen.", "area": "technik", "category": "wasser", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "leckage-sensoren-nach-frost", "title": "Leckage-Sensoren nach Frostperiode testen", "description": "Sensoren unter Spüle, an Waschmaschine, Heizung und im Keller auf Funktion prüfen — Frostschäden können kleine Undichtigkeiten erzeugen.", "area": "technik", "category": "wasser", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [3], "source": "tip" },
-    { "slug": "bewaesserung-inbetriebnahme-jahr", "title": "Bewässerungsanlage in Betrieb nehmen", "description": "Leitungen langsam befüllen, alle Ventile und Düsen prüfen — jetzt frostsicher.", "area": "garten", "category": "bewaesserung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "bewaesserung-wetterdaten", "title": "Bewässerungssteuerung mit Wetterdaten koppeln", "description": "Automatische Bewässerung mit Wetterdaten und Bodenfeuchte verbinden — spart bis zu 40 % Wasser und schützt vor Über-/Unterbewässerung.", "area": "garten", "category": "bewaesserung", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [4], "source": "tip" },
-    { "slug": "regentonnen-reinigen", "title": "Regentonnen reinigen und aufstellen", "description": "Vor der Befüllsaison — Deckel prüfen gegen Mückenbrut.", "area": "garten", "category": "bewaesserung", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "leckage-sensoren-aussen", "title": "Leckage-Sensoren für Aussenbereiche aktivieren", "description": "Sensoren für Teich-Technikraum, Pool-Pumpenbereich und Gartenpumpen in Betrieb nehmen und testen.", "area": "garten", "category": "wasser", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [5], "source": "tip" },
-    { "slug": "wasserfilter-hausanlage", "title": "Wasserfilter der Hausanlage prüfen / tauschen", "description": "Hausfilter (z. B. Partikelfilter) alle 6–12 Monate wechseln.", "area": "technik", "category": "wasser", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "pool-wasserchemie", "title": "Pool-Wasserchemie regelmäßig kontrollieren", "description": "pH 7,0–7,4 und freies Chlor 0,3–0,6 mg/l wöchentlich prüfen, Algenmittel dosieren.", "area": "garten", "category": "pool", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "pool-technikraum-ueberwachen", "title": "Leckage-Sensor am Pool-Technikraum prüfen", "description": "Sensor im Pumpenraum gibt frühzeitig Alarm — Pumpdichtungen und Verbindungsmuffen sind häufige Schwachstellen.", "area": "garten", "category": "pool", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [6], "source": "tip" },
-    { "slug": "bewaesserung-winterfest-jahr", "title": "Bewässerungsanlage winterfest machen", "description": "Leitungen vollständig entleeren, Ventile schließen, Steuergerät abschalten.", "area": "garten", "category": "bewaesserung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "pool-winterfest", "title": "Pool winterfest machen", "description": "Wasserchemie anpassen, Pumpe und Leitungen entleeren, Winterabdeckung montieren.", "area": "garten", "category": "pool", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "wasserverbrauch-sommer", "title": "Wasserverbrauch: Sommerverbrauch analysieren", "description": "Saisonaler Mehrverbrauch (Garten, Pool) analysieren — Einsparpotenziale für nächste Saison ableiten.", "area": "garten", "category": "wasser", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [9], "source": "tip" },
-    { "slug": "leckage-grundcheck-herbst", "title": "Leckage-Grundcheck vor dem Winter", "description": "Alle Sensoren prüfen — besonders Stellen mit Gefriergefahr: Außenmauern, Keller, Garage, Waschküche. Schleichende Lecks im Winter verursachen Schimmel.", "area": "technik", "category": "wasser", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [10], "source": "tip" },
-    { "slug": "warmwasserbereiter-winterbetrieb", "title": "Warmwasserbereiter auf Winterbetrieb einstellen", "description": "Warmwasservorhaltezeit und Legionellenschutzprogramm aktivieren.", "area": "technik", "category": "wasser", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "leckage-sensoren-wintervollcheck", "title": "Leckage-Sensoren: Wintersaison-Vollcheck", "description": "Alle Sensoren auf Batteriestatus und Verbindung prüfen — kritische Stellen: Technikraum, unter Spüle, Waschmaschine, Keller. Im Winter sind Lecks besonders gefährlich.", "area": "technik", "category": "wasser", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [11], "source": "tip" },
-    { "slug": "frostschutz-rohre", "title": "Frostschutz für freiliegende Rohre sicherstellen", "description": "Außenwandleitungen, Rohre in Garagen und Kellern dämmen oder Frostwächter/Heizkabel prüfen.", "area": "technik", "category": "wasser", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "wasserverbrauch-jahresreport", "title": "Wasserverbrauch: Jahresreport erstellen", "description": "Monatsvergleiche, auffällige Tagesverbräuche und Einsparpotenziale auswerten — gute Basis für Jahresabrechnung und Sparmaßnahmen.", "area": "technik", "category": "wasser", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [12], "source": "tip" },
-    { "slug": "wasserrechnung-pruefen", "title": "Jahres-Wasserrechnung prüfen", "description": "Ablesewert mit Abschlag vergleichen, ggf. Nachzahlung planen oder Abschlag anpassen.", "area": "technik", "category": "wasser", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [12] },
-
-    { "slug": "obstbaeume-schnitt-februar", "title": "Obstbäume und Sträucher schneiden", "description": "Gesetzliches Schnittverbot ab 1. März bis 30. September für starke Eingriffe — jetzt letzter Termin!", "area": "garten", "category": "obst", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "rasenmaeher-warten", "title": "Rasenmäher warten und schärfen", "description": "Öl wechseln, Messer schärfen oder tauschen, Luftfilter und Zündkerze prüfen.", "area": "garten", "category": "geraete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "saatgut-anzuchterde", "title": "Saatgut und Anzuchterde kaufen", "description": "Frühe Kulturen wie Tomaten, Paprika ab Februar innen vorziehen.", "area": "garten", "category": "beete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [2] },
-    { "slug": "terrasse-wege-reinigen", "title": "Terrasse und Wege reinigen", "description": "Hochdruckreiniger einsetzen, Moos und Algen entfernen, Fugen prüfen.", "area": "garten", "category": "gartenpflege", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "kompost-umsetzen-beete-vorbereiten", "title": "Kompost umschichten und Beete vorbereiten", "description": "Erste Beete anlegen, Frühbeet aufstellen, Boden auflockern.", "area": "garten", "category": "beete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "rasenpflege-vorbereiten", "title": "Rasenpflege vorbereiten", "description": "Bei Bodentemperatur über 8 °C: Vertikutieren, Moosbekämpfung, Belüftung.", "area": "garten", "category": "rasen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "gartengeraete-instand-setzen", "title": "Gartengeräte instand setzen", "description": "Schäden beheben, Werkzeug reinigen und ölen, Akkus laden.", "area": "garten", "category": "geraete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "rasen-vertikutieren-duengen-jahr", "title": "Rasen vertikutieren und düngen", "description": "Ideale Zeit nach Frostende bei Bodentemperatur über 10 °C — Frühjahrsdünger (stickstoffbetont).", "area": "garten", "category": "rasen", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "gartenmoebel-reinigen", "title": "Gartenmöbel raus holen und reinigen", "description": "Holzmöbel ölen, Polster und Kissen auf Schimmel prüfen und auslüften.", "area": "garten", "category": "gartenpflege", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "beete-anlegen-fruehjahrsblueher", "title": "Beete anlegen und Frühjahrsblüher setzen", "description": "Bodenfrost möglich bis Eisheiligen (ca. 15. Mai) — empfindliche Pflanzen schützen.", "area": "garten", "category": "beete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "hecken-leichte-formkorrekturen", "title": "Hecken: nur leichte Formkorrekturen erlaubt", "description": "Gesetzliches Schnittverbot 1. März bis 30. September für stärkere Eingriffe — nur leichte Korrekturen an Nadelgehölzen zulässig.", "area": "garten", "category": "hecke", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "rasenbewaesserung-testen", "title": "Rasenbewässerung einrichten und testen", "description": "Zeitschaltuhr und Sprinkler kalibrieren — Leitungen auf Frostschäden prüfen. Erst jetzt einschalten (kein Frost mehr erwartet).", "area": "garten", "category": "bewaesserung", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [4] },
-    { "slug": "beetpflanzen-nach-eisheiligen", "title": "Beetpflanzen setzen nach Eisheiligen (ca. 15. Mai)", "description": "Ab ca. 15. Mai frostfrei im Freien: Tomaten, Zucchini, Paprika, Basilikum.", "area": "garten", "category": "beete", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "pool-vorbereiten-befuellen", "title": "Pool vorbereiten und befüllen", "description": "Wasserchemie (pH 7,0–7,4, Chlor), Pumpe und Filter warten, Winterabdeckung reinigen.", "area": "garten", "category": "pool", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "teich-inbetriebnahme", "title": "Teich und Wasserspiele in Betrieb nehmen", "description": "Pumpen, Filterbecken und UV-Klärer reinigen, Winterstopfen entfernen.", "area": "garten", "category": "pool", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "unkraut-vor-samenbildung", "title": "Unkraut vor der Samenbildung entfernen", "description": "Vor der Blüte stechen bzw. abstechen, besonders Wegerich und Löwenzahn.", "area": "garten", "category": "gartenpflege", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [5, 6] },
-    { "slug": "rasen-trockenheit-waessern", "title": "Rasen bei Trockenheit wässern", "description": "Morgens oder abends wässern — tief und selten statt täglich oberflächlich.", "area": "garten", "category": "rasen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "obstbaeume-ausduennen", "title": "Obstbäume ausdünnen", "description": "Überschüssige Früchte entfernen — fördert Qualität und verhindert Bruchäste.", "area": "garten", "category": "obst", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "schaedlinge-pflanzen-kontrolle", "title": "Schädlingsbefall an Pflanzen kontrollieren", "description": "Blattläuse, Spinnmilben — früh behandeln mit Neem-Öl oder Seifenlösung.", "area": "garten", "category": "gartenpflege", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [6] },
-    { "slug": "rasen-hitze-waessern", "title": "Rasen bei Hitze intensiv wässern", "description": "Morgens oder abends, 15–20 l/m² pro Woche — tief wässern für tiefe Wurzeln.", "area": "garten", "category": "rasen", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [7] },
-    { "slug": "obstbaeume-schaedlinge-juli", "title": "Obstbäume auf Schädlinge kontrollieren", "description": "Pilzbefall, Feuerbrand, Blattläuse frühzeitig erkennen.", "area": "garten", "category": "obst", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [7] },
-    { "slug": "ernte-lagerung", "title": "Ernte und Lagerung Obst und Gemüse", "description": "Erntezeit nutzen, Keller-/Kühllagerbedingungen prüfen — Druckstellen sofort aussortieren.", "area": "garten", "category": "obst", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [7] },
-    { "slug": "rasen-sommerduenger", "title": "Rasen mit Sommerdünger nachversorgen", "description": "Stickstoffarmer Sommerdünger — kein Herbstdünger jetzt (kommt September).", "area": "garten", "category": "rasen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "kompost-mulchen-august", "title": "Kompost umsetzen und Beete mulchen", "description": "Mulchschicht reduziert Wasserverdunstung um bis zu 60 %.", "area": "garten", "category": "beete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "teich-pool-hochsommer", "title": "Teich- und Poolwasser Hochsommer-Pflege", "description": "Algenbildung durch Hitzestau kontrollieren, pH und Chlor prüfen.", "area": "garten", "category": "pool", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "hecken-schnittverbot-august", "title": "Kein Hecken-Rückschnitt im August", "description": "Gesetzliches Schnittverbot 1. März – 30. September — Verstöße können mit Bußgeld belegt werden. Leichte Formkorrekturen an Nadelgehölzen sind erlaubt.", "area": "garten", "category": "hecke", "priority": "high", "schedule_type": "annual_repeat", "repeat_months": [8] },
-    { "slug": "rasen-herbstduenger", "title": "Rasen mit Herbstdünger versorgen", "description": "Kaliumbetonter Herbstdünger — letzter Düngetermin des Jahres für Frostresistenz.", "area": "garten", "category": "rasen", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "beetpflanzen-zurueckschneiden", "title": "Beetpflanzen zurückschneiden", "description": "Mehrjährige Pflanzen auf Winter vorbereiten, Sommerblumen kompostieren.", "area": "garten", "category": "beete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "aepfel-birnen-ernten", "title": "Äpfel und Birnen ernten und lagern", "description": "Lagertemperatur 2–5 °C, gut belüftet — auf Druckstellen und Fäulnis prüfen.", "area": "garten", "category": "obst", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "herbstschnitt-beginnen", "title": "Herbstschnitt bei erlaubten Pflanzen beginnen", "description": "Ab 1. Oktober erlaubt: Hecken, Sträucher stärker schneiden — jetzt vorbereiten.", "area": "garten", "category": "hecke", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [9] },
-    { "slug": "rasen-letztes-maeen", "title": "Rasen letztes Mal mähen", "description": "Auf ca. 5–6 cm Schnitthöhe — zu kurz macht ihn frostempfindlich.", "area": "garten", "category": "rasen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "kuebelpflanzen-hereinholen", "title": "Kübelpflanzen hereinholen", "description": "Vor den ersten Frostnächten (unter 5 °C) — Überwinterungsort: kühl, hell, frostfrei.", "area": "garten", "category": "gartenpflege", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "gartengeraete-winterfest-lagern", "title": "Gartengeräte winterfest lagern", "description": "Reinigen, trocknen, ölen — Kraftstoff aus Rasenmäher und Motorsäge ablassen.", "area": "garten", "category": "geraete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "herbstlaub-entfernen", "title": "Herbstlaub regelmäßig entfernen", "description": "Nasses Laub auf dem Rasen verursacht Pilzkrankheiten und Faulstellen.", "area": "garten", "category": "gartenpflege", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "zwiebelpflanzen-setzen", "title": "Zwiebelpflanzen setzen (Tulpen, Narzissen, Krokusse)", "description": "Oktober bis November bei Bodentemperatur unter 10 °C setzen.", "area": "garten", "category": "beete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "hecken-herbstschnitt", "title": "Hecken und Sträucher Herbstschnitt (ab Oktober erlaubt)", "description": "Ab 1. Oktober wieder erlaubt: starker Rückschnitt von Laubgehölzen und Hecken.", "area": "garten", "category": "hecke", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [10] },
-    { "slug": "rosen-schuetzen", "title": "Rosen und empfindliche Pflanzen schützen", "description": "Reisigdecke, Gartenvlies oder Kokosmatten — Stammschutz für Veredelungsstelle wichtig.", "area": "garten", "category": "gartenpflege", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "laubkompost-anlegen", "title": "Laubkompost anlegen", "description": "Herbstlaub als wertvoller Mulch und Bodenverbesserer nutzen.", "area": "garten", "category": "beete", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "pflanzenschnitt-abschliessen", "title": "Pflanzenschnitt abschließen", "description": "Laub, abgestorbene Stängel — Fruchtstand für Vögel stehen lassen.", "area": "garten", "category": "gartenpflege", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [11] },
-    { "slug": "garten-jahresplanung", "title": "Jahresplanung Garten", "description": "Neugestaltungen, Pflanzbestellungen, größere Baumfällungen für nächste Saison planen.", "area": "garten", "category": "gartenpflege", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [12] },
-
-    { "slug": "fenster-fruehjahrsreinigung", "title": "Fenster Frühjahrsreinigung", "description": "Dichtungen auf Verschleiß, Sprünge und Schimmelansatz prüfen.", "area": "haus", "category": "fenster", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "tuerscharniere-oelen", "title": "Türscharniere und Schlösser ölen", "description": "Schlosszylinder mit Graphitspray oder Silikonspray behandeln.", "area": "hof", "category": "aussen", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "rollladenkasten-waermebruecken", "title": "Rollladenkasten auf Wärmebrücken und Schäden prüfen", "description": "Dämmmaterial auf Beschädigungen kontrollieren — häufige Ursache für Schimmel.", "area": "haus", "category": "fenster", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [3] },
-    { "slug": "rolllaeden-warten", "title": "Rollläden und Jalousien warten", "description": "Führungsschienen reinigen und ölen, Gurte und Motoren prüfen.", "area": "haus", "category": "fenster", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "insektenschutz-montieren", "title": "Insektenschutzgitter montieren", "description": "Auf Risse und defekte Reißverschlüsse oder Magnetverschlüsse prüfen.", "area": "haus", "category": "fenster", "priority": "low", "schedule_type": "annual_repeat", "repeat_months": [5] },
-    { "slug": "holzfenster-nachlackieren", "title": "Holzfenster mit Wetterschutz nachlackieren", "description": "Bei trockener Witterung streichen — schützt vor Fäule, Rissen und Grauwerden.", "area": "haus", "category": "fenster", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [7] },
-    { "slug": "fenster-tuerdichtungen-erneuern", "title": "Fenster- und Türdichtungen erneuern", "description": "Zugluft reduziert Heizkosten erheblich — Silikonband oder Gummidichtprofil.", "area": "haus", "category": "fenster", "priority": "normal", "schedule_type": "annual_repeat", "repeat_months": [10] }
+    {
+      "slug": "aepfel-birnen-ernten",
+      "title": "Äpfel und Birnen ernten und lagern",
+      "description": "Lagertemperatur 2–5 °C, gut belüftet — auf Druckstellen und Fäulnis prüfen.",
+      "area": "garten",
+      "category": "obst",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "aussenanstrich-schaden",
+      "title": "Außenanstrich auf Schäden prüfen",
+      "description": "Lackschäden, Holzfäule und aufgeplatzte Fugen frühzeitig beheben.",
+      "area": "haus",
+      "category": "fassade",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "aussenfarbe-holzteile-fruehjahr",
+      "title": "Außenfarbe und Holzteile im Frühjahr behandeln",
+      "description": "Trockenes Wetter nutzen — UV-Schutzlasur oder Wetterschutzfarbe.",
+      "area": "haus",
+      "category": "fassade",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "aussenleitungen-gartensteckdosen",
+      "title": "Außenleitungen und Gartensteckdosen prüfen",
+      "description": "Feuchtigkeitsschäden nach Winter, Fehlerstromschutzschalter testen.",
+      "area": "technik",
+      "category": "elektro",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "aussenwasserhaehne-winter",
+      "title": "Außenwasserhähne absperren und entleeren",
+      "description": "Entleerungsschieber im Keller schließen! Vergessen kostet teure Rohrbrüche.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "aussenwasserzaehler-ablesen",
+      "title": "Außenwasserzähler ablesen und notieren",
+      "description": "Für Jahresabrechnung und Verbrauchskontrolle.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "beete-anlegen-fruehjahrsblueher",
+      "title": "Beete anlegen und Frühjahrsblüher setzen",
+      "description": "Bodenfrost möglich bis Eisheiligen (ca. 15. Mai) — empfindliche Pflanzen schützen.",
+      "area": "garten",
+      "category": "beete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "beetpflanzen-nach-eisheiligen",
+      "title": "Beetpflanzen setzen nach Eisheiligen (ca. 15. Mai)",
+      "description": "Ab ca. 15. Mai frostfrei im Freien: Tomaten, Zucchini, Paprika, Basilikum.",
+      "area": "garten",
+      "category": "beete",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "beetpflanzen-zurueckschneiden",
+      "title": "Beetpflanzen zurückschneiden",
+      "description": "Mehrjährige Pflanzen auf Winter vorbereiten, Sommerblumen kompostieren.",
+      "area": "garten",
+      "category": "beete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "bewaesserung-inbetriebnahme-jahr",
+      "title": "Bewässerungsanlage in Betrieb nehmen",
+      "description": "Leitungen langsam befüllen, alle Ventile und Düsen prüfen — jetzt frostsicher.",
+      "area": "garten",
+      "category": "bewaesserung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "bewaesserung-wetterdaten",
+      "title": "Bewässerungssteuerung mit Wetterdaten koppeln",
+      "description": "Automatische Bewässerung mit Wetterdaten und Bodenfeuchte verbinden — spart bis zu 40 % Wasser und schützt vor Über-/Unterbewässerung.",
+      "area": "garten",
+      "category": "bewaesserung",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "bewaesserung-winterfest-jahr",
+      "title": "Bewässerungsanlage winterfest machen",
+      "description": "Leitungen vollständig entleeren, Ventile schließen, Steuergerät abschalten.",
+      "area": "garten",
+      "category": "bewaesserung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "bewegungsmelder-kurze-tage",
+      "title": "Bewegungsmelder auf kürzere Tage einstellen",
+      "description": "Dunkelheit beginnt früher — Empfindlichkeit und Einschaltzeiten der Außenbeleuchtung anpassen, Dämmerungsschalter kontrollieren.",
+      "area": "sicherheit",
+      "category": "smarthome",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "blitzschutz-pruefen-lassen",
+      "title": "Blitzschutzanlage prüfen lassen",
+      "description": "Alle 2–4 Jahre durch Fachbetrieb — Erdungswiderstand und Ableitungen messen.",
+      "area": "sicherheit",
+      "category": "elektro",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "co-melder-jahrestest",
+      "title": "CO-Melder Jahrestest",
+      "description": "Besonders wichtig in der Heizsaison — bei Gasheizung und Kamin.",
+      "area": "sicherheit",
+      "category": "rauchmelder",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "co-melder-monatstest",
+      "title": "CO-Melder prüfen",
+      "description": "Batterietest und Signalton — lebenswichtig in der Heizsaison.",
+      "area": "sicherheit",
+      "category": "rauchmelder",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "dach-schneelasten",
+      "title": "Dach nach Schneelasten kontrollieren",
+      "description": "Besonders bei älteren Dächern und Flachdächern — ab 80 kg/m² kritisch.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "dachflaechenfenster-dichtigkeit",
+      "title": "Dachflächenfenster auf Undichtigkeiten prüfen",
+      "description": "Nach Frühjahrsregen: Gummirahmen und Eindeckrahmen prüfen.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ]
+    },
+    {
+      "slug": "dachinspektion-nach-winter",
+      "title": "Dachinspektion nach Winter",
+      "description": "Ziegel auf Beschädigungen, Moos, Schneeschutzgitter und Blitzschutz prüfen.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "dachrinnen-finale-reinigung",
+      "title": "Dachrinnen finale Reinigung vor Winter",
+      "description": "Letzter Check nach dem Laubfall — Schneeschutzgitter auf festen Sitz prüfen.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "dachrinnen-frostschaden",
+      "title": "Dachrinnen auf Verstopfungen und Frostschäden prüfen",
+      "description": "Vor der Schneeschmelze frei räumen — Fallrohre auf Risse prüfen.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "dachrinnen-herbstlaub",
+      "title": "Dachrinnen von Herbstlaub befreien",
+      "description": "Vor der Hauptregenzeit — verstopfte Rinnen verursachen Fassaden- und Fundamentschäden.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "einbruchalarm-kameras-sichtfeld",
+      "title": "Einbruchalarm und Außenkameras auf Sichtfelder prüfen",
+      "description": "Laubaustrieb verdeckt häufig Kamerablickfelder und Bewegungsmelderreichweiten — Ausrichtung anpassen.",
+      "area": "sicherheit",
+      "category": "smarthome",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "einbruchschutz-kontrolle-august",
+      "title": "Einbruchschutz kontrollieren",
+      "description": "Schlösser, Sicherheitsbeschläge, Bewegungsmelder-Empfindlichkeit, Scharniere prüfen.",
+      "area": "sicherheit",
+      "category": "einbruchschutz",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "einbruchschutz-urlaubszeit",
+      "title": "Einbruchschutz für Urlaubszeit vorbereiten",
+      "description": "Timer-Schaltung für Lichter, Briefkasten leeren lassen, Nachbarn informieren.",
+      "area": "sicherheit",
+      "category": "einbruchschutz",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ]
+    },
+    {
+      "slug": "einfahrt-pflaster-frostschaden",
+      "title": "Einfahrt und Pflasterbelag auf Frostschäden prüfen",
+      "description": "Risse ausbessern bevor Unkraut eindringt — Fugenmörtel erneuern.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "energieverbrauch-halbjahr",
+      "title": "Energieverbrauch Halbjahr auswerten",
+      "description": "Strom, Wasser, Gas/Heizung mit Vorjahr vergleichen.",
+      "area": "technik",
+      "category": "energie",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ]
+    },
+    {
+      "slug": "energieverbrauch-jahresauswertung",
+      "title": "Energieverbrauch Jahresauswertung",
+      "description": "Zählerstände Gas, Strom, Wasser notieren — Vergleich mit Vorjahr, Effizienz beurteilen.",
+      "area": "technik",
+      "category": "energie",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "energieverbrauch-januar-auswerten",
+      "title": "Energieverbrauch Januar auswerten",
+      "description": "Zählerstand notieren und mit Vorjahr vergleichen — Abweichungen dokumentieren.",
+      "area": "technik",
+      "category": "energie",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "ernte-lagerung",
+      "title": "Ernte und Lagerung Obst und Gemüse",
+      "description": "Erntezeit nutzen, Keller-/Kühllagerbedingungen prüfen — Druckstellen sofort aussortieren.",
+      "area": "garten",
+      "category": "obst",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ]
+    },
+    {
+      "slug": "erste-hilfe-set-pruefen",
+      "title": "Erste-Hilfe-Set prüfen und auffüllen",
+      "description": "Verfallsdaten der Verbandsmaterialien prüfen — neue Verbandsmittel einlegen.",
+      "area": "sicherheit",
+      "category": "notfall",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "fassade-frostschaden",
+      "title": "Frostschäden an Fassade kontrollieren",
+      "description": "Risse und abgeplatzte Stellen dokumentieren, bei Tauwetter ausbessern.",
+      "area": "haus",
+      "category": "fassade",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "fassade-trockenrisse",
+      "title": "Fassade auf Risse und Trockenrisse prüfen",
+      "description": "Hitzesommer fördern Rissbildung — vor Herbst ausbessern.",
+      "area": "haus",
+      "category": "fassade",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ]
+    },
+    {
+      "slug": "fassadenrisse-herbst",
+      "title": "Fassadenrisse vor Herbst ausbessern",
+      "description": "Trockenes Wetter nutzen für dauerhafte Fugenabdichtung mit Acryl oder Silikon.",
+      "area": "haus",
+      "category": "fassade",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "fenster-fruehjahrsreinigung",
+      "title": "Fenster Frühjahrsreinigung",
+      "description": "Dichtungen auf Verschleiß, Sprünge und Schimmelansatz prüfen.",
+      "area": "haus",
+      "category": "fenster",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "fenster-tuerdichtungen-erneuern",
+      "title": "Fenster- und Türdichtungen erneuern",
+      "description": "Zugluft reduziert Heizkosten erheblich — Silikonband oder Gummidichtprofil.",
+      "area": "haus",
+      "category": "fenster",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "feuerloescher-jahrespruefung",
+      "title": "Feuerlöscher prüfen",
+      "description": "Alle 2 Jahre durch Fachbetrieb — Plombierung, Druckanzeige, Halterung und Haltbarkeitsdatum.",
+      "area": "sicherheit",
+      "category": "feuerloescher",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "frostschutz-rohre",
+      "title": "Frostschutz für freiliegende Rohre sicherstellen",
+      "description": "Außenwandleitungen, Rohre in Garagen und Kellern dämmen oder Frostwächter/Heizkabel prüfen.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "garagentor-carport-kontrolle",
+      "title": "Garagentor, Carport und Nebengebäude kontrollieren",
+      "description": "Federn, Führungsschienen, Schlösser, Beleuchtung.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "garten-jahresplanung",
+      "title": "Jahresplanung Garten",
+      "description": "Neugestaltungen, Pflanzbestellungen, größere Baumfällungen für nächste Saison planen.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "gartengeraete-instand-setzen",
+      "title": "Gartengeräte instand setzen",
+      "description": "Schäden beheben, Werkzeug reinigen und ölen, Akkus laden.",
+      "area": "garten",
+      "category": "geraete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "gartengeraete-winterfest-lagern",
+      "title": "Gartengeräte winterfest lagern",
+      "description": "Reinigen, trocknen, ölen — Kraftstoff aus Rasenmäher und Motorsäge ablassen.",
+      "area": "garten",
+      "category": "geraete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "gartengeraete-winterschaden",
+      "title": "Gartengeräte auf Winterschäden kontrollieren",
+      "description": "Frühzeitig Reparaturen planen, Ersatzteile rechtzeitig bestellen.",
+      "area": "garten",
+      "category": "geraete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "gartenmoebel-reinigen",
+      "title": "Gartenmöbel raus holen und reinigen",
+      "description": "Holzmöbel ölen, Polster und Kissen auf Schimmel prüfen und auslüften.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "gartenstrom-niedervolt",
+      "title": "Gartenstrom und Niedervoltbeleuchtung prüfen",
+      "description": "Leitungen auf Beschädigungen durch Rasenmäher oder Schaufeln.",
+      "area": "technik",
+      "category": "elektro",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ]
+    },
+    {
+      "slug": "hausnummer-wegleuchten",
+      "title": "Hausnummernbeleuchtung und Wegleuchten",
+      "description": "Defekte Leuchtmittel tauschen.",
+      "area": "sicherheit",
+      "category": "beleuchtung",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ]
+    },
+    {
+      "slug": "hecken-herbstschnitt",
+      "title": "Hecken und Sträucher Herbstschnitt (ab Oktober erlaubt)",
+      "description": "Ab 1. Oktober wieder erlaubt: starker Rückschnitt von Laubgehölzen und Hecken.",
+      "area": "garten",
+      "category": "hecke",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "hecken-leichte-formkorrekturen",
+      "title": "Hecken: nur leichte Formkorrekturen erlaubt",
+      "description": "Gesetzliches Schnittverbot 1. März bis 30. September für stärkere Eingriffe — nur leichte Korrekturen an Nadelgehölzen zulässig.",
+      "area": "garten",
+      "category": "hecke",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "hecken-schnittverbot-august",
+      "title": "Kein Hecken-Rückschnitt im August",
+      "description": "Gesetzliches Schnittverbot 1. März – 30. September — Verstöße können mit Bußgeld belegt werden. Leichte Formkorrekturen an Nadelgehölzen sind erlaubt.",
+      "area": "garten",
+      "category": "hecke",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "heizkoerper-entlueften-november",
+      "title": "Heizkörper entlüften",
+      "description": "Gluckern deutet auf Luftblasen hin — Entlüftungsventil aufdrehen bis Wasser kommt, Druck danach prüfen.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "heizkostenspiegel-vorbereiten",
+      "title": "Heizkostenspiegel vorbereiten",
+      "description": "Zählerstände Gas/Öl/Pellets notieren für Jahresabrechnung und Vergleich.",
+      "area": "technik",
+      "category": "energie",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "heizlastberechnung-beauftragen",
+      "title": "Heizlastberechnung beauftragen",
+      "description": "Ermöglicht optimale Auslegung der Heizung — Basis für Modernisierung und spart langfristig bis zu 20 % Energie.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "heizoel-pellets-bestellen",
+      "title": "Heizölvorrat / Pelletvorrat bestellen",
+      "description": "Vor dem Saisonstart — Sommerpreise oft 10–15 % günstiger als Winterpreise.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "heizoel-pellets-vorrat-pruefen",
+      "title": "Heizölvorrat / Pelletvorrat prüfen",
+      "description": "Nachbestellen falls unter 30 % Restmenge — Lieferzeiten im Winter länger.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "heizung-effizienz-pruefen",
+      "title": "Heizungsanlage auf Effizienz prüfen",
+      "description": "Filter reinigen, Heizkörper entlüften, Druck im System prüfen.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "heizung-jahresreport",
+      "title": "Heizsystem: Jahresreport erstellen",
+      "description": "Jahresauswertung von Taktung, Laufzeiten und Verbrauch — ideale Basis für Modernisierungsplanung und Heizlastberechnung im neuen Jahr.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "heizung-saison-monitoring-start",
+      "title": "Heizsystem: Heizsaison-Monitoring starten",
+      "description": "Taktung und Laufzeiten dokumentieren — Optimierungspotenzial für die Heizsaison erkennen. Heizlastberechnung als Basis für Modernisierungsplanung.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "heizung-sommerbetrieb",
+      "title": "Heizung auf Sommerbetrieb umstellen",
+      "description": "Warmwasser-Vorhaltetemperatur prüfen, Zirkulationspumpe optimieren, Heizkörper abdrehen.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "heizung-taktprotokoll-november",
+      "title": "Heizsystem: Taktprotokoll November auswerten",
+      "description": "Zu häufiges Takten (über 6×/Stunde) zeigt Handlungsbedarf — auffällige Muster dokumentieren und Optimierung prüfen.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "heizung-taktung-verbrauch-analysieren",
+      "title": "Heizsystem: Taktung und Verbrauch analysieren",
+      "description": "Schalthäufigkeit und Laufzeiten aufzeichnen — zu häufiges Takten (über 6×/h) deutet auf Überdimensionierung hin und kostet Energie.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "heizung-volle-leistung-pruefen",
+      "title": "Heizungsanlage auf volle Leistung prüfen",
+      "description": "Pumpenleistung, Vorlauftemperatur und Kesseltemperatur optimieren.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "heizung-winterbetrieb-vorbereiten",
+      "title": "Heizung für Winterbetrieb vorbereiten",
+      "description": "Jahresinspektion durch Fachbetrieb — Düsen, Brenner, Wärmetauscher, Pumpe.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "heizungseffizienz-nach-winter",
+      "title": "Heizungseffizienz nach Winter analysieren",
+      "description": "Heizkurve und Vorlauftemperatur anpassen, Pumpenstufe prüfen.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "heizungswasser-ph-messen",
+      "title": "Heizungswasser pH-Wert messen lassen",
+      "description": "pH 8,2–9,5 ist optimal — zu saures Heizungswasser korrodiert Rohre und Wärmetauscher.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "herbstlaub-entfernen",
+      "title": "Herbstlaub regelmäßig entfernen",
+      "description": "Nasses Laub auf dem Rasen verursacht Pilzkrankheiten und Faulstellen.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "herbstschnitt-beginnen",
+      "title": "Herbstschnitt bei erlaubten Pflanzen beginnen",
+      "description": "Ab 1. Oktober erlaubt: Hecken, Sträucher stärker schneiden — jetzt vorbereiten.",
+      "area": "garten",
+      "category": "hecke",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "holzfenster-nachlackieren",
+      "title": "Holzfenster mit Wetterschutz nachlackieren",
+      "description": "Bei trockener Witterung streichen — schützt vor Fäule, Rissen und Grauwerden.",
+      "area": "haus",
+      "category": "fenster",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ]
+    },
+    {
+      "slug": "holzteile-ausbleichen",
+      "title": "Holzteile auf Ausbleichen und Trockenrisse prüfen",
+      "description": "Terrassendielen, Zaunbretter, Carport-Dach — vor Herbstregen nachölen.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "insektenschutz-montieren",
+      "title": "Insektenschutzgitter montieren",
+      "description": "Auf Risse und defekte Reißverschlüsse oder Magnetverschlüsse prüfen.",
+      "area": "haus",
+      "category": "fenster",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "kaminofen-kamine-reinigen-lassen",
+      "title": "Kaminöfen und Kamine reinigen lassen",
+      "description": "Schornsteinfeger beauftragen — gesetzlich vorgeschrieben, Ruß- und Teerablagerungen entfernen.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "keller-feuchtigkeit-herbst",
+      "title": "Keller auf Feuchtigkeitsschäden prüfen",
+      "description": "Nach ersten Herbstregen — Schimmelflecken früh behandeln, Drainage kontrollieren.",
+      "area": "haus",
+      "category": "keller",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "kellerabdichtung-lichtschaechte",
+      "title": "Kellerabdichtung und Lichtschächte kontrollieren",
+      "description": "Schneeschmelze kann zu Wassereinbruch führen — Schächte von Eis befreien.",
+      "area": "haus",
+      "category": "keller",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "kellerfenster-lichtschaechte",
+      "title": "Kellerfenster auf Dichtigkeit und Lichtschächte prüfen",
+      "description": "Dichtungen prüfen, Lichtschächte von Laub befreien, Abläufe reinigen.",
+      "area": "haus",
+      "category": "keller",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "kellerschaechte-wassereinbruch",
+      "title": "Kellerschächte auf Wassereinbruch prüfen",
+      "description": "Schutzgitter reinigen, Abläufe freihalten vor Winterregen.",
+      "area": "haus",
+      "category": "keller",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "klimaanlage-testlauf",
+      "title": "Klimaanlage Testlauf vor Sommer",
+      "description": "Filter reinigen, Kondensat-Abfluss prüfen, Kühlmittel beim Fachbetrieb prüfen lassen.",
+      "area": "technik",
+      "category": "klimaanlage",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "klimaanlage-warten",
+      "title": "Klimaanlage reinigen und warten",
+      "description": "Filter, Kondensatablauf, Lamellen — professionelle Wartung alle 1–2 Jahre empfohlen.",
+      "area": "technik",
+      "category": "klimaanlage",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ]
+    },
+    {
+      "slug": "kompost-mulchen-august",
+      "title": "Kompost umsetzen und Beete mulchen",
+      "description": "Mulchschicht reduziert Wasserverdunstung um bis zu 60 %.",
+      "area": "garten",
+      "category": "beete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "kompost-umsetzen-beete-vorbereiten",
+      "title": "Kompost umschichten und Beete vorbereiten",
+      "description": "Erste Beete anlegen, Frühbeet aufstellen, Boden auflockern.",
+      "area": "garten",
+      "category": "beete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "kuebelpflanzen-hereinholen",
+      "title": "Kübelpflanzen hereinholen",
+      "description": "Vor den ersten Frostnächten (unter 5 °C) — Überwinterungsort: kühl, hell, frostfrei.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "laubkompost-anlegen",
+      "title": "Laubkompost anlegen",
+      "description": "Herbstlaub als wertvoller Mulch und Bodenverbesserer nutzen.",
+      "area": "garten",
+      "category": "beete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "leckage-grundcheck-herbst",
+      "title": "Leckage-Grundcheck vor dem Winter",
+      "description": "Alle Sensoren prüfen — besonders Stellen mit Gefriergefahr: Außenmauern, Keller, Garage, Waschküche. Schleichende Lecks im Winter verursachen Schimmel.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "leckage-sensoren-aussen",
+      "title": "Leckage-Sensoren für Aussenbereiche aktivieren",
+      "description": "Sensoren für Teich-Technikraum, Pool-Pumpenbereich und Gartenpumpen in Betrieb nehmen und testen.",
+      "area": "garten",
+      "category": "wasser",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "leckage-sensoren-nach-frost",
+      "title": "Leckage-Sensoren nach Frostperiode testen",
+      "description": "Sensoren unter Spüle, an Waschmaschine, Heizung und im Keller auf Funktion prüfen — Frostschäden können kleine Undichtigkeiten erzeugen.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "leckage-sensoren-wintervollcheck",
+      "title": "Leckage-Sensoren: Wintersaison-Vollcheck",
+      "description": "Alle Sensoren auf Batteriestatus und Verbindung prüfen — kritische Stellen: Technikraum, unter Spüle, Waschmaschine, Keller. Im Winter sind Lecks besonders gefährlich.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "markisen-sonnenschutz",
+      "title": "Markisen und Sonnenschutz prüfen",
+      "description": "Motor und Tuchbefestigung prüfen, Gelenke ölen.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ]
+    },
+    {
+      "slug": "notfallnummern-aktualisieren",
+      "title": "Notfallnummern aktualisieren",
+      "description": "Heizungsdienst, Klempner, Elektrik, Hausarzt — Liste sichtbar aufhängen.",
+      "area": "sicherheit",
+      "category": "notfall",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "notstrom-taschenlampen",
+      "title": "Notstrom und Taschenlampen bereitstellen",
+      "description": "Herbststürme können Stromausfälle verursachen — Powerbank und Batterien prüfen.",
+      "area": "sicherheit",
+      "category": "notfall",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "obstbaeume-ausduennen",
+      "title": "Obstbäume ausdünnen",
+      "description": "Überschüssige Früchte entfernen — fördert Qualität und verhindert Bruchäste.",
+      "area": "garten",
+      "category": "obst",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ]
+    },
+    {
+      "slug": "obstbaeume-schaedlinge-juli",
+      "title": "Obstbäume auf Schädlinge kontrollieren",
+      "description": "Pilzbefall, Feuerbrand, Blattläuse frühzeitig erkennen.",
+      "area": "garten",
+      "category": "obst",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ]
+    },
+    {
+      "slug": "obstbaeume-schnitt-februar",
+      "title": "Obstbäume und Sträucher schneiden",
+      "description": "Gesetzliches Schnittverbot ab 1. März bis 30. September für starke Eingriffe — jetzt letzter Termin!",
+      "area": "garten",
+      "category": "obst",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "pflanzenschnitt-abschliessen",
+      "title": "Pflanzenschnitt abschließen",
+      "description": "Laub, abgestorbene Stängel — Fruchtstand für Vögel stehen lassen.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "pool-technikraum-ueberwachen",
+      "title": "Leckage-Sensor am Pool-Technikraum prüfen",
+      "description": "Sensor im Pumpenraum gibt frühzeitig Alarm — Pumpdichtungen und Verbindungsmuffen sind häufige Schwachstellen.",
+      "area": "garten",
+      "category": "pool",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pool-vorbereiten-befuellen",
+      "title": "Pool vorbereiten und befüllen",
+      "description": "Wasserchemie (pH 7,0–7,4, Chlor), Pumpe und Filter warten, Winterabdeckung reinigen.",
+      "area": "garten",
+      "category": "pool",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "pool-wasserchemie",
+      "title": "Pool-Wasserchemie regelmäßig kontrollieren",
+      "description": "pH 7,0–7,4 und freies Chlor 0,3–0,6 mg/l wöchentlich prüfen, Algenmittel dosieren.",
+      "area": "garten",
+      "category": "pool",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ]
+    },
+    {
+      "slug": "pool-winterfest",
+      "title": "Pool winterfest machen",
+      "description": "Wasserchemie anpassen, Pumpe und Leitungen entleeren, Winterabdeckung montieren.",
+      "area": "garten",
+      "category": "pool",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "pv-batteriespeicher-inbetriebnahme",
+      "title": "PV-Batteriespeicher aus dem Wintermodus holen",
+      "description": "Anfang Februar: Speicher aufwecken, Ladezustand und Zelldrift prüfen — Einbindung ins Smart-Home-System kontrollieren.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-eigenverbrauch-warmepumpe-eauto",
+      "title": "PV-Eigenverbrauch optimieren: Wärmepumpe und E-Auto einbinden",
+      "description": "Frühjahrssonne optimal nutzen: PV-Überschuss automatisch an Wärmepumpe, Heizstab oder E-Auto-Ladung koppeln — spart Netzstrom.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-herbstmodus",
+      "title": "PV-Überschusssteuerung auf Herbstmodus anpassen",
+      "description": "Solarer Ertrag sinkt ab September deutlich — Priorität auf Warmwassererwärmung und Batterieladung vor E-Auto-Laden anpassen.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-hochsommer-ertrag",
+      "title": "PV-Anlage: Hochsommer-Ertrag optimal nutzen",
+      "description": "Juli ist meist der ertragreichste Monat: Überschussstrom in Batterie laden und gleichzeitig Warmwasser aufheizen — Verbraucher automatisch koordinieren.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-jahres-halbzeit",
+      "title": "PV-Anlage: Jahres-Halbzeit-Auswertung",
+      "description": "Ertragsvergleich mit Vorjahr, Verschmutzungsgrad der Module prüfen — saubere Module bringen bis 30 % mehr Ertrag. Zeitpunkt für Reinigung vor dem Herbst.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-sommermodus-eigenverbrauch",
+      "title": "Sommermodus: PV-Eigenverbrauch maximieren",
+      "description": "Waschmaschine, Spülmaschine und E-Auto-Ladung in PV-Hochzeiten (Mittagsstunden) legen — senkt Strombezugskosten drastisch.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-speicher-winterschlaf",
+      "title": "PV-Batteriespeicher: Winterschlaf prüfen und einstellen",
+      "description": "Bei dauerhafter Kälte (unter 5 °C) Batteriespeicher auf Wintermodus / Tiefentladeschutz einstellen — Monitoring und Schutz der Akkus sicherstellen.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-statistik-mai",
+      "title": "PV-Überschuss-Statistik Mai auswerten",
+      "description": "Mai ist meist erster Hochertrag-Monat: Eigenverbrauchsquote prüfen, ggf. weitere Verbraucher (E-Auto, Warmwasserspeicher) einbinden für maximale Autarkie.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-ueberschusssteuerung-aktivieren",
+      "title": "PV-Überschusssteuerung aktivieren und testen",
+      "description": "Ab Ende März/Anfang April lohnt sich der PV-Überschuss für Warmwasser oder Heizungsunterstützung — automatisierte Steuerung einrichten und Eigenverbrauch optimieren.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "pv-ueberschusssteuerung-vorbereiten",
+      "title": "PV-Überschusssteuerung vorbereiten",
+      "description": "Ab Ende Februar steigt die Sonneneinstrahlung deutlich — Überschusssteuerung für Heizstab oder Wärmepumpe konfigurieren und testen.",
+      "area": "technik",
+      "category": "pv",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "rasen-herbstduenger",
+      "title": "Rasen mit Herbstdünger versorgen",
+      "description": "Kaliumbetonter Herbstdünger — letzter Düngetermin des Jahres für Frostresistenz.",
+      "area": "garten",
+      "category": "rasen",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "rasen-letztes-maeen",
+      "title": "Rasen letztes Mal mähen",
+      "description": "Auf ca. 5–6 cm Schnitthöhe — zu kurz macht ihn frostempfindlich.",
+      "area": "garten",
+      "category": "rasen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "rasen-sommerduenger",
+      "title": "Rasen mit Sommerdünger nachversorgen",
+      "description": "Stickstoffarmer Sommerdünger — kein Herbstdünger jetzt (kommt September).",
+      "area": "garten",
+      "category": "rasen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "rasen-trockenheit-waessern",
+      "title": "Rasen bei Trockenheit wässern",
+      "description": "Morgens oder abends wässern — tief und selten statt täglich oberflächlich; bei Hitze 15–20 l/m² pro Woche für tiefe Wurzeln.",
+      "area": "garten",
+      "category": "rasen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6,
+        7
+      ]
+    },
+    {
+      "slug": "rasen-vertikutieren-duengen-jahr",
+      "title": "Rasen vertikutieren und düngen",
+      "description": "Ideale Zeit nach Frostende bei Bodentemperatur über 10 °C — Frühjahrsdünger (stickstoffbetont).",
+      "area": "garten",
+      "category": "rasen",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "rasenbewaesserung-testen",
+      "title": "Rasenbewässerung einrichten und testen",
+      "description": "Zeitschaltuhr und Sprinkler kalibrieren — Leitungen auf Frostschäden prüfen. Erst jetzt einschalten (kein Frost mehr erwartet).",
+      "area": "garten",
+      "category": "bewaesserung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "rasenmaeher-warten",
+      "title": "Rasenmäher warten und schärfen",
+      "description": "Öl wechseln, Messer schärfen oder tauschen, Luftfilter und Zündkerze prüfen.",
+      "area": "garten",
+      "category": "geraete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "rasenpflege-vorbereiten",
+      "title": "Rasenpflege vorbereiten",
+      "description": "Bei Bodentemperatur über 8 °C: Vertikutieren, Moosbekämpfung, Belüftung.",
+      "area": "garten",
+      "category": "rasen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "rauchmelder-jahrestest",
+      "title": "Rauchmelder Jahrestest und Batteriewechsel",
+      "description": "Alle Rauchmelder testen, Batterien nach Hersteller wechseln (mind. alle 12 Monate).",
+      "area": "sicherheit",
+      "category": "rauchmelder",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "rauchmelder-monatstest",
+      "title": "Rauchmelder testen",
+      "description": "Monatliche Funktionsprüfung — Testtaste mindestens 3 Sekunden drücken.",
+      "area": "sicherheit",
+      "category": "rauchmelder",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "slug": "regenrinnen-eisbildung",
+      "title": "Regenrinnen auf Eisbildung prüfen",
+      "description": "Eiszapfen und Verstopfungen vorsichtig entfernen.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "regenrinnen-reinigen-reparieren",
+      "title": "Regenrinnen reinigen und reparieren",
+      "description": "Laub und Schmutz aus dem Winter entfernen, Gefälle auf freien Abfluss prüfen.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "regenrinnen-sommerverstopfung",
+      "title": "Regenrinnen auf Sommerverstopfungen prüfen",
+      "description": "Pollen, Blätter, Vogelkot entfernen — vor der Herbstregenzeit reinigen.",
+      "area": "haus",
+      "category": "dach",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "regentonnen-reinigen",
+      "title": "Regentonnen reinigen und aufstellen",
+      "description": "Vor der Befüllsaison — Deckel prüfen gegen Mückenbrut.",
+      "area": "garten",
+      "category": "bewaesserung",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "renovierungsjahresplanung",
+      "title": "Jahresplanung Renovierungen nächstes Jahr",
+      "description": "Größere Vorhaben (Dach, Fassade, Heizung) jetzt planen — Handwerker frühzeitig anfragen.",
+      "area": "haus",
+      "category": "fassade",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "rollladenkasten-waermebruecken",
+      "title": "Rollladenkasten auf Wärmebrücken und Schäden prüfen",
+      "description": "Dämmmaterial auf Beschädigungen kontrollieren — häufige Ursache für Schimmel.",
+      "area": "haus",
+      "category": "fenster",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "rolllaeden-warten",
+      "title": "Rollläden und Jalousien warten",
+      "description": "Führungsschienen reinigen und ölen, Gurte und Motoren prüfen.",
+      "area": "haus",
+      "category": "fenster",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "rosen-schuetzen",
+      "title": "Rosen und empfindliche Pflanzen schützen",
+      "description": "Reisigdecke, Gartenvlies oder Kokosmatten — Stammschutz für Veredelungsstelle wichtig.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "saatgut-anzuchterde",
+      "title": "Saatgut und Anzuchterde kaufen",
+      "description": "Frühe Kulturen wie Tomaten, Paprika ab Februar innen vorziehen.",
+      "area": "garten",
+      "category": "beete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "schaedlinge-pflanzen-kontrolle",
+      "title": "Schädlingsbefall an Pflanzen kontrollieren",
+      "description": "Blattläuse, Spinnmilben — früh behandeln mit Neem-Öl oder Seifenlösung.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ]
+    },
+    {
+      "slug": "schneeraeumung-organisieren",
+      "title": "Schneeräumung organisieren",
+      "description": "Pflicht: Gehwege und Zugänge räumen — ggf. Winterdienst beauftragen, Haftung beachten.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "sicherheitskameras-alarmsensoren-test",
+      "title": "Sicherheitskameras und Alarmsensoren testen",
+      "description": "Vor Ende der Urlaubssaison: Sensoren auf Funktion prüfen, Benachrichtigungseinstellungen und Netzwerk-Empfang kontrollieren.",
+      "area": "sicherheit",
+      "category": "smarthome",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "sichtschutz-zaeune",
+      "title": "Sichtschutz und Zäune kontrollieren",
+      "description": "Pfostenfäulnis, gelockerte Verbindungen, Holz behandeln.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4
+      ]
+    },
+    {
+      "slug": "siphons-abfluesse-geruch",
+      "title": "Siphons und Abflüsse auf Geruch prüfen",
+      "description": "Seltener genutzte Abflüsse (Keller, Zweit-WC) mit Wasser befüllen.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "smarthome-firmware-updates",
+      "title": "Smart-Home-Zentrale: Firmware-Updates prüfen",
+      "description": "Regelmäßige Updates sichern Stabilität und Cybersicherheit aller Geräte — Update-Log prüfen.",
+      "area": "technik",
+      "category": "smarthome",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "smarthome-jahresupdate-backup",
+      "title": "Smart-Home-System: Jahres-Update und Backup",
+      "description": "Firmware aller Geräte aktualisieren, Backup der Systemkonfiguration erstellen — Sicherheitsupdates schließen Schwachstellen.",
+      "area": "technik",
+      "category": "smarthome",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "smarthome-urlaubsmodus",
+      "title": "Smart-Home-Urlaubsmodus aktivieren",
+      "description": "Anwesenheit durch automatische Licht- und Rollladensteuerung simulieren — Türen, Fenster und Bewegungsmelder aus der Ferne per App überwachen.",
+      "area": "sicherheit",
+      "category": "smarthome",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        7
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "solarmodule-reinigen",
+      "title": "Solarmodule reinigen",
+      "description": "Verschmutzte Module können bis 30 % Leistung verlieren — warmes Wasser, kein Hochdruckreiniger; nach Winter (April) und vor dem Herbst (August).",
+      "area": "technik",
+      "category": "pv",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        4,
+        8
+      ]
+    },
+    {
+      "slug": "steckdosen-aussenbereich",
+      "title": "Steckdosen im Außenbereich überprüfen",
+      "description": "Feuchtigkeitsschäden und Dichtungen kontrollieren, Schutzabdeckungen prüfen.",
+      "area": "technik",
+      "category": "elektro",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "streusand-salz-auffuellen",
+      "title": "Streusand / Salz auffüllen",
+      "description": "Wege, Einfahrt und Treppe sicher halten — Salzverbrauch: max. 20 g/m².",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "teich-inbetriebnahme",
+      "title": "Teich und Wasserspiele in Betrieb nehmen",
+      "description": "Pumpen, Filterbecken und UV-Klärer reinigen, Winterstopfen entfernen.",
+      "area": "garten",
+      "category": "pool",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "teich-pool-hochsommer",
+      "title": "Teich- und Poolwasser Hochsommer-Pflege",
+      "description": "Algenbildung durch Hitzestau kontrollieren, pH und Chlor prüfen.",
+      "area": "garten",
+      "category": "pool",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        8
+      ]
+    },
+    {
+      "slug": "terrasse-wege-reinigen",
+      "title": "Terrasse und Wege reinigen",
+      "description": "Hochdruckreiniger einsetzen, Moos und Algen entfernen, Fugen prüfen.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "terrassendielen-behandeln",
+      "title": "Terrassendielen und Holzteile behandeln",
+      "description": "Ölen oder lasieren bei trockenem Wetter — Holz vor Grauwerden schützen.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        6
+      ]
+    },
+    {
+      "slug": "thermostate-ventile-kontrollieren",
+      "title": "Thermostate und Ventile kontrollieren",
+      "description": "Auf freien Gang und korrekte Funktion prüfen — Ventile können einrosten.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "thermostatventile-wintermodus",
+      "title": "Thermostatventile auf Wintermodus / Nachtabsenkung",
+      "description": "Heizkurve anpassen, Nachtabsenkung aktiviert spart 5–15 % Heizenergie.",
+      "area": "technik",
+      "category": "heizung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ]
+    },
+    {
+      "slug": "tuerscharniere-oelen",
+      "title": "Türscharniere und Schlösser ölen",
+      "description": "Schlosszylinder mit Graphitspray oder Silikonspray behandeln.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "unkraut-vor-samenbildung",
+      "title": "Unkraut vor der Samenbildung entfernen",
+      "description": "Vor der Blüte stechen bzw. abstechen, besonders Wegerich und Löwenzahn.",
+      "area": "garten",
+      "category": "gartenpflege",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5,
+        6
+      ]
+    },
+    {
+      "slug": "warmwasser-temperatur-legionellen",
+      "title": "Warmwasserspeicher Temperatur prüfen",
+      "description": "Mindestens 60 °C gegen Legionellen-Bildung — gesetzliche Anforderung.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ]
+    },
+    {
+      "slug": "warmwasserbereiter-winterbetrieb",
+      "title": "Warmwasserbereiter auf Winterbetrieb einstellen",
+      "description": "Warmwasservorhaltezeit und Legionellenschutzprogramm aktivieren.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    },
+    {
+      "slug": "wasserfilter-hausanlage",
+      "title": "Wasserfilter der Hausanlage prüfen / tauschen",
+      "description": "Hausfilter (z. B. Partikelfilter) alle 6–12 Monate wechseln.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        5
+      ]
+    },
+    {
+      "slug": "wasserleitungen-frost-undichtigkeit",
+      "title": "Wasserleitungen nach Frost auf Undichtigkeiten prüfen",
+      "description": "Alle sichtbaren Rohre kontrollieren — besonders in Außenwänden und unbeheizten Räumen.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        3
+      ]
+    },
+    {
+      "slug": "wasserrechnung-pruefen",
+      "title": "Jahres-Wasserrechnung prüfen",
+      "description": "Ablesewert mit Abschlag vergleichen, ggf. Nachzahlung planen oder Abschlag anpassen.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "wasserrohre-frostschaden",
+      "title": "Wasserrohre auf Frostschäden prüfen",
+      "description": "Besonders in unbeheizten Bereichen: Garage, Keller, Außenwände — auf Feuchtigkeit und Druckverlust achten.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "high",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ]
+    },
+    {
+      "slug": "wasserverbrauch-jahresreport",
+      "title": "Wasserverbrauch: Jahresreport erstellen",
+      "description": "Monatsvergleiche, auffällige Tagesverbräuche und Einsparpotenziale auswerten — gute Basis für Jahresabrechnung und Sparmaßnahmen.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "wasserverbrauch-jahresvergleich",
+      "title": "Wasserverbrauch: Jahresvergleich",
+      "description": "Monats- und Jahresvergleich hilft, Leckagen und ineffiziente Geräte zu erkennen (tropfende Armatur ≈ 2.000 l/Jahr).",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        2
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "wasserverbrauch-monatsauswertung",
+      "title": "Wasserverbrauch: Monatsauswertung",
+      "description": "Ungewöhnliche Spitzen können auf schleichende Lecks, vergessene Außenzapfhähne oder defekte Spülkästen hinweisen.",
+      "area": "technik",
+      "category": "wasser",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        1
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "wasserverbrauch-sommer",
+      "title": "Wasserverbrauch: Sommerverbrauch analysieren",
+      "description": "Saisonaler Mehrverbrauch (Garten, Pool) analysieren — Einsparpotenziale für nächste Saison ableiten.",
+      "area": "garten",
+      "category": "wasser",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        9
+      ],
+      "source": "tip"
+    },
+    {
+      "slug": "weihnachtsbeleuchtung-sicher",
+      "title": "Weihnachtsbeleuchtung sicher verlegen",
+      "description": "Lichterketten auf Beschädigungen prüfen, Kabelverbindungen im Freien wetterfest absichern.",
+      "area": "sicherheit",
+      "category": "beleuchtung",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        12
+      ]
+    },
+    {
+      "slug": "winterdienstmaterial",
+      "title": "Winterdienstmaterial bereitstellen",
+      "description": "Streusalz (Haushaltsvorrat), Schneeschieber, Sandstreuer — jetzt günstig kaufen.",
+      "area": "hof",
+      "category": "aussen",
+      "priority": "normal",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        11
+      ]
+    },
+    {
+      "slug": "zwiebelpflanzen-setzen",
+      "title": "Zwiebelpflanzen setzen (Tulpen, Narzissen, Krokusse)",
+      "description": "Oktober bis November bei Bodentemperatur unter 10 °C setzen.",
+      "area": "garten",
+      "category": "beete",
+      "priority": "low",
+      "schedule_type": "annual_repeat",
+      "repeat_months": [
+        10
+      ]
+    }
   ]
 }

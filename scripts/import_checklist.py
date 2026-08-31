@@ -190,7 +190,7 @@ def run_import(path: Path, deactivate_missing: bool = False) -> dict:
         deactivated = 0
         if deactivate_missing:
             for task in db.query(Task).filter(Task.active.is_(True)).all():
-                if task.slug not in seen_slugs:
+                if task.slug not in seen_slugs and task.source != "user":
                     task.active = False
                     deactivated += 1
 

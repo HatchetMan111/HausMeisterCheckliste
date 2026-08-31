@@ -46,11 +46,22 @@ def ensure_instances_for_task(db, task, today: date | None = None, horizon_days:
             created += 1
         return created
 
-    lookback = today - timedelta(days=min(370, horizon_days))
+    # Aufwärmschutz: Fälligkeiten werden erst ab dem aktuellen Monat erzeugt,
+    # damit eine frische Installation nicht mit dem Jahres-Rückstand überrollt wird.
+    # Rückwirkend abgehakt werden kann jederzeit über die Monatsaktionen im Jahresplan.
+    lookback = today.replace(day=1)
     for due in recurrence.occurrences(task, lookback, horizon):
         if due not in existing:
             db.add(TaskInstance(task_id=task.id, due_date=due, year=due.year))
             created += 1
+    if task.schedule_type == "annual_window":
+        # läuft das Jahresfenster gerade, wird die Fälligkeit des laufenden
+        # Fensters auch dann angelegt, wenn der Fensterbeginn vor dem Monatsstart liegt
+        for year in (today.year - 1, today.year):
+            start, end = recurrence.window_bounds(task, year)
+            if start < lookback <= end and start not in existing:
+                db.add(TaskInstance(task_id=task.id, due_date=start, year=year))
+                created += 1
     if created:
         db.commit()
     return created

@@ -203,6 +203,10 @@ a.task-title:hover { text-decoration: underline; }
 }
 .chip-high { background: #fbeaec; color: var(--red); }
 
+.onboard-panel { border-left: 4px solid var(--amber); background: #fffaf0; }
+.onboard-panel h3 { margin: 0 0 0.4rem; }
+.onboard-panel .hint { margin: 0.5rem 0 0; }
+
 .empty { color: var(--muted); font-style: italic; }
 
 .flash {

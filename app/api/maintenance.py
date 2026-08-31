@@ -120,10 +120,18 @@ def dashboard_sections(db: Session, today: date) -> dict:
         item["priority"] = prio
         item["priority_rank"] = {"high": 0, "normal": 1, "low": 2}[prio]
         item["due_str"] = inst.due_date.strftime("%d.%m.")
+        item["month_based"] = inst.task.schedule_type in ("annual_repeat", "annual_window")
+        item["month"] = inst.due_date.month
         items.append(item)
 
+    # Dringend: echter Rückstand (überfällig) und datumsgenaue Aufgaben, die
+    # heute fällig sind. Monatsbasierte Aufgaben gehören in den Monats-Fokus.
     urgent = sorted(
-        (i for i in items if i["status"] in ("overdue", "due")),
+        (
+            i for i in items
+            if i["status"] == "overdue"
+            or (i["status"] == "due" and not i["month_based"])
+        ),
         key=lambda i: (i["priority_rank"], i["due_date"]),
     )
 
@@ -132,24 +140,37 @@ def dashboard_sections(db: Session, today: date) -> dict:
     in_month = [
         i
         for i in items
-        if i["status"] == "upcoming" and month_start <= date.fromisoformat(i["due_date"]) <= month_end
+        if i["month"] == today.month
+        and (
+            i["status"] == "upcoming"
+            or (i["status"] == "due" and i["month_based"])
+        )
+        and i["instance_id"] not in {x["instance_id"] for x in urgent}
     ]
     in_month.sort(key=lambda i: (i["priority_rank"], i["due_date"]))
     month_focus = [i for i in in_month if i["priority"] in ("high", "normal")]
     month_rest = [i for i in in_month if i["priority"] == "low"]
 
     month_ids = {i["instance_id"] for i in in_month}
+    urgent_ids = {i["instance_id"] for i in urgent}
     later = sorted(
         (
             i
             for i in items
             if i["status"] == "upcoming"
             and i["instance_id"] not in month_ids
+            and i["instance_id"] not in urgent_ids
             and date.fromisoformat(i["due_date"]) <= today + timedelta(days=30)
         ),
         key=lambda i: (i["priority_rank"], i["due_date"]),
     )
-    return {"urgent": urgent, "month_focus": month_focus, "month_rest": month_rest, "later": later}
+    return {
+        "urgent": urgent,
+        "month_focus": month_focus,
+        "month_rest": month_rest,
+        "later": later,
+        "overdue_total": len(urgent),
+    }
 
 
 @router.get("/instances")
@@ -230,16 +251,51 @@ def _instances_in_month(db: Session, month: int, statuses: tuple[str, ...]) -> l
     )
 
 
+def _month_due_for_task(task: Task, month: int, year: int) -> date | None:
+    from ..services.recurrence import parse_repeat_months
+
+    if task.schedule_type == "annual_repeat":
+        if month not in parse_repeat_months(task.repeat_months):
+            return None
+        day = min(max(int(task.repeat_day or 1), 1), _last_day_of_month(year, month))
+        return date(year, month, day)
+    if task.schedule_type == "annual_window":
+        start, _ = recurrence.window_bounds(task, year)
+        if start.month == month:
+            return start
+        return None
+    return None
+
+
 @router.post("/complete-month/{month}")
 def complete_month(month: int, db: Session = Depends(get_db)):
-    instances = _instances_in_month(db, month, ("open",))
-    for inst in instances:
-        inst.status = "done"
-        db.add(TaskCompletion(task_id=inst.task_id, instance_id=inst.id))
-        _schedule_next_interval(db, inst.task, inst.due_date)
-    if instances:
-        db.commit()
-    return {"ok": True, "completed": len(instances)}
+    if not 1 <= month <= 12:
+        raise HTTPException(status_code=422, detail="Monat muss zwischen 1 und 12 liegen.")
+    year = date.today().year
+    existing = {
+        (i.task_id, i.due_date): i
+        for i in _instances_in_month(db, month, ("open", "done", "skipped"))
+    }
+    completed = 0
+    tasks = db.query(Task).filter(Task.active.is_(True)).all()
+    for task in tasks:
+        due = _month_due_for_task(task, month, year)
+        if due is None:
+            continue
+        inst = existing.get((task.id, due))
+        if inst is None:
+            inst = TaskInstance(task_id=task.id, due_date=due, year=year, status="done")
+            db.add(inst)
+            db.flush()
+            db.add(TaskCompletion(task_id=task.id, instance_id=inst.id))
+            completed += 1
+        elif inst.status != "done":
+            inst.status = "done"
+            db.add(TaskCompletion(task_id=task.id, instance_id=inst.id))
+            _schedule_next_interval(db, task, due)
+            completed += 1
+    db.commit()
+    return {"ok": True, "completed": completed}
 
 
 @router.post("/reopen-month/{month}")
@@ -253,6 +309,27 @@ def reopen_month(month: int, db: Session = Depends(get_db)):
     if reopened:
         db.commit()
     return {"ok": True, "reopened": reopened}
+
+
+@router.post("/skip-all-overdue")
+def skip_all_overdue(db: Session = Depends(get_db)):
+    """Rettungsanker nach Erstinstallation/Migration: alle überfälligen offenen
+    Fälligkeiten als übersprungen markieren (ohne Verlaufseinträge)."""
+    today = date.today()
+    rows = (
+        db.query(TaskInstance)
+        .join(Task)
+        .filter(Task.active.is_(True), TaskInstance.status == "open")
+        .all()
+    )
+    skipped = 0
+    for inst in rows:
+        if recurrence.status_for(inst.task, inst, today) == "overdue":
+            inst.status = "skipped"
+            skipped += 1
+    if skipped:
+        db.commit()
+    return {"ok": True, "skipped": skipped}
 
 
 @router.get("/history")

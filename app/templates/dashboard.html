@@ -8,6 +8,19 @@
 </div>
 
 {% set month_total = sections.month_focus|length + sections.month_rest|length %}
+{% if sections.overdue_total >= 10 %}
+<div class="card onboard-panel">
+  <h3>🧹 Viel Rückstand entdeckt ({{ sections.overdue_total }})</h3>
+  <p>Kommt das von einer Erstinstallation oder Migration? Alte Monate kannst du
+     bequem im <a href="/jahresplan">Jahresplan</a> je Monat abhaken — oder alle
+     überfälligen Punkte hier auf einmal überspringen, um sauber zu starten:</p>
+  <form method="post" action="/maintenance/skip-all-overdue-form" onsubmit="return confirm('Alle {{ sections.overdue_total }} überfälligen Aufgaben als übersprungen markieren?');">
+    <button class="btn" type="submit">⤼ Alle überfälligen überspringen ({{ sections.overdue_total }})</button>
+  </form>
+  <p class="hint">Übersprungene Aufgaben verschwinden vom Dashboard und erscheinen zum nächsten Termin wieder.</p>
+</div>
+{% endif %}
+
 <div class="card stats">
   <span class="stat {% if sections.urgent %}stat-urgent{% endif %}">🔥 {{ sections.urgent|length }} dringend</span>
   <span class="stat">📅 {{ month_total }} diesen Monat</span>
@@ -36,6 +49,7 @@
         <span class="task-title">{{ area_icons.get(it.area, "🏠") }} {{ it.title }}</span>
         <span class="task-meta">
           {% if it.status == "overdue" %}<span class="status-dot dot-red">🔴 überfällig seit {{ it.due_str }}</span>
+          {% elif it.status == "due" and it.month_based %}<span class="status-dot dot-amber">🟠 fällig diesen Monat</span>
           {% elif it.status == "due" %}<span class="status-dot dot-amber">🟠 heute fällig</span>
           {% else %}<span class="status-dot">📆 fällig {{ it.due_str }}</span>{% endif %}
           · {{ it.area_name or "—" }}{% if it.category_name %} · {{ it.category_name }}{% endif %}
