@@ -175,6 +175,7 @@ cat > /etc/caddy/Caddyfile <<EOF
 # verwaltet von Hausmeister (Re-Runs setzen diese Datei zurueck)
 {
   admin off
+  default_sni $SITE_NAME
 }
 
 # HTTP: sofort nutzbar, ohne Zertifikat (kein Offline-Modus/kein Push)
@@ -186,7 +187,7 @@ http://$SITE_NAME {
   reverse_proxy 127.0.0.1:8080
 }
 
-# HTTPS: volle PWA-Funktionen (Offline-Modus, Push) nach einmaliger
+# HTTPS: volle PWA-Funktionen (Offline-Modus, Push) nach Einmaliger
 # Zertifikats-Bestaetigung – Anleitung: /help/certificate
 $SITE_NAME {
   tls internal

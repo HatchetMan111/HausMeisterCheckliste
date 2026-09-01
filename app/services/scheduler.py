@@ -46,6 +46,15 @@ def ensure_instances_for_task(db, task, today: date | None = None, horizon_days:
             created += 1
         return created
 
+    # Bewusst gesetzte Einzeltermine (Nutzereingabe) erhalten immer ihre
+    # Instanz – auch mit Datum in der Vergangenheit.
+    if task.schedule_type == "one_time":
+        if task.due_date and task.due_date not in existing:
+            db.add(TaskInstance(task_id=task.id, due_date=task.due_date, year=task.due_date.year))
+            db.commit()
+            created += 1
+        return created
+
     # Aufwärmschutz: Fälligkeiten werden erst ab dem aktuellen Monat erzeugt,
     # damit eine frische Installation nicht mit dem Jahres-Rückstand überrollt wird.
     # Rückwirkend abgehakt werden kann jederzeit über die Monatsaktionen im Jahresplan.

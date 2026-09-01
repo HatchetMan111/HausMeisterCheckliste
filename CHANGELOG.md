@@ -4,6 +4,22 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.2.3] - 2026-09-01
+
+### Behoben
+
+- **HTTPS-first-Falle bei IP-Aufruf:** moderne Browser probieren bei Eingabe
+  einer nackten IP zuerst HTTPS – auf Port 443 brach der TLS-Handshake ab, weil
+  Caddy ohne SNI kein Zertifikat ausliefern konnte; die UI schien „über die IP
+  nicht mehr erreichbar". Caddy bekommt jetzt `default_sni` auf den
+  mDNS-Namen: `https://<IP>` liefert das hausmeister.local-Zertifikat (mit
+  einmalig zu bestätigendem Hinweis), `http://<IP>` bleibt unverändert direkt
+  nutzbar
+- **Aufwärmschutz feinjustiert:** selbst angelegte Einzelaufgaben
+  (`one_time`) erhalten ihre Fälligkeit auch bei bewusst gesetztem Datum in der
+  Vergangenheit (Nutzereingabe schlägt den Rückstands-Schutz, der nur die
+  Jahresbibliothek betrifft)
+
 ## [0.2.2] - 2026-08-31
 
 ### Geändert
