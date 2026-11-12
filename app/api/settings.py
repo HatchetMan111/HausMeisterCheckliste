@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -28,6 +28,10 @@ def settings_public(db: Session) -> dict:
     smtp = notifications.get_smtp_config(db)
     password_set = bool(notifications.get_setting(db, "smtp_password"))
     vapid_pub = notifications.get_setting(db, "vapid_public")
+    try:
+        notify_days_ahead = int(notifications.get_setting(db, "notify_days_ahead") or 7)
+    except ValueError:
+        notify_days_ahead = 7
     return {
         "property": {"name": prop.name, "address": prop.address},
         "smtp": {
@@ -39,6 +43,7 @@ def settings_public(db: Session) -> dict:
             "password_set": password_set,
         },
         "notify_email": smtp["to"],
+        "notify_days_ahead": notify_days_ahead,
         "channels": {
             "email": notifications.channel_enabled(db, "email"),
             "push": notifications.channel_enabled(db, "push"),
@@ -216,3 +221,43 @@ def push_test(db: Session = Depends(get_db)):
         {"title": "Hausmeister", "body": "Test-Push erfolgreich.", "url": "/"},
     )
     return {"ok": True, "sent": sent}
+
+
+@router.post("/import-checklist")
+async def import_checklist(file: UploadFile):
+    """Checklisten-Import (JSON/CSV). Dateiname wird auf den Basisnamen
+    beschränkt – ein Pfad-Traversal über file.filename ist ausgeschlossen."""
+    import os
+    import sys
+    from importlib import util as importlib_util
+    from pathlib import Path
+
+    safe_name = os.path.basename(file.filename or "") or "import.json"
+    if not safe_name.lower().endswith((".json", ".csv")):
+        raise HTTPException(
+            status_code=422, detail="Nur .json- oder .csv-Dateien werden unterstützt."
+        )
+    config.ensure_dirs()
+    target = config.DATA_DIR / f"upload-{safe_name}"
+    target.write_bytes(await file.read())
+
+    script = Path(__file__).resolve().parent.parent / "scripts" / "import_checklist.py"
+    if not script.exists():
+        target.unlink(missing_ok=True)
+        raise HTTPException(status_code=500, detail="Import-Skript nicht gefunden.")
+    spec = importlib_util.spec_from_file_location("import_checklist", script)
+    module = importlib_util.module_from_spec(spec)
+    sys.modules["import_checklist"] = module
+    spec.loader.exec_module(module)
+    try:
+        result = module.run_import(target)
+    except Exception as exc:
+        target.unlink(missing_ok=True)
+        raise HTTPException(status_code=422, detail=f"Import fehlgeschlagen: {exc}")
+    target.unlink(missing_ok=True)
+    return {
+        "ok": True,
+        "created": result.get("created", 0),
+        "updated": result.get("updated", 0),
+        "total": result.get("total", 0),
+    }

@@ -133,8 +133,8 @@ wann und von wem was gemacht wurde.
 
 | Komponente | Wahl |
 |---|---|
-| Backend | Python + FastAPI |
-| Frontend | Server-seitiges HTML (Jinja2) + PWA (Service Worker, Manifest) |
+| Backend | Python + FastAPI (reine JSON-API unter `/api/*`) |
+| Frontend | React 18 + Vite SPA (PWA: Service Worker, Manifest, Offline-Warteschlange) |
 | Datenbank | SQLite + versionierte Alembic-Migrationen |
 | Webserver | Uvicorn (intern :8080) hinter Caddy (extern :443, TLS-Terminierung) |
 | Dienste | systemd: `hausmeister.service`, `hausmeister-daily.timer`, `caddy.service` |
@@ -507,12 +507,32 @@ cd HausMeisterCheckliste
 python3 -m venv venv && venv/bin/pip install -r requirements.txt -r requirements-dev.txt
 venv/bin/alembic upgrade head                                   # Schema
 HAUSMEISTER_DATA_DIR=/tmp/hm venv/bin/python scripts/import_checklist.py data/templates/checklist.json
-venv/bin/uvicorn app.main:app --port 8080                       # Dev-Server
+venv/bin/uvicorn app.main:app --port 8080                       # API + SPA
 venv/bin/pytest                                                 # Tests
 ```
 
-CI (`.github/workflows/ci.yml`): pytest, Alembic up/down/up, `bash -n` und
-ShellCheck für alle Shell-Skripte.
+### Frontend (React + Vite)
+
+Das UI ist eine SPA unter `frontend/` (React 18, Vite, React Router). Das
+gebaute Ergebnis `frontend/dist` wird **mitcommitted** – Uvicorn liefert es
+direkt aus (Fallback auf `index.html` für alle SPA-Routen), im Container wird
+dafür **kein Node.js** benötigt:
+
+```bash
+cd frontend
+npm install            # einmalig
+npm run dev            # Dev-Server :5173 mit Proxy auf API :8080
+npm run build          # nach Änderungen: dist neu bauen und committen!
+```
+
+Design-Grundsätze: grüne Markenidentikät bleibt, CSS-Custom-Properties mit
+automatischem Dark-Mode (`prefers-color-scheme`), Offline-Warteschlange
+(IndexedDB) für „Erledigt"-Aktionen wie bisher – der Service Worker liegt
+unter `frontend/public/sw.js` (Cache-Name bei jedem Build-Inhalt-Update
+hochzählen).
+
+CI (`.github/workflows/ci.yml`): Frontend-Build, pytest, Alembic up/down/up,
+`bash -n` und ShellCheck für alle Shell-Skripte.
 
 Dienste im Betrieb:
 

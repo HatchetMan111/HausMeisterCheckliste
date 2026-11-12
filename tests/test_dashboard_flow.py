@@ -78,11 +78,10 @@ def test_month_task_is_due_whole_month_not_overdue(client):
 
 
 def test_dashboard_does_not_roll_new_install(client):
-    """Dashboard-Panel erscheint erst ab 10 überfälligen; Monatsaufgaben im Fokus."""
-    resp = client.get("/")
-    assert resp.status_code == 200
-    # keine Onboarding-Panel bei wenig Rückstand
-    assert "Viel Rückstand entdeckt" not in resp.text
+    """Sections-Endpunkt: erst ab 10 überfälligen zeigt die UI das Rettungs-Panel
+    (Schwelle liegt in der SPA, der Endpunkt liefert overdue_total)."""
+    sections = client.get("/api/maintenance/sections").json()
+    assert sections["overdue_total"] == 0
 
     # viele überfällige erzeugen
     for n in range(12):
@@ -91,9 +90,26 @@ def test_dashboard_does_not_roll_new_install(client):
             json={"title": f"Rückstand {n}", "schedule_type": "one_time",
                   "due_date": (date.today() - timedelta(days=n + 1)).isoformat()},
         )
+    sections = client.get("/api/maintenance/sections").json()
+    assert sections["overdue_total"] >= 12
+    assert len(sections["urgent"]) >= 12
+
+
+def test_spa_shell_served_for_all_routes(client):
+    """Die SPA-Shell wird für alle UI-Routen ausgeliefert, API-404s bleiben JSON."""
     resp = client.get("/")
-    assert "Viel Rückstand entdeckt" in resp.text
-    assert "Alle überfälligen überspringen" in resp.text
+    assert resp.status_code == 200
+    assert "Hausmeister" in resp.text
+    assert 'id="root"' in resp.text
+    for path in ("/jahresplan", "/tasks", "/tasks/new", "/tasks/1/edit",
+                 "/history", "/settings", "/help/certificate"):
+        resp = client.get(path)
+        assert resp.status_code == 200, path
+        assert 'id="root"' in resp.text
+
+    resp = client.get("/api/does-not-exist")
+    assert resp.status_code == 404
+    assert resp.json()["detail"] == "Nicht gefunden."
 
 
 def test_jahresplan_library_without_duplicates(db):

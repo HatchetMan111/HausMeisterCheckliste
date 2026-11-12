@@ -155,10 +155,25 @@ def test_backup_import_rejects_non_zip(client):
 
 
 def test_pages_render(client):
-    for path in ("/", "/tasks", "/tasks/new", "/history", "/settings", "/help/certificate"):
+    for path in ("/", "/tasks", "/tasks/new", "/history", "/settings", "/help/certificate", "/jahresplan"):
         resp = client.get(path)
         assert resp.status_code == 200, path
         assert "Hausmeister" in resp.text
+
+
+def test_import_checklist_filename_is_sanitized(client):
+    """file.filename darf trotz ../ keine Datei außerhalb des Datenverzeichnisses anlegen."""
+    from app import config
+
+    resp = client.post(
+        "/api/settings/import-checklist",
+        files={"file": ("../../escaped.json", b"{\"tasks\": []}", "application/json")},
+    )
+    # Der Import selbst scheitert evtl., aber es darf nichts außerhalb liegen:
+    outside = config.DATA_DIR.parent / "escaped.json"
+    assert not outside.exists(), "Path-Traversal: Datei landete außerhalb des Datenverzeichnisses!"
+    stray = list(config.DATA_DIR.parent.glob("escaped*"))
+    assert not stray, f"Unerwartete Dateien: {stray}"
 
 
 def test_root_ca_endpoint_absent_by_default(client):
@@ -208,14 +223,68 @@ def test_dashboard_sections_order(client):
         json={"title": "Demnaechst Sektion", "schedule_type": "one_time",
               "due_date": (date.today() + timedelta(days=20)).isoformat()},
     )
-    resp = client.get("/")
-    assert resp.status_code == 200
-    text = resp.text
-    assert "🔥 Jetzt dringend" in text
-    assert "Dringend Sektion" in text
-    assert "Später" in text
-    assert "Demnaechst Sektion" in text
-    assert "🗓️" in text and "📅" in text
+    sections = client.get("/api/maintenance/sections").json()
+    assert any(i["title"] == "Dringend Sektion" for i in sections["urgent"])
+    assert any(i["title"] == "Demnaechst Sektion" for i in sections["later"])
 
     buckets = client.get("/api/maintenance/dashboard").json()
     assert any(i["title"] == "Dringend Sektion" for i in buckets["overdue"])
+
+
+def test_settings_notify_days_ahead_roundtrip(client):
+    resp = client.get("/api/settings")
+    assert isinstance(resp.json()["notify_days_ahead"], int)
+    resp = client.put("/api/settings", json={"notify_days_ahead": 14})
+    assert resp.status_code == 200
+    assert resp.json()["notify_days_ahead"] == 14
+    resp = client.get("/api/settings")
+    assert resp.json()["notify_days_ahead"] == 14
+
+
+def test_history_returns_local_timezone(client, db):
+    from datetime import date, datetime
+
+    from app.models import Task, TaskCompletion
+
+    task = Task(slug="tz-test-aufgabe", title="TZ Test", schedule_type="one_time",
+                due_date=date(2030, 1, 1), active=True)
+    db.add(task)
+    db.commit()
+    db.add(TaskCompletion(task_id=task.id, completed_at=datetime(2026, 11, 12, 23, 30)))
+    db.commit()
+
+    resp = client.get("/api/maintenance/history?limit=1")
+    assert resp.status_code == 200
+    completed_at = resp.json()["completions"][0]["completed_at"]
+    # Europe/Berlin = UTC+1 (im November): 23:30 UTC → 00:30+01:00
+    assert completed_at.startswith("2026-11-13T00:30:00+01:00")
+
+
+def test_search_escapes_like_wildcards(client):
+    client.post("/api/tasks", json={"title": "Rauchmelder 100%", "schedule_type": "one_time", "due_date": "2030-01-01"})
+    client.post("/api/tasks", json={"title": "Gartenhaus streichen", "schedule_type": "one_time", "due_date": "2030-01-01"})
+
+    resp = client.get("/api/tasks", params={"q": "100%"}).json()
+    titles = [t["title"] for t in resp["tasks"]]
+    assert "Rauchmelder 100%" in titles
+
+    resp = client.get("/api/tasks", params={"q": "haus"}).json()
+    assert any(t["title"] == "Gartenhaus streichen" for t in resp["tasks"])
+
+
+def test_meta_endpoint(client):
+    resp = client.get("/api/meta")
+    assert resp.status_code == 200
+    data = resp.json()
+    slugs = {a["slug"] for a in data["areas"]}
+    assert {"haus", "hof", "technik", "garten", "sicherheit"} <= slugs
+    assert data["app_name"] == "Hausmeister"
+    assert isinstance(data["categories"], list)
+
+
+def test_import_checklist_rejects_wrong_suffix(client):
+    resp = client.post(
+        "/api/settings/import-checklist",
+        files={"file": ("boese.exe", b"x", "application/octet-stream")},
+    )
+    assert resp.status_code == 422

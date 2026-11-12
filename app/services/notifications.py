@@ -183,7 +183,12 @@ def send_web_push(db: Session, payload: dict) -> int:
                 vapid_claims=claims,
             )
             sent += 1
-        except Exception:
-            db.delete(sub)
-            db.commit()
+        except Exception as exc:
+            # Nur bei 404/410 (Abo ungültig/expired) löschen – bei transienten
+            # Netzwerkfehlern bleibt das Abo erhalten, damit der nächste
+            # Versand erneut versucht werden kann.
+            status = getattr(getattr(exc, "response", None), "status_code", None)
+            if status in (404, 410):
+                db.delete(sub)
+                db.commit()
     return sent

@@ -5,6 +5,29 @@ on:
   pull_request:
 
 jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Frontend-Abhängigkeiten installieren
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+      - name: Frontend bauen
+        working-directory: frontend
+        run: npm run build
+      - name: Ist committetes dist aktuell? (Warnung bei veraltetem dist)
+        working-directory: frontend
+        run: |
+          if ! git diff --quiet HEAD -- dist; then
+            echo "::warning::frontend/dist ist nicht aktuell – bitte 'npm run build' ausführen und dist committen."
+            git diff --stat HEAD -- dist
+          fi
+
   python:
     runs-on: ubuntu-latest
     steps:

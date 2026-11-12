@@ -4,6 +4,47 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.3.0] - 2026-11-12
+
+### Neu – UI komplett in React + Vite
+
+- Das Frontend ist jetzt eine **React-18-SPA** (Vite, React Router) unter
+  `frontend/` – ersetzt die server-seitigen Jinja2-Templates. Das gebaute
+  `frontend/dist` wird mitcommitted, Uvicorn liefert es direkt aus
+  (SPA-Fallback); im Container bleibt **kein Node.js nötig**
+- Modernisiertes Design: Sticky-Topbar mit Blur, Karten/Chips/Badges-System,
+  automatischer **Dark-Mode** (`prefers-color-scheme`), responsives Layout,
+  animierte Toasts statt Flash-Redirects
+- Live-Updates ohne Seiten-Reload: Erledigt/Überspringen aktualisiert die
+  Ansicht sofort, Suchfilter mit Debouncing, Offline-Warteschlange (IndexedDB +
+  Service Worker) unverändert erhalten
+- Neue API-Endpunkte für die SPA: `GET /api/meta`, `GET
+  /api/maintenance/sections`, `GET /api/maintenance/jahresplan`
+
+### Behoben
+
+- **Path-Traversal im Checklisten-Import:** der Dateiname eines Uploads wurde
+  ohne Bereinigung in den Pfad übernommen (`upload-<filename>`) – jetzt wird
+  nur der Basisname verwendet und die Endung geprüft
+- **`notify_days_ahead` nie sichtbar:** das Feld wurde gespeichert, aber im
+  Einstellungsformular hart auf 7 gesetzt und von der API nicht geliefert –
+  jetzt Roundtrip in API und UI
+- **Web-Push-Abos bei transienten Fehlern gelöscht:** jedes Versandproblem
+  entfernte das Abo dauerhaft – jetzt werden Abos nur noch bei HTTP 404/410
+  (ungültig/expired) gelöscht
+- **Verlauf zeigte UTC statt Lokalzeit** (1–2 h Versatz) – Erledigungs-
+  Zeitstempel werden jetzt nach `HAUSMEISTER_TZ` (Standard Europe/Berlin)
+  konvertiert und mit Offset ausgeliefert
+- **Suche mit `%`/`_` wirkte als Wildcards** statt Literalsuche
+- Doppelte `_flash`-Definition in `app/main.py` entfernt, Jinja2-Abhängigkeit
+  aus `requirements.txt` gestrichen
+
+### Geändert
+
+- Tests auf SPA umgestellt (Shell-Routen + JSON-API-Assertions) und um
+  Regressionsfälle für alle Fixes erweitert (57 Tests); CI um Frontend-Build-Job
+  ergänzt, der bei veraltetem committetem `dist` warnt
+
 ## [0.2.3] - 2026-09-01
 
 ### Behoben

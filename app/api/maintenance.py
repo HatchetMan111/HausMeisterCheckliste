@@ -4,7 +4,7 @@ import io
 import os
 import sqlite3
 import zipfile
-from datetime import date, timedelta
+from datetime import date, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Response, UploadFile
 from pydantic import BaseModel
@@ -173,6 +173,11 @@ def dashboard_sections(db: Session, today: date) -> dict:
     }
 
 
+@router.get("/sections")
+def get_sections(db: Session = Depends(get_db)):
+    return dashboard_sections(db, date.today())
+
+
 @router.get("/instances")
 def list_instances(
     from_date: date | None = None,
@@ -230,6 +235,20 @@ def _last_day_of_month(year: int, month: int) -> int:
     import calendar
 
     return calendar.monthrange(year, month)[1]
+
+
+def _to_local_iso(dt):
+    """Naive UTC-Zeitstempel (Datenbank) in die konfigurierte Lokalzeit
+    konvertieren und als ISO-String mit Offset zurückgeben."""
+    if dt is None:
+        return None
+    try:
+        from zoneinfo import ZoneInfo
+
+        local = dt.replace(tzinfo=timezone.utc).astimezone(ZoneInfo(config.TIMEZONE))
+    except Exception:
+        return dt.isoformat()
+    return local.isoformat()
 
 
 def _instances_in_month(db: Session, month: int, statuses: tuple[str, ...]) -> list[TaskInstance]:
@@ -346,7 +365,7 @@ def history(limit: int = 100, db: Session = Depends(get_db)):
                 "id": c.id,
                 "task_id": c.task_id,
                 "task_title": c.task.title if c.task else None,
-                "completed_at": c.completed_at.isoformat() if c.completed_at else None,
+                "completed_at": _to_local_iso(c.completed_at),
                 "completed_by": c.completed_by,
                 "note": c.note,
             }
@@ -359,6 +378,149 @@ def history(limit: int = 100, db: Session = Depends(get_db)):
 def ensure_instances(db: Session = Depends(get_db)):
     created = scheduler.ensure_all_instances(db)
     return {"ok": True, "instances_created": created}
+
+
+MONTH_NAMES = [
+    "Januar", "Februar", "März", "April", "Mai", "Juni",
+    "Juli", "August", "September", "Oktober", "November", "Dezember",
+]
+PRIORITY_FILTERS = ("all", "high", "normal", "low", "tip")
+
+
+def jahresplan_payload(db: Session, view: str, month: int | None, priority: str, today: date | None = None) -> dict:
+    """Jahresplan-Daten für die SPA: Aufgaben je Monat (monatsbasiert) plus
+    laufende/einmalige Aufgaben, mit Status je Monat und Summen."""
+    from ..services.recurrence import parse_repeat_months, window_bounds
+
+    today = today or date.today()
+    scheduler.ensure_all_instances(db)
+    year = today.year
+    view = "year" if view == "year" else "month"
+    if month is None or not 1 <= month <= 12:
+        month = today.month
+    if priority not in PRIORITY_FILTERS:
+        priority = "all"
+
+    tasks = db.query(Task).filter(Task.active.is_(True)).all()
+    year_start, year_end = date(year, 1, 1), date(year, 12, 31)
+    instances = (
+        db.query(TaskInstance)
+        .join(Task)
+        .filter(Task.active.is_(True), TaskInstance.due_date >= year_start, TaskInstance.due_date <= year_end)
+        .all()
+    )
+    open_by_task_month: dict[tuple[int, int], int] = {}
+    done_by_task_month: dict[tuple[int, int], int] = {}
+    overdue_by_task: dict[int, int] = {}
+    for inst in instances:
+        key = (inst.task_id, inst.due_date.month)
+        if inst.status == "open":
+            open_by_task_month[key] = inst.id
+            if inst.due_date < today:
+                overdue_by_task[inst.task_id] = overdue_by_task.get(inst.task_id, 0) + 1
+        elif inst.status == "done":
+            done_by_task_month[key] = done_by_task_month.get(key, 0) + 1
+
+    def month_of_window(task: Task, m: int) -> bool:
+        start, end = window_bounds(task, year)
+        cursor = start
+        while cursor <= end:
+            if cursor.month == m:
+                return True
+            cursor += timedelta(days=1)
+        return False
+
+    def matches_priority(task: Task) -> bool:
+        prio = task.priority if task.priority in ("high", "normal", "low") else "normal"
+        if priority == "tip":
+            return task.source == "tip"
+        if priority == "all":
+            return True
+        return prio == priority
+
+    def serialize_item(task: Task, m: int | None) -> dict:
+        key = (task.id, m) if m else (task.id, today.month)
+        open_id = open_by_task_month.get(key)
+        done_cnt = done_by_task_month.get(key, 0)
+        status = "done" if (done_cnt and not open_id) else ("open" if open_id else "planned")
+        prio = task.priority if task.priority in ("high", "normal", "low") else "normal"
+        item = {
+            "task_id": task.id,
+            "title": task.title,
+            "description": task.description,
+            "area": task.area.slug if task.area else None,
+            "area_name": task.area.name if task.area else None,
+            "category_name": task.category.name if task.category else None,
+            "priority": prio,
+            "is_tip": task.source == "tip",
+            "open_id": open_id,
+            "done": done_cnt,
+            "overdue": overdue_by_task.get(task.id, 0),
+            "schedule_text": recurrence.human_schedule(task),
+            "status": status,
+            "estimated_minutes": task.estimated_minutes,
+            "window_end": None,
+        }
+        if task.schedule_type == "annual_window":
+            item["window_end"] = window_bounds(task, year)[1].isoformat()
+        return item
+
+    months_out: list[dict] = []
+    month_range = range(1, 13) if view == "year" else [month]
+    for m in month_range:
+        items = []
+        for task in tasks:
+            if task.schedule_type == "annual_repeat":
+                if m not in parse_repeat_months(task.repeat_months):
+                    continue
+            elif task.schedule_type == "annual_window":
+                if not month_of_window(task, m):
+                    continue
+            elif task.schedule_type == "one_time" and task.due_date:
+                if task.due_date.month != m:
+                    continue
+            else:
+                continue
+            if not matches_priority(task):
+                continue
+            items.append(serialize_item(task, m))
+        items.sort(key=lambda i: ({"high": 0, "normal": 1, "low": 2}.get(i["priority"], 3), i["title"]))
+        months_out.append({"month": m, "name": MONTH_NAMES[m - 1], "items": items})
+
+    running = []
+    for task in tasks:
+        if task.schedule_type not in ("interval_days", "one_time"):
+            continue
+        if not matches_priority(task):
+            continue
+        running.append(serialize_item(task, None))
+    running.sort(key=lambda i: i["title"])
+
+    all_items = [i for mrow in months_out for i in mrow["items"]] + running
+    total = len(all_items)
+    done_total = sum(1 for i in all_items if i["status"] == "done")
+    return {
+        "view": view,
+        "month": month,
+        "priority": priority,
+        "year": year,
+        "months": months_out,
+        "running": running,
+        "total": total,
+        "done_total": done_total,
+        "open_total": total - done_total,
+        "today": today.isoformat(),
+    }
+
+
+@router.get("/jahresplan")
+def get_jahresplan(
+    view: str = "month",
+    month: int | None = None,
+    priority: str = "all",
+    db: Session = Depends(get_db),
+):
+    return jahresplan_payload(db, view, month, priority)
 
 
 def export_backup_zip() -> bytes:

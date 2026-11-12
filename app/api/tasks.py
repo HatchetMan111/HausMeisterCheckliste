@@ -34,6 +34,11 @@ def unique_slug(db: Session, base: str, exclude_id: int | None = None) -> str:
     return slug
 
 
+def escape_like(q: str) -> str:
+    """% und _ in Suchbegriffen maskieren, damit sie nicht als Wildcards wirken."""
+    return q.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+
+
 class TaskPayload(BaseModel):
     title: str
     slug: str | None = None
@@ -150,7 +155,7 @@ def list_tasks(
     if active is not None:
         query = query.filter(Task.active.is_(active))
     if q:
-        query = query.filter(Task.title.ilike(f"%{q}%"))
+        query = query.filter(Task.title.ilike(f"%{escape_like(q)}%", escape="\\"))
     tasks = query.order_by(Task.active.desc(), Task.title).all()
     return {"tasks": [serialize_task(t) for t in tasks]}
 

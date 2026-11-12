@@ -1,12 +1,10 @@
-const CACHE_NAME = "hausmeister-v1";
+const CACHE_NAME = "hausmeister-v2";
 const SHELL = [
   "/",
-  "/static/app.css",
-  "/static/app.js",
-  "/static/manifest.json",
+  "/index.html",
+  "/manifest.json",
   "/static/icons/icon-192.png",
   "/static/icons/icon-512.png",
-  "/help/certificate",
 ];
 
 const DB_NAME = "hausmeister";
@@ -92,7 +90,12 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET" || url.origin !== self.location.origin) {
     return;
   }
-  if (url.pathname.startsWith("/static/")) {
+  // API-Antworten niemals cachen – immer frisch vom Server.
+  if (url.pathname.startsWith("/api/")) {
+    return;
+  }
+  // Gehashte Vite-Assets: cache-first, unveränderlich pro Build.
+  if (url.pathname.startsWith("/assets/")) {
     event.respondWith(
       caches.match(event.request).then(
         (hit) =>
@@ -106,16 +109,19 @@ self.addEventListener("fetch", (event) => {
     );
     return;
   }
+  // Navigationen (SPA-Routen): network-first, offline auf gecachte Shell fallen.
   event.respondWith(
     fetch(event.request)
       .then((res) => {
-        if (res.ok && url.pathname === "/") {
+        if (res.ok && event.request.mode === "navigate") {
           const copy = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put("/", copy));
+          caches.open(CACHE_NAME).then((cache) => cache.put("/index.html", copy));
         }
         return res;
       })
-      .catch(() => caches.match(event.request).then((hit) => hit || caches.match("/")))
+      .catch(() =>
+        caches.match(event.request).then((hit) => hit || caches.match("/index.html"))
+      )
   );
 });
 

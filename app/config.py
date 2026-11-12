@@ -6,7 +6,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 APP_NAME = "Hausmeister"
-VERSION = "0.2.3"
+VERSION = "0.3.0"
 
 DATA_DIR = Path(os.environ.get("HAUSMEISTER_DATA_DIR", BASE_DIR / "data"))
 DB_PATH = Path(os.environ.get("HAUSMEISTER_DB_PATH", DATA_DIR / "hausmeister.sqlite3"))
@@ -18,6 +18,7 @@ SECRET_KEY_FILE = Path(
 
 PUSH_ENABLED = os.environ.get("HAUSMEISTER_PUSH_ENABLED", "0") == "1"
 APP_URL = os.environ.get("HAUSMEISTER_APP_URL", "https://hausmeister.local")
+TIMEZONE = os.environ.get("HAUSMEISTER_TZ", "Europe/Berlin")
 
 DEFAULT_BACKUP_KEEP = int(os.environ.get("HAUSMEISTER_BACKUP_KEEP", "14"))
 INSTANCE_HORIZON_DAYS = int(os.environ.get("HAUSMEISTER_HORIZON_DAYS", "400"))

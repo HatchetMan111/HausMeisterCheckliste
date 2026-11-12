@@ -13,5 +13,7 @@ data/.secret_key
 data/backups/
 data/certs/
 data/export/
-dist/
 *.log
+
+# Node/Frontend (das gebaute frontend/dist wird bewusst mitcommitted)
+frontend/node_modules/
