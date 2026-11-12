@@ -122,6 +122,7 @@ def dashboard_sections(db: Session, today: date) -> dict:
         item["due_str"] = inst.due_date.strftime("%d.%m.")
         item["month_based"] = inst.task.schedule_type in ("annual_repeat", "annual_window")
         item["month"] = inst.due_date.month
+        item["due_year"] = inst.due_date.year
         items.append(item)
 
     # Dringend: echter Rückstand (überfällig) und datumsgenaue Aufgaben, die
@@ -141,6 +142,7 @@ def dashboard_sections(db: Session, today: date) -> dict:
         i
         for i in items
         if i["month"] == today.month
+        and i["due_year"] == today.year
         and (
             i["status"] == "upcoming"
             or (i["status"] == "due" and i["month_based"])

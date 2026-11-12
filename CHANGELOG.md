@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen dieses Projekts werden hier dokumentiert.
 Format orientiert an [Keep a Changelog](https://keepachangelog.com/), Versionierung
 nach [SemVer](https://semver.org/).
 
+## [0.3.1] - 2026-11-12
+
+### Behoben
+
+- **Monats-Fokus ohne Jahresgrenze:** der Dashboard-Abschnitt „Monat im Fokus“
+  prüfte nur den Monat, nicht das Jahr – Fälligkeiten desselben Monats im
+  Folgejahr (der 400-Tage-Horizont legt sie früh an) erschienen fälschlich im
+  aktuellen Monat. Jetzt wird `due_year` geprüft (Regressions-Test ergänzt)
+
 ## [0.3.0] - 2026-11-12
 
 ### Neu – UI komplett in React + Vite

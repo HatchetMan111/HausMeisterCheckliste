@@ -210,6 +210,23 @@ def test_annual_window_overdue_after_window(client, db):
         assert all(i["status"] == "overdue" for i in task_inst if i["due_date"] < (today - timedelta(days=31)).isoformat())
 
 
+def test_dashboard_month_focus_excludes_next_year(client):
+    """Monats-Fokus zeigt nur Fälligkeiten des aktuellen Jahres – Instanzen
+    für denselben Monat im Folgejahr (Horizont 400 Tage) leaken sonst rein."""
+    from datetime import date
+
+    next_year_same_month = date(date.today().year + 1, date.today().month, 1)
+    client.post(
+        "/api/tasks",
+        json={"title": "Vorgriff Folgejahr", "schedule_type": "one_time",
+              "due_date": next_year_same_month.isoformat()},
+    )
+    sections = client.get("/api/maintenance/sections").json()
+    in_focus = [i for i in sections["month_focus"] + sections["month_rest"]
+                if i["title"] == "Vorgriff Folgejahr"]
+    assert not in_focus, "Folgejahr-Fälligkeit darf nicht im Monats-Fokus stehen"
+
+
 def test_dashboard_sections_order(client):
     from datetime import date, timedelta
 
